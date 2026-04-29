@@ -250,4 +250,3 @@ export const ALL_PROJECTS: ProjectData[] = [
 export const FEATURED_PROJECTS = ALL_PROJECTS.filter(p => p.featured);
 export const MORE_PROJECTS     = ALL_PROJECTS.filter(p => !p.featured);
 
-export type { ProjectData };

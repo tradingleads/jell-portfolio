@@ -175,7 +175,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
   }, [input, submit]);
 
   const sendChip = useCallback((chip: string) => {
-    setUsedChips(p => new Set([...p, chip]));
+    setUsedChips(p => new Set([...Array.from(p), chip]));
     submit(chip);
   }, [submit]);
 
