@@ -21,7 +21,6 @@ export async function POST(req: Request) {
       model,
       system: SYSTEM_PROMPT,
       messages,
-      maxTokens: 500,
       temperature: 0.72,
     });
 

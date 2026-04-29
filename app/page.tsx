@@ -599,7 +599,7 @@ function Navbar() {
               transition={{ delay: NAV_ITEMS.length * 0.05, duration: 0.2 }}
               style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 4px", borderBottom: "1px solid var(--ld-border)" }}
             >
-              <span style={{ fontSize: "1.0625rem", fontWeight: 600, color: "var(--ld-text)" }}>Appearance</span>
+              <span style={{ fontSize: "1.0625rem", fontWeight: 600, color: "var(--ld-text)" }}>Theme</span>
               <ThemeToggle />
             </motion.div>
 
