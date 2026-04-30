@@ -18,7 +18,7 @@ export async function POST(req: Request) {
           { role: "system", content: SYSTEM_PROMPT },
           ...messages,
         ],
-        temperature: 0.72,
+        temperature: 0.55,
         stream: true,
       }),
     });
