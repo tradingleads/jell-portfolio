@@ -2,9 +2,17 @@ import { SYSTEM_PROMPT } from "@/lib/prompt";
 
 export const maxDuration = 30;
 
+// Keep last N messages to stay within token limits
+const MAX_HISTORY = 10;
+
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
+
+    // Trim history to avoid token limit errors on longer conversations
+    const trimmedMessages = Array.isArray(messages)
+      ? messages.slice(-MAX_HISTORY)
+      : [];
 
     const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
@@ -16,19 +24,29 @@ export async function POST(req: Request) {
         model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: SYSTEM_PROMPT },
-          ...messages,
+          ...trimmedMessages,
         ],
         temperature: 0.55,
         stream: true,
+        max_tokens: 1024,
       }),
     });
 
     if (!response.ok) {
-      const error = await response.text();
-      console.error("[chat] Groq error:", error);
-      return new Response(JSON.stringify({ error }), {
-        status: response.status,
-        headers: { "Content-Type": "application/json" },
+      const errorText = await response.text();
+      console.error("[chat] Groq error:", response.status, errorText);
+
+      // Return a user-friendly message based on status
+      const userMessage =
+        response.status === 429
+          ? "Too many messages at once — please wait a moment and try again."
+          : response.status === 400
+          ? "Something went wrong with the request. Please try again."
+          : "The AI is temporarily unavailable. Please try again shortly.";
+
+      return new Response(userMessage, {
+        status: 200, // send 200 so Chat.tsx streams it as a message, not an error
+        headers: { "Content-Type": "text/plain; charset=utf-8" },
       });
     }
 
@@ -75,9 +93,9 @@ export async function POST(req: Request) {
     });
   } catch (err) {
     console.error("[chat] error:", err);
-    return new Response(JSON.stringify({ error: String(err) }), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
+    return new Response("Something went wrong. Please try again.", {
+      status: 200,
+      headers: { "Content-Type": "text/plain; charset=utf-8" },
     });
   }
 }
