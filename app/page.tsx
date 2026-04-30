@@ -653,7 +653,7 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.72, color: "var(--ld-muted)", maxWidth: "44ch", marginBottom: "clamp(24px, 4vw, 38px)" }}>
-            I build AI systems that capture leads, book appointments, answer customers, and handle operations — 24/7, without adding headcount.
+            I build AI systems that capture leads, book appointments, and handle operations — 24/7 without adding headcount.
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
@@ -1757,7 +1757,7 @@ function HowIWorkSection() {
               fontFamily: "var(--font-display)",
             }}
           >
-            Start with a Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
+            Book Your Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
           </motion.a>
         </motion.div>
 
@@ -1925,11 +1925,11 @@ function AboutSection() {
             Meet The Automation Specialist Behind The Results
           </h2>
           <p style={{ fontSize: "1rem", lineHeight: 1.78, color: "var(--ld-muted)", maxWidth: "46ch", marginBottom: 28 }}>
-            I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist helping businesses run smoother, respond faster, and grow without adding headcount.
+            I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist who builds systems that replace manual work, streamline operations, and help businesses scale without hiring more people.
             <br /><br />
-            From lead capture to operations, I build systems that remove repetitive work and unlock efficiency.
+            From lead capture to backend processes, I design systems that eliminate bottlenecks, reduce manual effort, and improve response speed.
             <br /><br />
-            Built for speed, scale, and measurable ROI.
+            Built for efficiency, scalability, and measurable ROI.
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
             {[
@@ -1998,12 +1998,12 @@ function TestimonialsSection() {
     <section style={{ padding: "80px 28px 64px", background: "var(--ld-card2)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Real Results</p>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Changed</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
-            Real Results From Real Clients
+            After Working Together
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
-            Lead response improved. Time saved. Revenue unlocked. Here&apos;s what clients experienced after implementation.
+            Faster replies. More conversations turning into bookings. Less time spent on repetitive work.
           </p>
         </motion.div>
 
@@ -2246,7 +2246,7 @@ function CTASection() {
             </h2>
 
             <p style={{ fontSize: "0.9375rem", fontWeight: 300, color: "var(--ld-muted)", lineHeight: 1.5, letterSpacing: "0.04em", marginTop: 12, marginBottom: 36 }}>
-              Clarity in one call.
+              Choose your preferred way to connect.
             </p>
 
             {/* Contact cards */}
