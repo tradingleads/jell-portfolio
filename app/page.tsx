@@ -2423,7 +2423,7 @@ function Footer() {
             ))}
           </div>
           <p style={{ fontSize: "0.65rem", color: "var(--ld-muted)", opacity: 0.35 }}>
-            © {new Date().getFullYear()} Jell Urmeneta. All rights reserved.
+            © {new Date().getFullYear()} Jell Urmeneta · Built with intention
           </p>
         </div>
 
