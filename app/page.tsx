@@ -2376,7 +2376,7 @@ function Footer() {
   ];
   return (
     <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24, position: "relative" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 24 }}>
 
         {/* Left — brand block */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -2401,13 +2401,12 @@ function Footer() {
         {/* Center — micro CTA */}
         <a
           href="#portfolio"
-          className="hidden sm:flex"
-          style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", flexDirection: "column", alignItems: "center", gap: 2, textDecoration: "none", transition: "opacity 0.2s ease", opacity: 0.6 }}
+          style={{ textDecoration: "none", display: "flex", flexDirection: "column", alignItems: "center", gap: 2, opacity: 0.6, transition: "opacity 0.2s ease" }}
           onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
           onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
         >
-          <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em", textAlign: "center" }}>Not sure where to start?</span>
-          <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3 }}>
+          <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em", whiteSpace: "nowrap" }}>Not sure where to start?</span>
+          <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3, whiteSpace: "nowrap" }}>
             Ask the AI <ArrowRight size={11} strokeWidth={2.5} />
           </span>
         </a>
