@@ -2375,60 +2375,55 @@ function Footer() {
     { Icon: Mail,     href: "mailto:jellurmeneta64@gmail.com",          label: "Email"    },
   ];
   return (
-    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "64px 28px", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 480, margin: "0 auto", display: "flex", flexDirection: "column", alignItems: "center", gap: 0, textAlign: "center" }}>
+    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
 
-        {/* Name */}
-        <motion.a
-          href="#"
-          onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
-          animate={{ filter: ["drop-shadow(0 0 0px transparent)", "drop-shadow(0 0 8px rgba(139,92,246,0.40))", "drop-shadow(0 0 0px transparent)"] }}
-          transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
-          style={{ textDecoration: "none", display: "inline-flex", alignItems: "baseline", gap: 5, cursor: "pointer", marginBottom: 10 }}
-        >
-          <span style={{ fontSize: "0.875rem", fontWeight: 900, letterSpacing: "0.05em", color: "var(--ld-text)", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
-            Jell
-          </span>
-          <span className="ld-text-shimmer" style={{ fontSize: "0.875rem", fontWeight: 800, letterSpacing: "0.05em", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
-            Urmeneta
-          </span>
-        </motion.a>
-
-        {/* Subtitle */}
-        <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", opacity: 0.65, letterSpacing: "0.02em", marginBottom: 6 }}>
-          AI Automation Specialist
-        </p>
-
-        {/* Trust line */}
-        <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.35, letterSpacing: "0.01em", marginBottom: 20 }}>
-          Built for businesses that take operations seriously.
-        </p>
-
-        {/* Micro CTA */}
-        <a
-          href="#portfolio"
-          style={{ fontSize: "0.72rem", fontWeight: 600, color: "var(--ld-accent)", textDecoration: "none", opacity: 0.8, letterSpacing: "0.01em", marginBottom: 24, display: "inline-flex", alignItems: "center", gap: 4, transition: "opacity 0.2s ease" }}
-          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
-          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "0.8")}
-        >
-          Not sure where to start? Ask the AI <ArrowRight size={12} strokeWidth={2.5} />
-        </a>
-
-        {/* Social icons */}
-        <div style={{ display: "flex", gap: 10, marginBottom: 24 }}>
-          {links.map(({ Icon, href, label }) => (
-            <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.08, borderColor: "var(--ld-borderC)" }} whileTap={{ scale: 0.95 }} title={label}
-              style={{ width: 36, height: 36, borderRadius: 9, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ld-muted)", textDecoration: "none" }}>
-              <Icon size={14} strokeWidth={1.5} />
-            </motion.a>
-          ))}
+        {/* Left — brand block */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          <motion.a
+            href="#"
+            onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
+            animate={{ filter: ["drop-shadow(0 0 0px transparent)", "drop-shadow(0 0 8px rgba(139,92,246,0.40))", "drop-shadow(0 0 0px transparent)"] }}
+            transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
+            style={{ textDecoration: "none", display: "inline-flex", alignItems: "baseline", gap: 5, cursor: "pointer" }}
+          >
+            <span style={{ fontSize: "0.875rem", fontWeight: 900, letterSpacing: "0.05em", color: "var(--ld-text)", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
+              Jell
+            </span>
+            <span className="ld-text-shimmer" style={{ fontSize: "0.875rem", fontWeight: 800, letterSpacing: "0.05em", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
+              Urmeneta
+            </span>
+          </motion.a>
+          <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", opacity: 0.7, letterSpacing: "0.01em" }}>AI Automation Specialist</p>
+          <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.42, letterSpacing: "0.01em" }}>Built for businesses that take operations seriously.</p>
+          <a
+            href="#portfolio"
+            style={{ display: "inline-flex", flexDirection: "column", gap: 1, marginTop: 4, textDecoration: "none", transition: "opacity 0.2s ease", opacity: 0.75 }}
+            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
+            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "0.75")}
+          >
+            <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em" }}>Not sure where to start?</span>
+            <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3 }}>
+              Ask the AI <ArrowRight size={11} strokeWidth={2.5} />
+            </span>
+          </a>
         </div>
 
-        {/* Copyright */}
-        <p style={{ fontSize: "0.65rem", color: "var(--ld-muted)", opacity: 0.3 }}>
-          © {new Date().getFullYear()} Jell Urmeneta. All rights reserved.
-        </p>
+        {/* Right — icons + copyright */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 12 }}>
+          <div style={{ display: "flex", gap: 7 }}>
+            {links.map(({ Icon, href, label }) => (
+              <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                whileHover={{ scale: 1.08, borderColor: "var(--ld-borderC)" }} whileTap={{ scale: 0.95 }} title={label}
+                style={{ width: 36, height: 36, borderRadius: 9, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ld-muted)", textDecoration: "none" }}>
+                <Icon size={14} strokeWidth={1.5} />
+              </motion.a>
+            ))}
+          </div>
+          <p style={{ fontSize: "0.65rem", color: "var(--ld-muted)", opacity: 0.35 }}>
+            © {new Date().getFullYear()} Jell Urmeneta. All rights reserved.
+          </p>
+        </div>
 
       </div>
     </footer>
