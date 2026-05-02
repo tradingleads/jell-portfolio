@@ -2376,7 +2376,7 @@ function Footer() {
   ];
   return (
     <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24, position: "relative" }}>
 
         {/* Left — brand block */}
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
@@ -2396,18 +2396,21 @@ function Footer() {
           </motion.a>
           <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", opacity: 0.7, letterSpacing: "0.01em" }}>AI Automation Specialist</p>
           <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.42, letterSpacing: "0.01em" }}>Built for businesses that take operations seriously.</p>
-          <a
-            href="#portfolio"
-            style={{ display: "inline-flex", flexDirection: "column", gap: 1, marginTop: 4, textDecoration: "none", transition: "opacity 0.2s ease", opacity: 0.75 }}
-            onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
-            onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "0.75")}
-          >
-            <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em" }}>Not sure where to start?</span>
-            <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3 }}>
-              Ask the AI <ArrowRight size={11} strokeWidth={2.5} />
-            </span>
-          </a>
         </div>
+
+        {/* Center — micro CTA */}
+        <a
+          href="#portfolio"
+          className="hidden sm:flex"
+          style={{ position: "absolute", left: "50%", transform: "translateX(-50%)", flexDirection: "column", alignItems: "center", gap: 2, textDecoration: "none", transition: "opacity 0.2s ease", opacity: 0.6 }}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
+        >
+          <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em", textAlign: "center" }}>Not sure where to start?</span>
+          <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3 }}>
+            Ask the AI <ArrowRight size={11} strokeWidth={2.5} />
+          </span>
+        </a>
 
         {/* Right — icons + copyright */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 12 }}>
