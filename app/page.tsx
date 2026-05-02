@@ -2371,20 +2371,21 @@ function PortfolioSection() {
 /* ── Footer ────────────────────────────────────────────────── */
 function Footer() {
   const links = [
-    { Icon: Linkedin, href: "https://www.linkedin.com/in/jellurmeneta",  label: "LinkedIn" },
-    { Icon: Mail,     href: "mailto:jellurmeneta64@gmail.com",           label: "Email"    },
-    { Icon: Phone,    href: WHATSAPP,                                     label: "WhatsApp" },
+    { Icon: Linkedin, href: "https://www.linkedin.com/in/jellurmeneta", label: "LinkedIn" },
+    { Icon: Mail,     href: "mailto:jellurmeneta64@gmail.com",          label: "Email"    },
   ];
   return (
-    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 24 }}>
-        <div>
+    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "48px 0", background: "var(--ld-bg)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 20 }}>
+
+        {/* Left — name + subtitle */}
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
           <motion.a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
             animate={{ filter: ["drop-shadow(0 0 0px transparent)", "drop-shadow(0 0 8px rgba(139,92,246,0.40))", "drop-shadow(0 0 0px transparent)"] }}
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
-            style={{ textDecoration: "none", display: "inline-flex", alignItems: "baseline", gap: 5, marginBottom: 5, cursor: "pointer" }}
+            style={{ textDecoration: "none", display: "inline-flex", alignItems: "baseline", gap: 5, cursor: "pointer" }}
           >
             <span style={{ fontSize: "0.875rem", fontWeight: 900, letterSpacing: "0.05em", color: "var(--ld-text)", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
               Jell
@@ -2393,19 +2394,24 @@ function Footer() {
               Urmeneta
             </span>
           </motion.a>
-          <p style={{ fontSize: "0.8rem", color: "var(--ld-muted)" }}>AI Automation Specialist · Rizal, Philippines</p>
-          <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", opacity: 0.55, marginTop: 8, letterSpacing: "0.01em" }}>Built for businesses that take operations seriously.</p>
+          <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", opacity: 0.7, letterSpacing: "0.01em" }}>AI Automation Specialist</p>
+          <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.38, letterSpacing: "0.01em" }}>Built for businesses that take operations seriously.</p>
         </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          {links.map(({ Icon, href, label }) => (
-            <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
-              whileHover={{ scale: 1.08, borderColor: "var(--ld-borderC)" }} whileTap={{ scale: 0.95 }} title={label}
-              style={{ width: 38, height: 38, borderRadius: 10, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ld-muted)", textDecoration: "none" }}>
-              <Icon size={15} strokeWidth={1.5} />
-            </motion.a>
-          ))}
+
+        {/* Right — icons + copyright stacked */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 12 }}>
+          <div style={{ display: "flex", gap: 8 }}>
+            {links.map(({ Icon, href, label }) => (
+              <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                whileHover={{ scale: 1.08, borderColor: "var(--ld-borderC)" }} whileTap={{ scale: 0.95 }} title={label}
+                style={{ width: 36, height: 36, borderRadius: 9, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", color: "var(--ld-muted)", textDecoration: "none" }}>
+                <Icon size={14} strokeWidth={1.5} />
+              </motion.a>
+            ))}
+          </div>
+          <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.38 }}>© {new Date().getFullYear()} Jell Urmeneta. All rights reserved.</p>
         </div>
-        <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", opacity: 0.5 }}>© {new Date().getFullYear()} Jell Urmeneta. All rights reserved.</p>
+
       </div>
     </footer>
   );
