@@ -2376,10 +2376,14 @@ function Footer() {
   ];
   return (
     <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", display: "grid", gridTemplateColumns: "1fr auto 1fr", alignItems: "center", gap: 24 }}>
+      {/* Mobile: stacked centered · Desktop: 3-column grid */}
+      <div
+        className="flex flex-col items-center gap-8 md:grid md:items-center md:gap-6"
+        style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px", gridTemplateColumns: "1fr auto 1fr" }}
+      >
 
         {/* Left — brand block */}
-        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        <div className="flex flex-col items-center text-center md:items-start md:text-left" style={{ gap: 6 }}>
           <motion.a
             href="#"
             onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: "smooth" }); }}
@@ -2411,8 +2415,8 @@ function Footer() {
           </span>
         </a>
 
-        {/* Right — icons + copyright grouped and centered */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, justifySelf: "end" }}>
+        {/* Right — icons + copyright */}
+        <div className="flex flex-col items-center gap-2.5 md:justify-self-end">
           <div style={{ display: "flex", gap: 7 }}>
             {links.map(({ Icon, href, label }) => (
               <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
