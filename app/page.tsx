@@ -528,102 +528,93 @@ function Navbar() {
         </motion.button>
       </div>
 
-      {/* Mobile slide-down menu panel */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            key="mobile-menu"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.22, ease: E }}
-            className="flex sm:hidden"
+    </motion.header>
+
+    {/* Full-screen mobile overlay — outside header to avoid transform stacking context */}
+    <AnimatePresence>
+      {menuOpen && (
+        <motion.div
+          key="mobile-menu"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.22, ease: E }}
+          className="sm:hidden"
+          style={{
+            position: "fixed", inset: 0, zIndex: 999,
+            background: "var(--ld-bg)",
+            display: "flex", flexDirection: "column",
+            alignItems: "center", justifyContent: "center",
+            gap: 0,
+          }}
+        >
+          {/* Close button */}
+          <motion.button
+            type="button"
+            onClick={() => setMenuOpen(false)}
+            whileTap={{ scale: 0.92 }}
             style={{
-              flexDirection: "column",
-              position: "absolute", top: "100%", left: 0, right: 0, zIndex: 500,
-              background: "var(--ld-card)",
-              borderTop: "1px solid var(--ld-border)",
-              borderBottom: "1px solid var(--ld-border)",
-              boxShadow: "0 16px 48px rgba(0,0,0,0.45)",
-              padding: "8px 20px 20px",
+              position: "absolute", top: 16, right: 16,
+              width: 40, height: 40, borderRadius: 10,
+              background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", color: "var(--ld-text)",
             }}
           >
-            {/* Nav links */}
-            {NAV_ITEMS.map(({ label, href }, i) => (
-              <motion.a
-                key={label}
-                href={href}
-                onClick={() => setMenuOpen(false)}
-                initial={{ opacity: 0, x: -8 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05, duration: 0.2 }}
-                style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "16px 4px", minHeight: 52,
-                  fontSize: "1.0625rem", fontWeight: 600,
-                  color: "var(--ld-text)", textDecoration: "none",
-                  borderBottom: "1px solid var(--ld-border)",
-                  transition: "color 0.15s ease",
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLElement).style.color = "var(--ld-accent)"; }}
-                onMouseLeave={e => { (e.currentTarget as HTMLElement).style.color = "var(--ld-text)"; }}
-              >
-                {label}
-                <ArrowRight size={15} strokeWidth={1.5} style={{ color: "var(--ld-muted)", opacity: 0.45 }} />
-              </motion.a>
-            ))}
+            <X size={18} strokeWidth={2} />
+          </motion.button>
 
-            {/* Let's Talk link */}
+          {/* Nav links */}
+          {[...NAV_ITEMS, { label: "Let's Talk", href: NAV_CTA.href }].map(({ label, href }, i) => (
             <motion.a
-              key="lets-talk"
-              href={NAV_CTA.href}
+              key={label}
+              href={href}
               onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0, x: -8 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: NAV_ITEMS.length * 0.05, duration: 0.2 }}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.06, duration: 0.22, ease: E }}
               style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "16px 4px", minHeight: 52,
-                fontSize: "1.0625rem", fontWeight: 700,
-                color: "var(--ld-accent)", textDecoration: "none",
-                borderBottom: "1px solid var(--ld-border)",
+                fontSize: "clamp(1.5rem, 6vw, 2rem)", fontWeight: 700,
+                color: label === "Let's Talk" ? "var(--ld-accent)" : "var(--ld-text)",
+                textDecoration: "none", padding: "16px 0",
+                width: "100%", textAlign: "center",
+                letterSpacing: "-0.01em",
+                transition: "opacity 0.15s ease",
               }}
+              onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = "0.6")}
+              onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = "1")}
             >
-              Let&apos;s Talk
-              <ArrowRight size={15} strokeWidth={1.5} style={{ color: "var(--ld-accent)", opacity: 0.6 }} />
+              {label}
             </motion.a>
+          ))}
 
-            {/* Theme toggle row */}
-            <motion.div
-              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: NAV_ITEMS.length * 0.05, duration: 0.2 }}
-              style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 4px", borderBottom: "1px solid var(--ld-border)" }}
-            >
-              <span style={{ fontSize: "1.0625rem", fontWeight: 600, color: "var(--ld-text)" }}>Theme</span>
+          {/* Theme + Book CTA */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: (NAV_ITEMS.length + 1) * 0.06 + 0.05, duration: 0.2 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginTop: 32, width: "80%", maxWidth: 320 }}
+          >
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+              <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--ld-muted)" }}>Theme</span>
               <ThemeToggle />
-            </motion.div>
-
-            {/* Book Call CTA — full width */}
+            </div>
             <motion.a
               href="#contact"
               onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: NAV_ITEMS.length * 0.05 + 0.08, duration: 0.2 }}
               whileTap={{ scale: 0.97 }}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                marginTop: 16, padding: "15px 0", borderRadius: 100,
+                width: "100%", padding: "14px 0", borderRadius: 100,
                 background: "var(--ld-accent)", color: "#fff",
-                fontWeight: 700, fontSize: "1rem", textDecoration: "none",
-                boxShadow: "0 0 20px var(--ld-glow)",
+                fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none",
               }}
             >
               Book Your Consultation <ArrowRight size={15} strokeWidth={2.5} />
             </motion.a>
           </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.header>
+        </motion.div>
+      )}
+    </AnimatePresence>
   );
 }
 
