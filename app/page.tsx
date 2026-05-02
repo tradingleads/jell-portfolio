@@ -2411,8 +2411,8 @@ function Footer() {
           </span>
         </a>
 
-        {/* Right — icons + copyright */}
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 12 }}>
+        {/* Right — icons + copyright grouped and centered */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 10, justifySelf: "end" }}>
           <div style={{ display: "flex", gap: 7 }}>
             {links.map(({ Icon, href, label }) => (
               <motion.a key={label} href={href} target="_blank" rel="noopener noreferrer"
@@ -2422,7 +2422,7 @@ function Footer() {
               </motion.a>
             ))}
           </div>
-          <p style={{ fontSize: "0.65rem", color: "var(--ld-muted)", opacity: 0.35 }}>
+          <p style={{ fontSize: "0.65rem", color: "var(--ld-muted)", opacity: 0.35, textAlign: "center", whiteSpace: "nowrap" }}>
             © {new Date().getFullYear()} Jell Urmeneta · Built with intention
           </p>
         </div>
