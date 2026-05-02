@@ -2,14 +2,12 @@ import { SYSTEM_PROMPT } from "@/lib/prompt";
 
 export const maxDuration = 30;
 
-// Keep last N messages to stay within token limits
 const MAX_HISTORY = 10;
 
 export async function POST(req: Request) {
   try {
     const { messages } = await req.json();
 
-    // Trim history to avoid token limit errors on longer conversations
     const trimmedMessages = Array.isArray(messages)
       ? messages.slice(-MAX_HISTORY)
       : [];
@@ -27,7 +25,7 @@ export async function POST(req: Request) {
           ...trimmedMessages,
         ],
         temperature: 0.55,
-        stream: true,
+        stream: false,
       }),
     });
 
@@ -35,7 +33,6 @@ export async function POST(req: Request) {
       const errorText = await response.text();
       console.error("[chat] Groq error:", response.status, errorText);
 
-      // Return a user-friendly message based on status
       const userMessage =
         response.status === 429
           ? "Too many messages at once — please wait a moment and try again."
@@ -43,58 +40,24 @@ export async function POST(req: Request) {
           ? "Something went wrong with the request. Please try again."
           : "The AI is temporarily unavailable. Please try again shortly.";
 
-      return new Response(userMessage, {
-        status: 200, // send 200 so Chat.tsx streams it as a message, not an error
-        headers: { "Content-Type": "text/plain; charset=utf-8" },
+      return new Response(JSON.stringify({ text: userMessage }), {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
       });
     }
 
-    // Parse SSE from Groq and stream plain text to client
-    const encoder = new TextEncoder();
-    const decoder = new TextDecoder();
+    const data = await response.json();
+    const text = data.choices?.[0]?.message?.content ?? "Sorry, I couldn't generate a response.";
 
-    const stream = new ReadableStream({
-      async start(controller) {
-        const reader = response.body!.getReader();
-        let buffer = "";
-        try {
-          while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-
-            buffer += decoder.decode(value, { stream: true });
-            const lines = buffer.split("\n");
-            buffer = lines.pop() ?? "";
-
-            for (const line of lines) {
-              const trimmed = line.trim();
-              if (!trimmed.startsWith("data:")) continue;
-              const data = trimmed.slice(5).trim();
-              if (data === "[DONE]") continue;
-              try {
-                const json = JSON.parse(data);
-                const content = json.choices?.[0]?.delta?.content;
-                if (content) controller.enqueue(encoder.encode(content));
-              } catch {
-                // skip malformed chunks
-              }
-            }
-          }
-        } finally {
-          reader.releaseLock();
-          controller.close();
-        }
-      },
-    });
-
-    return new Response(stream, {
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
+    return new Response(JSON.stringify({ text }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
     });
   } catch (err) {
     console.error("[chat] error:", err);
-    return new Response("Something went wrong. Please try again.", {
+    return new Response(JSON.stringify({ text: "Something went wrong. Please try again." }), {
       status: 200,
-      headers: { "Content-Type": "text/plain; charset=utf-8" },
+      headers: { "Content-Type": "application/json" },
     });
   }
 }

@@ -121,7 +121,8 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
     const assistantId = uid();
     const history = messagesRef.current;
 
-    setMessages(p => [...p, userMsg, { id: assistantId, role: "assistant", content: "" }]);
+    // Show user message + thinking placeholder
+    setMessages(p => [...p, userMsg, { id: assistantId, role: "assistant", content: "thinking…" }]);
     setInput("");
     setIsLoading(true);
     loadingRef.current = true;
@@ -140,22 +141,32 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
         signal: abort.signal,
       });
 
-      if (!res.ok)   throw new Error(`HTTP ${res.status}`);
-      if (!res.body) throw new Error("No response body");
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+      const data = await res.json();
+      const fullText: string = data.text ?? "Sorry, I couldn't generate a response.";
+
+      if (abort.signal.aborted) return;
 
       onOrbStateChange("speaking");
 
-      const reader  = res.body.getReader();
-      const decoder = new TextDecoder();
+      // Simulate typing character by character
+      let i = 0;
+      setMessages(p => p.map(m => m.id === assistantId ? { ...m, content: "" } : m));
 
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        const delta = decoder.decode(value, { stream: true });
-        if (delta) {
-          setMessages(p => p.map(m => m.id === assistantId ? { ...m, content: m.content + delta } : m));
+      const typeChar = () => {
+        if (abort.signal.aborted || i >= fullText.length) return;
+        const char = fullText[i];
+        i++;
+        setMessages(p => p.map(m =>
+          m.id === assistantId ? { ...m, content: m.content + char } : m
+        ));
+        if (i < fullText.length) {
+          setTimeout(typeChar, 14);
         }
-      }
+      };
+      typeChar();
+
     } catch (err: unknown) {
       if ((err as Error)?.name !== "AbortError") {
         setMessages(p => p.map(m =>
