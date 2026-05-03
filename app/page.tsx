@@ -1507,7 +1507,7 @@ function ProjectsSection() {
                       <p.Icon size={13} strokeWidth={1.5} style={{ color: p.color }} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: "0.8rem", fontWeight: 600, color: selectedId === p.id ? "var(--ld-text)" : "var(--ld-muted)", marginBottom: 3, lineHeight: 1.3, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{p.title}</p>
+                      <p style={{ fontSize: "0.8rem", fontWeight: 600, color: selectedId === p.id ? "var(--ld-text)" : "var(--ld-muted)", marginBottom: 3, lineHeight: 1.3 }}>{p.title}</p>
                       <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
                         <span style={{ fontSize: "0.62rem", fontWeight: 700, fontFamily: "var(--font-geist-mono)", color: p.roiColor }}>{p.roi}</span>
                         <span style={{ width: 2, height: 2, borderRadius: "50%", background: "var(--ld-border)", flexShrink: 0 }} />
@@ -1564,9 +1564,9 @@ function ProjectsSection() {
 
                   {/* Content */}
                   <div style={{ padding: "14px 18px 18px" }}>
-                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12, marginBottom: 14 }}>
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", lineHeight: 1.2, letterSpacing: "-0.01em" }}>{sel.title}</h3>
-                      <span style={{ flexShrink: 0, fontSize: "0.85rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: sel.roiColor, padding: "4px 10px", borderRadius: 8, background: `${sel.roiColor}12`, border: `1px solid ${sel.roiColor}28`, whiteSpace: "nowrap" }}>{sel.roi}</span>
+                    <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
+                      <h3 style={{ fontSize: "1.0625rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", lineHeight: 1.2, letterSpacing: "-0.01em", minWidth: 0 }}>{sel.title}</h3>
+                      <span style={{ fontSize: "0.8rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: sel.roiColor, padding: "4px 10px", borderRadius: 8, background: `${sel.roiColor}12`, border: `1px solid ${sel.roiColor}28` }}>{sel.roi}</span>
                     </div>
 
                     <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--ld-text)", lineHeight: 1.45, marginBottom: 8 }}>{sel.outcome}</p>
