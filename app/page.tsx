@@ -2303,7 +2303,7 @@ function CTASection() {
           </motion.div>
 
           {/* ── RIGHT: Premium booking card ── */}
-          <motion.div {...up(0.12)}>
+          <motion.div {...up(0.12)} style={{ paddingBottom: 6 }}>
             <div style={{
               borderRadius: 22,
               border: "1px solid var(--ld-border)",
