@@ -137,12 +137,12 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
   const hasMessages = messages.length > 0;
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>
+    <div style={{ display: "flex", flexDirection: "column", width: "100%" }}>
 
       {/* Chat header */}
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
-        padding: "20px 24px 14px",
+        padding: "14px 16px 10px",
       }}>
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <Sparkles size={14} strokeWidth={1.5} style={{ color: "var(--accent)", opacity: 0.8 }} />
@@ -189,7 +189,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
           transition={{ duration: 0.4, delay: 0.1 }}
           style={{
             display: "flex", flexWrap: "wrap", gap: 8,
-            padding: "0 20px 20px",
+            padding: "0 16px 16px",
             justifyContent: "center",
           }}
         >
@@ -233,9 +233,10 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
       <div
         className="message-prose"
         style={{
-          flex: 1, overflowY: "auto", padding: "0 20px",
-          display: "flex", flexDirection: "column", gap: 16,
+          overflowY: "auto", padding: "0 16px",
+          display: "flex", flexDirection: "column", gap: 12,
           scrollbarWidth: "none",
+          maxHeight: "60vh",
         }}
       >
         <AnimatePresence initial={false}>
@@ -281,7 +282,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
       </div>
 
       {/* Input */}
-      <div style={{ padding: "16px 20px 20px" }}>
+      <div style={{ padding: "12px 16px 16px" }}>
         <div style={{
           display: "flex", alignItems: "flex-end", gap: 10,
           background: "var(--bg-card)",

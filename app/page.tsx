@@ -575,9 +575,9 @@ function Navbar() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.22, ease: E }}
               style={{
-                fontSize: "clamp(1.5rem, 6vw, 2rem)", fontWeight: 700,
+                fontSize: "1.125rem", fontWeight: 600,
                 color: label === "Let's Talk" ? "var(--ld-accent)" : "var(--ld-text)",
-                textDecoration: "none", padding: "16px 0",
+                textDecoration: "none", padding: "12px 0",
                 width: "100%", textAlign: "center",
                 letterSpacing: "-0.01em",
                 transition: "opacity 0.15s ease",
@@ -593,7 +593,7 @@ function Navbar() {
           <motion.div
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: (NAV_ITEMS.length + 1) * 0.06 + 0.05, duration: 0.2 }}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, marginTop: 32, width: "80%", maxWidth: 320 }}
+            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 20, width: "85%", maxWidth: 320 }}
           >
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
               <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--ld-muted)" }}>Theme</span>
