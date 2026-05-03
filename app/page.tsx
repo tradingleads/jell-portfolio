@@ -2339,7 +2339,7 @@ function PortfolioSection() {
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
 
   return (
-    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: 80, paddingBottom: 20 }}>
+    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: 80, paddingBottom: 80 }}>
       <MouseGradient />
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(59,130,246,0.04) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none", zIndex: 0 }} />
 
