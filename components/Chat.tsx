@@ -1,5 +1,5 @@
 "use client";
-
+// v3 — no typing effect, no placeholder, instant response
 import {
   memo, useCallback, useEffect, useRef, useState, KeyboardEvent,
 } from "react";
