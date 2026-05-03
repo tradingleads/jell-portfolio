@@ -174,7 +174,6 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
   }, [submit]);
 
   const hasMessages = messages.length > 0;
-  const showTyping  = isLoading && messages.length > 0 && messages[messages.length - 1].role === "user";
 
   return (
     <div style={{ display: "flex", flexDirection: "column", width: "100%", height: "100%" }}>
@@ -294,7 +293,6 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
           })}
         </AnimatePresence>
 
-        <AnimatePresence>{showTyping && <TypingDots />}</AnimatePresence>
         <div ref={bottomRef} style={{ height: 4 }} />
       </div>
 
