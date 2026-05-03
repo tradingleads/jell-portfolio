@@ -324,6 +324,7 @@ function Navbar() {
   }, []);
 
   return (
+    <>
     <motion.header
       initial={{ y: -16, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
@@ -615,6 +616,7 @@ function Navbar() {
         </motion.div>
       )}
     </AnimatePresence>
+    </>
   );
 }
 
