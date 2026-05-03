@@ -19,8 +19,15 @@ const CHIPS = [
 ];
 
 function uid() { return Math.random().toString(36).slice(2, 10); }
-function stripTags(c: string) { return c.replace(/\[SHOW_PROJECTS\]/g, "").trim(); }
-function hasProjectsTag(c: string) { return c.includes("[SHOW_PROJECTS]"); }
+function stripTags(c: string) {
+  return c
+    .replace(/\[SHOW_PROJECTS\]/g, "")
+    .replace(/\{"action"\s*:\s*"show_projects"\}/g, "")
+    .trim();
+}
+function hasProjectsTag(c: string) {
+  return c.includes("[SHOW_PROJECTS]") || c.includes('"action":"show_projects"') || c.includes('"action": "show_projects"');
+}
 
 function renderMarkdown(text: string) {
   const out: React.ReactNode[] = [];
