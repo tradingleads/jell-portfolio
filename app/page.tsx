@@ -2235,7 +2235,7 @@ function CTASection() {
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: "clamp(32px, 5vw, 64px)",
-          alignItems: "center",
+          alignItems: "end",
           paddingBottom: 96,
         }}>
 
@@ -2303,7 +2303,7 @@ function CTASection() {
           </motion.div>
 
           {/* ── RIGHT: Premium booking card ── */}
-          <motion.div {...up(0.12)} style={{ paddingTop: 40 }}>
+          <motion.div {...up(0.12)}>
             <div style={{
               borderRadius: 22,
               border: "1px solid var(--ld-border)",
