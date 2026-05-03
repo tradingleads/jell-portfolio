@@ -121,7 +121,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
     const assistantId = uid();
     const history = messagesRef.current;
 
-    setMessages(p => [...p, userMsg, { id: assistantId, role: "assistant", content: "" }]);
+    setMessages(p => [...p, userMsg]);
     setInput("");
     setIsLoading(true);
     loadingRef.current = true;
@@ -149,14 +149,12 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
 
       onOrbStateChange("speaking");
 
-      // Display full response instantly
-      setMessages(p => p.map(m => m.id === assistantId ? { ...m, content: fullText } : m));
+      // Add full response only after API completes
+      setMessages(p => [...p, { id: assistantId, role: "assistant", content: fullText }]);
 
     } catch (err: unknown) {
       if ((err as Error)?.name !== "AbortError") {
-        setMessages(p => p.map(m =>
-          m.id === assistantId ? { ...m, content: "Something went wrong. Please try again." } : m
-        ));
+        setMessages(p => [...p, { id: assistantId, role: "assistant", content: "Something went wrong. Please try again." }]);
         onOrbStateChange("idle");
       }
     } finally {
