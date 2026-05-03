@@ -121,8 +121,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
     const assistantId = uid();
     const history = messagesRef.current;
 
-    // Show user message + thinking placeholder
-    setMessages(p => [...p, userMsg, { id: assistantId, role: "assistant", content: "thinking…" }]);
+    setMessages(p => [...p, userMsg, { id: assistantId, role: "assistant", content: "" }]);
     setInput("");
     setIsLoading(true);
     loadingRef.current = true;
@@ -150,22 +149,8 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
 
       onOrbStateChange("speaking");
 
-      // Simulate typing character by character
-      let i = 0;
-      setMessages(p => p.map(m => m.id === assistantId ? { ...m, content: "" } : m));
-
-      const typeChar = () => {
-        if (abort.signal.aborted || i >= fullText.length) return;
-        const char = fullText[i];
-        i++;
-        setMessages(p => p.map(m =>
-          m.id === assistantId ? { ...m, content: m.content + char } : m
-        ));
-        if (i < fullText.length) {
-          setTimeout(typeChar, 14);
-        }
-      };
-      typeChar();
+      // Display full response instantly
+      setMessages(p => p.map(m => m.id === assistantId ? { ...m, content: fullText } : m));
 
     } catch (err: unknown) {
       if ((err as Error)?.name !== "AbortError") {
