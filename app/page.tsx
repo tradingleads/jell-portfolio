@@ -2379,7 +2379,7 @@ function Footer() {
     { Icon: Mail,     href: "mailto:jellurmeneta64@gmail.com",          label: "Email"    },
   ];
   return (
-    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "44px 0", background: "var(--ld-bg)" }}>
+    <footer style={{ borderTop: "1px solid var(--ld-border)", padding: "28px 0", background: "var(--ld-bg)" }}>
       {/* Mobile: stacked centered · Desktop: 3-column grid */}
       <div
         className="flex flex-col items-center gap-8 md:grid md:items-center md:gap-6"
