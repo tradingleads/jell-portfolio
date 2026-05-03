@@ -545,8 +545,8 @@ function Navbar() {
             position: "fixed", inset: 0, zIndex: 999,
             background: "var(--ld-bg)",
             display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "center",
-            gap: 0,
+            alignItems: "center", justifyContent: "flex-start",
+            paddingTop: 96,
           }}
         >
           {/* Close button */}
@@ -565,20 +565,24 @@ function Navbar() {
             <X size={18} strokeWidth={2} />
           </motion.button>
 
+          {/* Inner content — left-aligned, max-width container */}
+          <div style={{ width: "100%", maxWidth: 400, padding: "0 24px", display: "flex", flexDirection: "column" }}>
+
           {/* Nav links */}
           {[...NAV_ITEMS, { label: "Let's Talk", href: NAV_CTA.href }].map(({ label, href }, i) => (
             <motion.a
               key={label}
               href={href}
               onClick={() => setMenuOpen(false)}
-              initial={{ opacity: 0, y: 12 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.06, duration: 0.22, ease: E }}
               style={{
                 fontSize: "1.125rem", fontWeight: 600,
                 color: label === "Let's Talk" ? "var(--ld-accent)" : "var(--ld-text)",
-                textDecoration: "none", padding: "12px 0",
-                width: "100%", textAlign: "center",
+                textDecoration: "none", padding: "13px 0",
+                textAlign: "left",
+                borderBottom: "1px solid var(--ld-border)",
                 letterSpacing: "-0.01em",
                 transition: "opacity 0.15s ease",
               }}
@@ -593,9 +597,9 @@ function Navbar() {
           <motion.div
             initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
             transition={{ delay: (NAV_ITEMS.length + 1) * 0.06 + 0.05, duration: 0.2 }}
-            style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12, marginTop: 20, width: "85%", maxWidth: 320 }}
+            style={{ display: "flex", flexDirection: "column", gap: 12, marginTop: 24 }}
           >
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
               <span style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--ld-muted)" }}>Theme</span>
               <ThemeToggle />
             </div>
@@ -613,6 +617,8 @@ function Navbar() {
               Book Your Consultation <ArrowRight size={15} strokeWidth={2.5} />
             </motion.a>
           </motion.div>
+
+          </div>{/* end inner content */}
         </motion.div>
       )}
     </AnimatePresence>
