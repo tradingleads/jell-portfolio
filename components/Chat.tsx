@@ -67,7 +67,11 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
   const busyRef     = useRef(false);
 
   useEffect(() => { messagesRef.current = messages; }, [messages]);
-  useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages]);
+  useEffect(() => {
+    if (messages.length > 0) {
+      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   useEffect(() => {
     if (!textareaRef.current) return;
