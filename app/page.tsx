@@ -2339,21 +2339,21 @@ function PortfolioSection() {
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
 
   return (
-    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden" }}>
+    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: 20, paddingBottom: 20 }}>
       <MouseGradient />
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(59,130,246,0.04) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none", zIndex: 0 }} />
 
-      <div style={{ position: "relative", zIndex: 1, maxWidth: 820, margin: "0 auto", padding: "36px 20px 24px" }}>
+      <div style={{ position: "relative", zIndex: 1, maxWidth: 820, margin: "0 auto", padding: "0 20px" }}>
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, ease: E }}
-          style={{ textAlign: "center", marginBottom: 18 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3B82F6", padding: "6px 14px", borderRadius: 100, background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 12 }}>
+          style={{ textAlign: "center", marginBottom: 16 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#3B82F6", padding: "6px 14px", borderRadius: 100, background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.18)", marginBottom: 10 }}>
             <Sparkles size={11} strokeWidth={2} />
             AI-Powered Business Assistant
           </span>
           <h2 style={{ fontSize: "clamp(1.6rem, 3.5vw, 2.4rem)", fontWeight: 800, letterSpacing: "-0.025em", color: "#F8FAFC", fontFamily: "var(--font-display)", lineHeight: 1.15 }}>
             Not Sure Where to Start?
           </h2>
-          <p style={{ fontSize: "0.9375rem", color: "#94A3B8", lineHeight: 1.6, maxWidth: "44ch", margin: "8px auto 0" }}>
+          <p style={{ fontSize: "0.9375rem", color: "#94A3B8", lineHeight: 1.6, maxWidth: "44ch", margin: "6px auto 0" }}>
             Ask the AI — instant answers about pricing, services, and what I can automate for your business.
           </p>
         </motion.div>
@@ -2364,7 +2364,7 @@ function PortfolioSection() {
 
         <div style={{ height: 1, background: "linear-gradient(90deg,transparent,rgba(59,130,246,0.16) 30%,rgba(59,130,246,0.16) 70%,transparent)", marginBottom: 0 }} />
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.18, ease: E }} style={{ minHeight: 440 }}>
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.55, delay: 0.18, ease: E }}>
           <Chat onOrbStateChange={handleOrbState} />
         </motion.div>
       </div>
