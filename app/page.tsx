@@ -657,7 +657,7 @@ function HeroSection() {
           </motion.h1>
 
           <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.72, color: "var(--ld-muted)", maxWidth: "44ch", marginBottom: "clamp(24px, 4vw, 38px)" }}>
-            I build AI systems that capture leads, book appointments, and turn inquiries into booked calls — 24/7 without adding headcount.
+            I build AI systems that handle your repetitive tasks and processes — so your business runs automatically, without manual work.
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
