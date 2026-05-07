@@ -906,7 +906,7 @@ function ServicesSection() {
         <motion.div {...up()} style={{ marginBottom: 60 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Gets Fixed</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
-            Every Hour You Waste Has a Price Tag.
+            Where Automation Creates Leverage
           </h2>
         </motion.div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
