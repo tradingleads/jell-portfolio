@@ -1760,7 +1760,7 @@ function HowIWorkSection() {
               fontFamily: "var(--font-display)",
             }}
           >
-            Book Your Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
+            Book an Automation Audit <ArrowRight size={16} strokeWidth={2.5} />
           </motion.a>
         </motion.div>
 
