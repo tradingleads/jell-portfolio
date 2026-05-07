@@ -2308,106 +2308,6 @@ function WhoIWorkWithSection() {
   );
 }
 
-/* ── FAQ ────────────────────────────────────────────────────── */
-const FAQS = [
-  {
-    q: "How much does automation cost?",
-    a: "Projects typically start at $300 and scale based on workflow complexity and scope. Once I understand what you need, I'll give you a clear estimate before any work begins.",
-  },
-  {
-    q: "What tools do you use?",
-    a: "I work across n8n, Zapier, Make, Google Apps Script, and AI tools like ChatGPT and Claude — depending on what fits your stack best. I always choose tools based on your existing setup, not the other way around.",
-  },
-  {
-    q: "How long does setup take?",
-    a: "Simple automations can be ready in a few days. More complex, multi-step systems typically take 1–3 weeks. I'll give you a realistic timeline after reviewing your workflow.",
-  },
-  {
-    q: "Can this integrate with my current tools?",
-    a: "Yes. Most modern tools — CRMs, calendars, email platforms, Google Workspace, messaging apps — connect cleanly through APIs or automation platforms. We'll confirm compatibility before starting.",
-  },
-  {
-    q: "Do you offer support after launch?",
-    a: "Yes. Once a system is live, I monitor it and can refine or adjust as your needs change. Ongoing retainers are available if you want continuous support and improvement.",
-  },
-  {
-    q: "What businesses do you work with?",
-    a: "I work with agencies, coaches, real estate teams, clinics, local service businesses, and ecommerce brands — primarily those dealing with high lead volume, manual workflows, or scaling operations.",
-  },
-];
-
-function FAQSection() {
-  const [open, setOpen] = useState<number | null>(null);
-
-  return (
-    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 780, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 52 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>FAQ</p>
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
-            Common Questions
-          </h2>
-        </motion.div>
-
-        <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-          {FAQS.map(({ q, a }, i) => (
-            <motion.div key={i} {...up(i * 0.05)}>
-              <div
-                style={{
-                  background: "var(--ld-card)",
-                  border: `1px solid ${open === i ? "var(--ld-borderC)" : "var(--ld-border)"}`,
-                  borderRadius: 14,
-                  overflow: "hidden",
-                  transition: "border-color 0.25s ease",
-                  boxShadow: open === i ? "0 0 20px var(--ld-glow)" : "var(--ld-shadow)",
-                }}
-              >
-                {/* Question row */}
-                <button
-                  type="button"
-                  onClick={() => setOpen(open === i ? null : i)}
-                  style={{
-                    width: "100%", display: "flex", alignItems: "center",
-                    justifyContent: "space-between", gap: 16,
-                    padding: "20px 24px", background: "none", border: "none",
-                    cursor: "pointer", textAlign: "left",
-                  }}
-                >
-                  <span style={{ fontSize: "1rem", fontWeight: 600, color: "var(--ld-text)", fontFamily: "var(--font-display)", lineHeight: 1.4 }}>{q}</span>
-                  <motion.div
-                    animate={{ rotate: open === i ? 45 : 0 }}
-                    transition={{ duration: 0.2, ease: "easeOut" }}
-                    style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 7, background: open === i ? "var(--ld-accent)" : "var(--ld-card2)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.2s ease" }}
-                  >
-                    <span style={{ fontSize: "1rem", lineHeight: 1, color: open === i ? "#fff" : "var(--ld-muted)", fontWeight: 300 }}>+</span>
-                  </motion.div>
-                </button>
-
-                {/* Answer */}
-                <AnimatePresence initial={false}>
-                  {open === i && (
-                    <motion.div
-                      key="answer"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.28, ease: [0.16, 1, 0.3, 1] }}
-                      style={{ overflow: "hidden" }}
-                    >
-                      <p style={{ padding: "0 24px 22px", fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.75 }}>
-                        {a}
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
 
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
@@ -2615,7 +2515,6 @@ export default function LandingPage() {
         <TestimonialsSection />
         <WhatIAutomateSection />
         <WhoIWorkWithSection />
-        <FAQSection />
         <CTASection />
         <PortfolioSection />
         <Footer />
