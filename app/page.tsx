@@ -651,13 +651,13 @@ function HeroSection() {
         <div className="text-center sm:text-left">
 
           <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(2rem, 5.5vw, 3.9rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 18 }}>
-            Your Business Is{" "}
-            <span className="ld-gradient">Leaking Revenue.</span>{" "}
-            Automation Fixes That.
+            Automation Systems That{" "}
+            <span className="ld-gradient">Save Time, Capture More Leads,</span>{" "}
+            and Remove Manual Work.
           </motion.h1>
 
-          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.72, color: "var(--ld-muted)", maxWidth: "44ch", marginBottom: "clamp(24px, 4vw, 38px)" }}>
-            I build AI systems that handle your repetitive tasks and processes — so your business runs automatically, without manual work.
+          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.72, color: "var(--ld-text)", opacity: 0.78, maxWidth: "44ch", marginBottom: "clamp(24px, 4vw, 38px)" }}>
+            I design AI-powered systems for service businesses that automate lead handling, appointment booking, customer support, and repetitive operations.
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
@@ -665,7 +665,7 @@ function HeroSection() {
               whileHover={{ scale: 1.03, boxShadow: "0 0 32px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto justify-center"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 28px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", boxShadow: "0 0 20px var(--ld-glow)" }}>
-              Book Your Consultation <ArrowRight size={16} strokeWidth={2.5} />
+              Book a Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
             </motion.a>
             <motion.a href="#projects"
               whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
