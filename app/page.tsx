@@ -2311,77 +2311,77 @@ function WhoIWorkWithSection() {
 
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
-  return (
-    <section id="contact" style={{ padding: "96px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
-      {/* Ambient glow */}
-      <div className="ld-ambient-glow" style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.6, pointerEvents: "none" }} />
+  const CONTACTS = [
+    { Icon: Phone,    label: "WhatsApp",  sub: "Quick message support",  href: WHATSAPP,                                  color: "#22c55e" },
+    { Icon: Mail,     label: "Email",     sub: "For detailed inquiries",  href: "mailto:jellurmeneta64@gmail.com",          color: "var(--ld-accent)" },
+    { Icon: Linkedin, label: "LinkedIn",  sub: "Professional profile",    href: "https://www.linkedin.com/in/jellurmeneta", color: "#0ea5e9" },
+  ];
 
-      <div style={{ maxWidth: 680, margin: "0 auto", position: "relative", textAlign: "center" }}>
-        <motion.div {...up()}>
-          <span style={{
-            display: "inline-flex", alignItems: "center", gap: 7,
-            fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em",
-            textTransform: "uppercase", color: "var(--ld-accent)",
-            padding: "6px 16px", borderRadius: 100,
-            background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)",
-            marginBottom: 28,
-          }}>
+  return (
+    <section id="contact" style={{ padding: "80px 28px 0", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "30%", width: 500, height: 300, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
+
+      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
+
+        {/* Badge */}
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 48 }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 16px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)" }}>
             <Sparkles size={10} strokeWidth={2.5} />
             Work With Me
           </span>
-
-          <h2 style={{
-            fontSize: "clamp(2rem, 5vw, 3.25rem)", fontWeight: 900,
-            color: "var(--ld-text)", fontFamily: "var(--font-display)",
-            letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 20,
-          }}>
-            Let&apos;s Find What You Can Automate
-          </h2>
-
-          <p style={{ fontSize: "1.0625rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 40, maxWidth: "44ch", margin: "0 auto 40px" }}>
-            Book an automation audit or explore solutions with the AI assistant.
-          </p>
-
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 24 }}>
-            <motion.a
-              href={CALENDLY}
-              target="_blank"
-              rel="noopener noreferrer"
-              whileHover={{ scale: 1.03, boxShadow: "0 0 36px var(--ld-glow)" }}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "14px 32px", borderRadius: 100,
-                background: "var(--ld-accent)", color: "#fff",
-                fontWeight: 700, fontSize: "1rem", textDecoration: "none",
-                boxShadow: "0 0 24px var(--ld-glow)",
-                fontFamily: "var(--font-display)",
-              }}
-            >
-              Book An Automation Audit <ArrowRight size={16} strokeWidth={2.5} />
-            </motion.a>
-
-            <motion.a
-              href="#portfolio"
-              whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
-              whileTap={{ scale: 0.97 }}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 8,
-                padding: "14px 28px", borderRadius: 100,
-                border: "1px solid var(--ld-borderC)", background: "var(--ld-glow)",
-                color: "var(--ld-text)", fontWeight: 600, fontSize: "1rem",
-                textDecoration: "none", transition: "all 0.2s ease",
-                fontFamily: "var(--font-display)",
-              }}
-            >
-              Ask The AI <ArrowUpRight size={15} strokeWidth={2} />
-            </motion.a>
-          </div>
-
-          <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", opacity: 0.5 }}>
-            Free audit &nbsp;·&nbsp; No commitment &nbsp;·&nbsp; Response within 24 hours
-          </p>
         </motion.div>
+
+        {/* 2-column */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(32px, 5vw, 60px)", alignItems: "end", paddingBottom: 80 }}>
+
+          {/* Left */}
+          <motion.div {...up(0.05)}>
+            <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 12 }}>
+              Let&apos;s Find What<br />You Can Automate
+            </h2>
+            <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 28, maxWidth: "34ch" }}>
+              Book an audit or reach out directly — I&apos;ll help you identify the fastest automation wins.
+            </p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+              {CONTACTS.map(({ Icon, label, sub, href, color }) => (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target={href.startsWith("mailto") ? undefined : "_blank"}
+                  rel="noopener noreferrer"
+                  whileHover={{ x: 3, borderColor: `${color}55` }}
+                  whileTap={{ scale: 0.98 }}
+                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 16px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s ease" }}
+                >
+                  <div style={{ width: 36, height: 36, borderRadius: 9, flexShrink: 0, background: `${color}10`, border: `1px solid ${color}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={16} strokeWidth={1.5} style={{ color }} />
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 1 }}>{label}</p>
+                    <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", opacity: 0.6 }}>{sub}</p>
+                  </div>
+                  <ArrowRight size={13} strokeWidth={2} style={{ color: "var(--ld-muted)", opacity: 0.35, flexShrink: 0 }} />
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
+
+          {/* Right — booking card */}
+          <motion.div {...up(0.1)}>
+            <div style={{ borderRadius: 18, border: "1px solid var(--ld-border)", background: "var(--ld-card)", boxShadow: "var(--ld-shadowLg)", overflow: "hidden" }}>
+              <div style={{ padding: "24px 22px 22px" }}>
+                <h3 style={{ fontSize: "1.0625rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 4 }}>
+                  Book a Consultation
+                </h3>
+                <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", marginBottom: 18, letterSpacing: "0.01em" }}>
+                  30 mins &nbsp;·&nbsp; No pressure &nbsp;·&nbsp; Clear next steps
+                </p>
+                <MiniScheduler />
+              </div>
+            </div>
+          </motion.div>
+
+        </div>
       </div>
     </section>
   );
