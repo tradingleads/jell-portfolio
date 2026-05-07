@@ -2001,10 +2001,10 @@ function TestimonialsSection() {
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Changed</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
-            After Working Together
+            What Changes After Automation
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
-            Faster replies. More conversations turning into bookings. Less time spent on repetitive work.
+            Faster replies. Better workflows. Less manual work.
           </p>
         </motion.div>
 
