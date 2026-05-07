@@ -1924,15 +1924,13 @@ function AboutSection() {
 
         <motion.div {...up(0.1)}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>About</p>
-          <h2 style={{ fontSize: "clamp(1.5rem, 3.2vw, 2.25rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 20, lineHeight: 1.2 }}>
-            Meet The Automation Specialist Behind The Results
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 18, lineHeight: 1.2 }}>
+            Building Systems That Scale Operations
           </h2>
-          <p style={{ fontSize: "1rem", lineHeight: 1.78, color: "var(--ld-muted)", maxWidth: "46ch", marginBottom: 28 }}>
-            I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist who builds systems that replace manual work, streamline operations, and help businesses scale without hiring more people.
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
+            I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist focused on building systems that reduce manual work, improve response speed, and streamline operations.
             <br /><br />
-            From lead capture to backend processes, I design systems that eliminate bottlenecks, reduce manual effort, and improve response speed.
-            <br /><br />
-            Built for efficiency, scalability, and measurable ROI.
+            From lead handling to backend workflows, I design automations that help businesses save time and scale efficiently.
           </p>
           <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
             {[
