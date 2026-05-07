@@ -17,7 +17,8 @@ import {
   MessageSquare, Mail, BarChart3, TrendingUp, CheckCircle,
   ArrowUpRight, Clock, Sparkles, Activity, Phone, Linkedin,
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
-  ChevronLeft, ChevronRight,
+  ChevronLeft, ChevronRight, Briefcase, GraduationCap,
+  Home, Building2, HeartPulse, ShoppingBag,
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
@@ -2196,6 +2197,59 @@ function MiniScheduler() {
   );
 }
 
+/* ── Who I Work With ───────────────────────────────────────── */
+const WHO = [
+  { Icon: Briefcase,    c: "var(--ld-accent)",  label: "Agencies",                  d: "Marketing, digital, and creative agencies looking to automate client ops, reporting, and lead workflows." },
+  { Icon: GraduationCap, c: "var(--ld-purple)", label: "Coaches & Consultants",     d: "High-ticket coaches who need automated follow-ups, onboarding sequences, and booking systems." },
+  { Icon: Home,          c: "var(--ld-blue)",   label: "Real Estate Teams",         d: "Agents and brokers automating lead qualification, follow-ups, and appointment scheduling." },
+  { Icon: Building2,     c: "var(--ld-accent)", label: "Local Service Businesses",  d: "Service providers automating inquiries, bookings, reminders, and customer communication." },
+  { Icon: HeartPulse,    c: "var(--ld-purple)", label: "Clinics & Healthcare",      d: "Clinics reducing admin load with automated scheduling, reminders, and intake workflows." },
+  { Icon: ShoppingBag,   c: "var(--ld-blue)",   label: "Ecommerce Brands",          d: "Online stores automating abandoned cart recovery, customer support, and post-purchase flows." },
+];
+
+function WhoIWorkWithSection() {
+  return (
+    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Who I Work With</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+            Built for Teams That Run on Leads and Workflows
+          </h2>
+          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
+            Automation systems designed for teams handling leads, operations, content, and customer workflows.
+          </p>
+        </motion.div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 18 }}>
+          {WHO.map(({ Icon, c, label, d }, i) => (
+            <motion.div
+              key={label}
+              {...up(i * 0.06)}
+              whileHover={{ y: -4, borderColor: `${c}50`, boxShadow: `0 0 28px ${c}12, 0 8px 32px rgba(0,0,0,0.25)` }}
+              style={{
+                padding: "28px 24px",
+                background: "var(--ld-card)",
+                border: "1px solid var(--ld-border)",
+                borderRadius: 18,
+                boxShadow: "var(--ld-shadow)",
+                transition: "all 0.28s ease",
+                cursor: "default",
+              }}
+            >
+              <div style={{ width: 44, height: 44, borderRadius: 12, marginBottom: 16, background: `${c}12`, border: `1px solid ${c}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={20} strokeWidth={1.5} style={{ color: c }} />
+              </div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 8 }}>{label}</h3>
+              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.65 }}>{d}</p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
 
@@ -2454,6 +2508,7 @@ export default function LandingPage() {
         <HowIWorkSection />
         <AboutSection />
         <TestimonialsSection />
+        <WhoIWorkWithSection />
         <CTASection />
         <PortfolioSection />
         <Footer />
