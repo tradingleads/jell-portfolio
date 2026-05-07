@@ -2389,7 +2389,7 @@ function CTASection() {
   );
 }
 
-/* ── Interactive portfolio section (centerpiece) ─────────── */
+/* ── Interactive portfolio section ──────────────────────── */
 function PortfolioSection() {
   const [, setOrbState] = useState<OrbState>("idle");
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
