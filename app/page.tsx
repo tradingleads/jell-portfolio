@@ -1609,20 +1609,20 @@ const STEPS = [
   {
     n: "01", Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
     t: "Find What's Costing You Money",
-    d: "I audit your workflow to pinpoint where leads are slipping, tasks are stalling, and revenue is being left on the table — then identify the highest-ROI fix first.",
+    d: "Audit your workflow to uncover missed leads, wasted time, and high-ROI automation opportunities.",
     tag: "Discovery & Audit",
   },
   {
     n: "02", Icon: Wrench, hex: "#2563EB", c: "var(--ld-blue)",
     t: "Build the System That Saves Time",
-    d: "I build a custom automation tailored to your tools and goals — never a generic template. Every step is designed to cut errors, remove manual work, and reclaim your team's time.",
+    d: "Build custom automation systems that remove manual work, reduce errors, and save time.",
     tag: "Design & Build",
   },
   {
     n: "03", Icon: Rocket, hex: "#7C3AED", c: "var(--ld-purple)",
     t: "Launch, Optimize, Scale",
-    d: "I handle setup, testing, and post-launch refinement so results compound over time — closing more leads, saving more hours, and scaling without adding headcount.",
-    tag: "Deploy & Scale",
+    d: "Launch, refine, and improve automation systems to increase efficiency and support growth.",
+    tag: "Deploy & Optimize",
   },
 ];
 
