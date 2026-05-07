@@ -2344,13 +2344,11 @@ function CTASection() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 24 }}>
             <motion.a
-              href="#contact"
-              onClick={e => { e.preventDefault(); document.querySelector<HTMLElement>(".mini-scheduler-section")?.scrollIntoView({ behavior: "smooth" }); window.location.href = CALENDLY; }}
-              whileHover={{ scale: 1.03, boxShadow: "0 0 36px var(--ld-glow)" }}
-              whileTap={{ scale: 0.97 }}
               href={CALENDLY}
               target="_blank"
               rel="noopener noreferrer"
+              whileHover={{ scale: 1.03, boxShadow: "0 0 36px var(--ld-glow)" }}
+              whileTap={{ scale: 0.97 }}
               style={{
                 display: "inline-flex", alignItems: "center", gap: 8,
                 padding: "14px 32px", borderRadius: 100,
