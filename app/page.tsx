@@ -2411,133 +2411,79 @@ function FAQSection() {
 
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
-
-  const CONTACTS = [
-    { Icon: Phone,    label: "WhatsApp",  sub: "Quick message support",  href: WHATSAPP,                                  color: "#22c55e" },
-    { Icon: Mail,     label: "Email",     sub: "For detailed inquiries",  href: "mailto:jellurmeneta64@gmail.com",           color: "var(--ld-accent)" },
-    { Icon: Linkedin, label: "LinkedIn",  sub: "Professional profile",    href: "https://www.linkedin.com/in/jellurmeneta", color: "#0ea5e9" },
-  ];
-
   return (
-    <section id="contact" style={{ padding: "80px 28px 0", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
-      {/* Ambient glows */}
-      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "25%", width: 600, height: 400, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.5, pointerEvents: "none" }} />
-      <div className="ld-ambient-glow" style={{ position: "absolute", bottom: 0, right: "10%", width: 400, height: 400, background: "radial-gradient(circle, var(--ld-glow) 0%, transparent 65%)", opacity: 0.3, pointerEvents: "none" }} />
+    <section id="contact" style={{ padding: "96px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+      {/* Ambient glow */}
+      <div className="ld-ambient-glow" style={{ position: "absolute", top: "10%", left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.6, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
-
-        {/* Trust badge */}
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
+      <div style={{ maxWidth: 680, margin: "0 auto", position: "relative", textAlign: "center" }}>
+        <motion.div {...up()}>
           <span style={{
             display: "inline-flex", alignItems: "center", gap: 7,
             fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em",
             textTransform: "uppercase", color: "var(--ld-accent)",
             padding: "6px 16px", borderRadius: 100,
             background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)",
+            marginBottom: 28,
           }}>
             <Sparkles size={10} strokeWidth={2.5} />
             Work With Me
           </span>
+
+          <h2 style={{
+            fontSize: "clamp(2rem, 5vw, 3.25rem)", fontWeight: 900,
+            color: "var(--ld-text)", fontFamily: "var(--font-display)",
+            letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 20,
+          }}>
+            Let&apos;s Find What You Can Automate
+          </h2>
+
+          <p style={{ fontSize: "1.0625rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 40, maxWidth: "44ch", margin: "0 auto 40px" }}>
+            Book an automation audit or explore solutions with the AI assistant.
+          </p>
+
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 12, justifyContent: "center", marginBottom: 24 }}>
+            <motion.a
+              href="#contact"
+              onClick={e => { e.preventDefault(); document.querySelector<HTMLElement>(".mini-scheduler-section")?.scrollIntoView({ behavior: "smooth" }); window.location.href = CALENDLY; }}
+              whileHover={{ scale: 1.03, boxShadow: "0 0 36px var(--ld-glow)" }}
+              whileTap={{ scale: 0.97 }}
+              href={CALENDLY}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "14px 32px", borderRadius: 100,
+                background: "var(--ld-accent)", color: "#fff",
+                fontWeight: 700, fontSize: "1rem", textDecoration: "none",
+                boxShadow: "0 0 24px var(--ld-glow)",
+                fontFamily: "var(--font-display)",
+              }}
+            >
+              Book An Automation Audit <ArrowRight size={16} strokeWidth={2.5} />
+            </motion.a>
+
+            <motion.a
+              href="#portfolio"
+              whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
+              whileTap={{ scale: 0.97 }}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 8,
+                padding: "14px 28px", borderRadius: 100,
+                border: "1px solid var(--ld-borderC)", background: "var(--ld-glow)",
+                color: "var(--ld-text)", fontWeight: 600, fontSize: "1rem",
+                textDecoration: "none", transition: "all 0.2s ease",
+                fontFamily: "var(--font-display)",
+              }}
+            >
+              Ask The AI <ArrowUpRight size={15} strokeWidth={2} />
+            </motion.a>
+          </div>
+
+          <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", opacity: 0.5 }}>
+            Free audit &nbsp;·&nbsp; No commitment &nbsp;·&nbsp; Response within 24 hours
+          </p>
         </motion.div>
-
-        {/* 2-column layout */}
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "clamp(32px, 5vw, 64px)",
-          alignItems: "end",
-          paddingBottom: 96,
-        }}>
-
-          {/* ── LEFT: contact info ── */}
-          <motion.div {...up(0.05)}>
-            <h2 style={{
-              fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 900,
-              color: "var(--ld-text)", fontFamily: "var(--font-display)",
-              letterSpacing: "-0.03em", lineHeight: 1.1, marginBottom: 16,
-            }}>
-              Growth Gets Easier<br />When Your Business Runs Without You Doing Everything.
-            </h2>
-
-            <p style={{ fontSize: "0.9375rem", fontWeight: 300, color: "var(--ld-muted)", lineHeight: 1.5, letterSpacing: "0.04em", marginTop: 12, marginBottom: 36 }}>
-              Choose your preferred way to connect.
-            </p>
-
-            {/* Contact cards */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {CONTACTS.map(({ Icon, label, sub, href, color }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  whileHover={{ x: 4, boxShadow: `0 0 28px ${color}22, 0 0 0 1px ${color}40` }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{
-                    display: "flex", alignItems: "center", gap: 14,
-                    padding: "16px 20px",
-                    background: "var(--ld-card)",
-                    border: "1px solid var(--ld-border)",
-                    borderRadius: 14,
-                    textDecoration: "none",
-                    boxShadow: "var(--ld-shadow)",
-                    transition: "border-color 0.2s ease",
-                    cursor: "pointer",
-                  }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.borderColor = `${color}50`)}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.borderColor = "var(--ld-border)")}
-                >
-                  <div style={{
-                    width: 40, height: 40, borderRadius: 11, flexShrink: 0,
-                    background: `${color}12`,
-                    border: `1px solid ${color}30`,
-                    display: "flex", alignItems: "center", justifyContent: "center",
-                  }}>
-                    <Icon size={18} strokeWidth={1.5} style={{ color }} />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 2 }}>
-                      {label}
-                    </p>
-                    <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", opacity: 0.65 }}>
-                      {sub}
-                    </p>
-                  </div>
-                  <ArrowRight
-                    size={15} strokeWidth={2}
-                    style={{ color: "var(--ld-muted)", flexShrink: 0, opacity: 0.4 }}
-                  />
-                </motion.a>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* ── RIGHT: Premium booking card ── */}
-          <motion.div {...up(0.12)}>
-            <div style={{
-              borderRadius: 22,
-              border: "1px solid var(--ld-border)",
-              background: "var(--ld-card)",
-              boxShadow: "var(--ld-shadowLg)",
-              overflow: "hidden",
-            }}>
-              {/* Card content */}
-              <div style={{ padding: "28px 26px 26px" }}>
-                <h3 style={{
-                  fontSize: "1.125rem", fontWeight: 800,
-                  color: "var(--ld-text)", fontFamily: "var(--font-display)",
-                  letterSpacing: "-0.02em", marginBottom: 6,
-                }}>
-                  Book a Consultation
-                </h3>
-                <p style={{ fontSize: "0.8rem", color: "var(--ld-muted)", lineHeight: 1.55, marginBottom: 22, letterSpacing: "0.01em" }}>
-                  30 mins &nbsp;·&nbsp; No pressure &nbsp;·&nbsp; Clear next steps
-                </p>
-                <MiniScheduler />
-              </div>
-            </div>
-          </motion.div>
-        </div>
       </div>
     </section>
   );
