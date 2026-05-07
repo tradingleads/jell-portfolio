@@ -891,12 +891,12 @@ function ResultsSection() {
 
 /* ── Services ──────────────────────────────────────────────── */
 const SERVICES = [
-  { Icon: Zap,           c: "var(--ld-accent)",  t: "Never Miss a Lead Again",         d: "Most businesses lose leads in the first 5 minutes. I build AI systems that capture, qualify, and route every inbound lead instantly — so your team only talks to people ready to buy." },
-  { Icon: Bot,           c: "var(--ld-purple)",  t: "Fill Your Calendar on Autopilot", d: "Stop chasing no-shows and back-and-forth scheduling. An AI handles booking, confirmation, and reminders across every channel — 24/7, without involving your team." },
-  { Icon: MessageSquare, c: "var(--ld-blue)",    t: "Answer Every Question. Instantly.", d: "Customers expect fast replies. I build AI agents that resolve common questions, qualify issues, and escalate only what truly needs a human — no extra headcount required." },
-  { Icon: Film,          c: "var(--ld-accent)",  t: "One Piece of Content. Everywhere.", d: "Creating content for every platform is a full-time job. I build systems that take one video, post, or recording and distribute it across channels automatically." },
-  { Icon: Database,      c: "var(--ld-purple)",  t: "A Pipeline That Runs Itself",      d: "Leads fall through when your CRM is behind. I automate data entry, follow-ups, tagging, and contact management so your pipeline stays clean and your team stays focused." },
-  { Icon: Users,         c: "var(--ld-blue)",    t: "Remove Work That Shouldn't Exist", d: "Repetitive internal tasks drain your team and slow growth. I map your operations, identify the bottlenecks, and build automations that remove them permanently." },
+  { Icon: Zap,           c: "var(--ld-accent)",  t: "Instant Lead Qualification",          d: "Automatically capture, qualify, and route inbound leads so your team only talks to ready-to-buy prospects." },
+  { Icon: Bot,           c: "var(--ld-purple)",  t: "Automated Booking & Follow-Ups",      d: "Reduce no-shows and back-and-forth scheduling with automated confirmations, reminders, and follow-ups." },
+  { Icon: MessageSquare, c: "var(--ld-blue)",    t: "24/7 AI Customer Support",            d: "Answer common questions instantly, qualify inquiries, and escalate important conversations automatically." },
+  { Icon: Film,          c: "var(--ld-accent)",  t: "Content Distribution Workflows",      d: "Turn one piece of content into platform-ready posts and distribute them automatically across channels." },
+  { Icon: Database,      c: "var(--ld-purple)",  t: "Automated CRM & Pipeline Updates",   d: "Keep your CRM updated automatically with lead tracking, tagging, follow-ups, and contact management." },
+  { Icon: Users,         c: "var(--ld-blue)",    t: "Manual Tasks Removed",               d: "Eliminate repetitive admin work with automated processes, notifications, data entry, and internal workflows." },
 ];
 
 function ServicesSection() {
