@@ -18,7 +18,8 @@ import {
   ArrowUpRight, Clock, Sparkles, Activity, Phone, Linkedin,
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight, Briefcase, GraduationCap,
-  Home, Building2, HeartPulse, ShoppingBag,
+  Home, Building2, HeartPulse, ShoppingBag, CalendarCheck,
+  Bell, RefreshCw, Settings2,
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
@@ -2197,6 +2198,63 @@ function MiniScheduler() {
   );
 }
 
+/* ── What I Automate ───────────────────────────────────────── */
+const AUTOMATIONS = [
+  { Icon: Zap,          c: "#3B82F6", label: "Lead Qualification",       d: "Score and route inbound leads automatically so your team focuses on ready buyers." },
+  { Icon: CalendarCheck, c: "#8B5CF6", label: "Appointment Booking",      d: "Handle scheduling, confirmations, reminders, and rescheduling without manual input." },
+  { Icon: Database,     c: "#3B82F6", label: "CRM Automation",           d: "Keep contacts updated, tagged, and followed up with zero manual data entry." },
+  { Icon: Bot,          c: "#8B5CF6", label: "AI Customer Support",      d: "Answer common questions instantly and escalate complex issues automatically." },
+  { Icon: Film,         c: "#3B82F6", label: "Content Distribution",     d: "Repurpose and publish content across platforms from a single source." },
+  { Icon: Settings2,    c: "#8B5CF6", label: "Internal Operations",      d: "Automate approvals, handoffs, task creation, and team notifications." },
+  { Icon: BarChart3,    c: "#3B82F6", label: "Reporting & Notifications", d: "Deliver automated summaries and alerts to the right people at the right time." },
+  { Icon: RefreshCw,    c: "#8B5CF6", label: "Follow-Up Systems",        d: "Send timely, personalized follow-ups to leads and clients without lifting a finger." },
+];
+
+function WhatIAutomateSection() {
+  return (
+    <section style={{ padding: "80px 28px", background: "var(--ld-card2)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div {...up()} style={{ marginBottom: 48 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Automate</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
+            Common Workflows That Run Better Automated
+          </h2>
+        </motion.div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14 }}>
+          {AUTOMATIONS.map(({ Icon, c, label, d }, i) => (
+            <motion.div
+              key={label}
+              {...up(i * 0.05)}
+              whileHover={{ y: -3, borderColor: `${c}45`, background: `${c}06` }}
+              style={{
+                padding: "20px 20px",
+                background: "var(--ld-card)",
+                border: "1px solid var(--ld-border)",
+                borderRadius: 14,
+                boxShadow: "var(--ld-shadow)",
+                transition: "all 0.22s ease",
+                cursor: "default",
+                display: "flex",
+                flexDirection: "column",
+                gap: 10,
+              }}
+            >
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: `${c}12`, border: `1px solid ${c}22`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={16} strokeWidth={1.5} style={{ color: c }} />
+              </div>
+              <div>
+                <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 5 }}>{label}</p>
+                <p style={{ fontSize: "0.8125rem", color: "var(--ld-muted)", lineHeight: 1.6 }}>{d}</p>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ── Who I Work With ───────────────────────────────────────── */
 const WHO = [
   { Icon: Briefcase,    c: "var(--ld-accent)",  label: "Agencies",                  d: "Marketing, digital, and creative agencies looking to automate client ops, reporting, and lead workflows." },
@@ -2508,6 +2566,7 @@ export default function LandingPage() {
         <HowIWorkSection />
         <AboutSection />
         <TestimonialsSection />
+        <WhatIAutomateSection />
         <WhoIWorkWithSection />
         <CTASection />
         <PortfolioSection />
