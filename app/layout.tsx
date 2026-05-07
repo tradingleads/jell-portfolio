@@ -1,14 +1,12 @@
 import type { Metadata } from "next";
-import { GeistSans } from "geist/font/sans";
 import { GeistMono } from "geist/font/mono";
-import { Outfit } from "next/font/google";
+import { Inter } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-outfit",
-  weight: ["300", "400", "500", "600", "700", "800"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -40,9 +38,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistSans.variable} ${GeistMono.variable} ${outfit.variable}`}
+      className={`${GeistMono.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
+      <head>
+        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
+        <link
+          href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap"
+          rel="stylesheet"
+        />
+      </head>
       <body className="antialiased">
         <Providers>{children}</Providers>
       </body>

@@ -319,7 +319,7 @@ const Chat = memo(function Chat({ onOrbStateChange }: ChatProps) {
               fontSize: "0.9375rem",
               lineHeight: 1.55,
               color: "var(--text-primary)",
-              fontFamily: "var(--font-geist-sans)",
+              fontFamily: "var(--font-body, var(--font-inter), system-ui, sans-serif)",
               minHeight: "26px",
               maxHeight: "140px",
             }}

@@ -97,15 +97,23 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
+/* Font variables */
+:root {
+  --font-display: 'Satoshi', system-ui, sans-serif;
+  --font-body:    var(--font-inter, 'Inter'), system-ui, sans-serif;
+}
+
 body {
   background-color: var(--bg);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-body);
   min-height: 100dvh;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.25s ease;
   position: relative;
   line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv01", "cv03", "cv04", "cv11";
 }
 
 /* ─── Atmospheric Background ─────────────────────────────────── */
