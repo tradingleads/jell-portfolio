@@ -645,19 +645,18 @@ function HeroSection() {
       <div className="ld-ambient-glow" style={{ position: "absolute", bottom: "10%", left: "0%", width: 320, height: 320, background: "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 65%)", pointerEvents: "none" }} />
       <Particles />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(40px, 8vw, 80px) clamp(24px, 5vw, 28px)", width: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48, alignItems: "center" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(28px, 6vw, 60px) clamp(24px, 5vw, 28px)", width: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48, alignItems: "center" }}>
 
         {/* Left */}
         <div className="text-center sm:text-left">
 
-          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(2rem, 5.5vw, 3.9rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 18 }}>
-            Automation Systems That{" "}
-            <span className="ld-gradient">Save Time, Capture More Leads,</span>{" "}
-            and Remove Manual Work.
+          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+            <span className="ld-gradient">Save Time. Capture More Leads.</span>{" "}
+            Automate Manual Work.
           </motion.h1>
 
-          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.72, color: "var(--ld-text)", opacity: 0.78, maxWidth: "44ch", marginBottom: "clamp(24px, 4vw, 38px)" }}>
-            I design AI-powered systems for service businesses that automate lead handling, appointment booking, customer support, and repetitive operations.
+          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.78, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
+            I build AI systems for service businesses — automating lead handling, bookings, support, and repetitive workflows.
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
