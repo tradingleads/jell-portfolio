@@ -636,7 +636,7 @@ function Navbar() {
 /* ── Hero ──────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section style={{ minHeight: "100dvh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 100 }}>
+    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68 }}>
       {/* Hero dot grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, var(--ld-borderC) 1px, transparent 0)", backgroundSize: "32px 32px", opacity: 0.25, pointerEvents: "none" }} />
       {/* Spotlight — blue top center */}
@@ -645,56 +645,41 @@ function HeroSection() {
       <div className="ld-ambient-glow" style={{ position: "absolute", top: "15%", right: "0%", width: 480, height: 480, background: "radial-gradient(circle, rgba(139,92,246,0.07) 0%, transparent 65%)", pointerEvents: "none" }} />
       {/* Blue accent — bottom left */}
       <div className="ld-ambient-glow" style={{ position: "absolute", bottom: "10%", left: "0%", width: 320, height: 320, background: "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 65%)", pointerEvents: "none" }} />
-      {/* Large typographic background number */}
-      <div aria-hidden="true" style={{ position: "absolute", top: 0, right: 0, fontSize: "20vw", fontWeight: 900, color: "transparent", WebkitTextStroke: "1px rgba(59,130,246,0.06)", pointerEvents: "none", userSelect: "none", zIndex: 0, lineHeight: 1, fontFamily: "var(--font-display)" }}>01</div>
       <Particles />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(28px, 6vw, 60px) clamp(24px, 5vw, 28px)", width: "100%", position: "relative", zIndex: 1 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(28px, 6vw, 60px) clamp(24px, 5vw, 28px)", width: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48, alignItems: "center" }}>
 
-        {/* Full-width headline block */}
-        <motion.h1
-          {...up(0.06)}
-          style={{
-            fontSize: "clamp(3rem, 8vw, 6rem)",
-            fontWeight: 900,
-            lineHeight: 1.0,
-            letterSpacing: "-0.04em",
-            fontFamily: "var(--font-display)",
-            marginBottom: 0,
-          }}
-        >
-          <span style={{ display: "block", color: "var(--ld-text)" }}>Save Time.</span>
-          <span className="ld-gradient" style={{ display: "block" }}>Capture More Leads.</span>
-          <span style={{ display: "block", color: "var(--ld-text)" }}>Automate Manual Work.</span>
-        </motion.h1>
+        {/* Left */}
+        <div className="text-center sm:text-left">
 
-        {/* Thin rule */}
-        <motion.div {...up(0.10)} style={{ borderTop: "1px solid var(--ld-border)", width: "100%", margin: "28px 0" }} />
+          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+            <span className="ld-gradient">Save Time. Capture More Leads.</span>{" "}
+            Automate Manual Work.
+          </motion.h1>
 
-        {/* Two-column: subtext left, CTAs right */}
-        <motion.div {...up(0.14)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 32, alignItems: "flex-start", marginBottom: 56 }}>
-          <p style={{ fontSize: "1rem", lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.78, maxWidth: "42ch" }}>
+          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.78, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
             I build AI systems for service businesses — automating lead handling, bookings, support, and repetitive workflows.
-          </p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          </motion.p>
+
+          <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
             <motion.a href="#contact"
               whileHover={{ scale: 1.03, boxShadow: "0 0 32px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
-              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 28px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", boxShadow: "0 0 20px var(--ld-glow)", alignSelf: "flex-start" }}>
+              className="w-full sm:w-auto justify-center"
+              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 28px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", boxShadow: "0 0 20px var(--ld-glow)" }}>
               Book a Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
             </motion.a>
             <motion.a href="#projects"
               whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
-              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 26px", borderRadius: 100, border: "1px solid var(--ld-borderC)", color: "var(--ld-muted)", fontWeight: 600, fontSize: "0.9375rem", textDecoration: "none", transition: "all 0.2s ease", alignSelf: "flex-start" }}>
+              className="w-full sm:w-auto justify-center"
+              style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 26px", borderRadius: 100, border: "1px solid var(--ld-borderC)", color: "var(--ld-muted)", fontWeight: 600, fontSize: "0.9375rem", textDecoration: "none", transition: "all 0.2s ease" }}>
               See Proven Systems <ArrowUpRight size={15} strokeWidth={2} />
             </motion.a>
-          </div>
-        </motion.div>
+          </motion.div>
 
-        {/* Chat preview — floating, inset */}
-        <div style={{ maxWidth: 640, margin: "0 auto" }}>
-          <ChatPreview />
         </div>
 
+        {/* Right — animated chat preview */}
+        <ChatPreview />
       </div>
     </section>
   );
@@ -821,7 +806,7 @@ function TrustBar() {
   const doubled = [...TECHS, ...TECHS];
   return (
     <section style={{ padding: "20px 0 40px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)", overflow: "hidden" }}>
-      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
+      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
       <div style={{ position: "relative" }}>
         <motion.div
           animate={{ x: ["0%", "-50%"] }}
@@ -867,33 +852,6 @@ function TrustBar() {
   );
 }
 
-/* ── Statement / Pause section ─────────────────────────────── */
-function StatementSection() {
-  return (
-    <section style={{ padding: "140px 28px 160px", background: "var(--ld-bg)" }}>
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: "-60px" }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        style={{ maxWidth: 820, margin: "0 auto" }}
-      >
-        <p style={{ fontSize: "0.65rem", fontWeight: 700, letterSpacing: "0.22em", textTransform: "uppercase", color: "var(--ld-accent)", opacity: 0.7, marginBottom: 40 }}>
-          The Reality
-        </p>
-        <p style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.75rem)", fontWeight: 700, lineHeight: 1.45, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em" }}>
-          <span style={{ opacity: 0.45 }}>Most businesses </span>
-          <span className="ld-gradient">lose leads, waste hours on manual work,</span>
-          <span style={{ opacity: 0.45 }}> and scale slower than they should — not because they lack people, but because their </span>
-          <span className="ld-gradient">processes aren&apos;t automated.</span>
-        </p>
-        <div style={{ marginTop: 48, width: 40, height: 1, background: "var(--ld-borderC)" }} />
-        <p style={{ marginTop: 16, fontSize: "0.8rem", color: "var(--ld-muted)", opacity: 0.5, letterSpacing: "0.04em" }}>Jell Urmeneta</p>
-      </motion.div>
-    </section>
-  );
-}
-
 /* ── Results ───────────────────────────────────────────────── */
 const STATS = [
   { val: null,  target: 70, suffix: "%+", label: "Average reduction in manual work",    Icon: BarChart3,  c: "var(--ld-accent)"  },
@@ -904,40 +862,30 @@ const STATS = [
 
 function ResultsSection() {
   return (
-    <section id="results" style={{ padding: "60px 28px", background: "var(--ld-bg)" }}>
+    <section id="results" style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 0 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Measured Impact</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Measured Impact</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Save Time. Recover Revenue. Scale Smarter.
           </h2>
         </motion.div>
-        <motion.div
-          {...up(0.05)}
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
-            gap: "0",
-            borderTop: "1px solid var(--ld-border)",
-            marginTop: 0,
-          }}
-        >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 18 }}>
           {STATS.map(({ val, target, suffix, label, Icon, c }, i) => (
-            <motion.div
-              key={label}
-              {...up(i * 0.08)}
-              style={{
-                padding: "40px 0 40px 32px",
-                borderRight: i < STATS.length - 1 ? "1px solid var(--ld-border)" : "none",
-              }}
+            <motion.div key={label} {...up(i * 0.08)}
+              whileHover={{ y: -4, boxShadow: `0 0 0 1px ${c}22, 0 20px 60px rgba(0,0,0,0.55), 0 0 40px ${c}0a` }}
+              style={{ padding: "clamp(20px, 4vw, 36px) clamp(18px, 3vw, 28px)", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 22, boxShadow: "var(--ld-shadow)", transition: "all 0.28s ease" }}
             >
-              <p style={{ fontSize: "clamp(2.5rem, 5vw, 3.75rem)", fontWeight: 900, color: c, fontFamily: "var(--font-display)", letterSpacing: "-0.03em", lineHeight: 1, marginBottom: 12 }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={20} strokeWidth={1.5} style={{ color: c }} />
+              </div>
+              <p style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 900, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1 }}>
                 {val ?? (target !== null ? <Counter target={target} suffix={suffix} /> : "—")}
               </p>
-              <p style={{ fontSize: "0.8rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "18ch" }}>{label}</p>
+              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.55 }}>{label}</p>
             </motion.div>
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );
@@ -955,30 +903,25 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "100px 28px", background: "var(--ld-card2)" }}>
+    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Gets Fixed</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Gets Fixed</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
             Where Automation Creates Leverage
           </h2>
         </motion.div>
-        <div>
-          {SERVICES.map(({ c, t, d }, i) => (
-            <motion.div key={t} {...up(i * 0.06)}
-              style={{
-                display: "flex", alignItems: "flex-start", gap: 40, padding: "28px 0",
-                borderBottom: "1px solid var(--ld-border)",
-              }}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
+          {SERVICES.map(({ Icon, c, t, d }, i) => (
+            <motion.div key={t} {...up(i * 0.07)}
+              whileHover={{ y: -4, borderColor: c, boxShadow: `0 0 0 1px ${c}25, 0 16px 48px rgba(0,0,0,0.55), 0 0 32px ${c}08` }}
+              style={{ padding: "30px 26px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, transition: "all 0.28s ease", boxShadow: "var(--ld-shadow)" }}
             >
-              {/* Step number */}
-              <span style={{ fontFamily: "var(--font-geist-mono)", fontSize: "0.72rem", fontWeight: 700, color: "var(--ld-accent)", opacity: 0.5, width: 48, flexShrink: 0, paddingTop: 3 }}>
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              {/* Title */}
-              <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.25rem", fontWeight: 700, color: "var(--ld-text)", flex: 1, lineHeight: 1.3 }}>{t}</h3>
-              {/* Description */}
-              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "36ch", textAlign: "right" }}>{d}</p>
+              <div style={{ width: 46, height: 46, borderRadius: 13, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={22} strokeWidth={1.5} style={{ color: c }} />
+              </div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 10 }}>{t}</h3>
+              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.65 }}>{d}</p>
             </motion.div>
           ))}
         </div>
@@ -1685,84 +1628,127 @@ const STEPS = [
   },
 ];
 
+const cardVariants = {
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: E } },
+};
+const containerVariants = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.18 } },
+};
 
 function HowIWorkSection() {
   const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref, { once: true, margin: "-60px" });
+  const [activeIdx, setActiveIdx] = useState(-1);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!inView) return;
+    const timers = STEPS.map((_, i) =>
+      setTimeout(() => setActiveIdx(i), 300 + i * 500)
+    );
+    return () => timers.forEach(clearTimeout);
+  }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "100px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+    <section id="process" style={{ padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
       {/* Subtle background glow */}
       <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 720, margin: "0 auto", position: "relative" }}>
-        <motion.div {...up()} style={{ marginBottom: 64 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>How It Works</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", marginBottom: 8 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>How It Works</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 8 }}>
             From Missed Leads to Automated Growth
           </h2>
-          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", maxWidth: "52ch", lineHeight: 1.7 }}>
+          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", maxWidth: "52ch", margin: "0 auto", lineHeight: 1.7 }}>
             A focused done-for-you process designed to eliminate wasted time, missed leads, slow follow-ups, and manual busywork.
           </p>
         </motion.div>
 
-        {/* Editorial timeline */}
-        <div ref={ref} style={{ position: "relative" }}>
-          {/* Vertical timeline line */}
-          <div style={{
-            position: "absolute",
-            left: 23,
-            top: 0,
-            bottom: 0,
-            width: 1,
-            background: "linear-gradient(to bottom, var(--ld-accent), var(--ld-purple), transparent)",
-            opacity: 0.2,
+        {/* Cards + connector */}
+        <div style={{ position: "relative" }}>
+          {/* Connector line — desktop only, runs through card vertical center */}
+          <div className="hidden md:block" style={{
+            position: "absolute", top: "50%", left: "calc(16.5% + 12px)", right: "calc(16.5% + 12px)",
+            height: 1, transform: "translateY(-50%)",
+            background: `linear-gradient(90deg, #3B82F628, #2563EB50, #7C3AED28)`,
+            zIndex: 0,
           }} />
 
-          {STEPS.map(({ n, Icon, t, d, c, hex, tag }, i) => (
-            <motion.div
-              key={n}
-              initial={{ opacity: 0, x: -16 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-40px" }}
-              transition={{ duration: 0.6, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
-              style={{
-                display: "flex",
-                gap: 40,
-                alignItems: "flex-start",
-                paddingBottom: i < STEPS.length - 1 ? 64 : 0,
-                paddingLeft: 0,
-              }}
-            >
-              {/* Timeline dot + icon */}
-              <div style={{ flexShrink: 0, display: "flex", flexDirection: "column", alignItems: "center", paddingTop: 4 }}>
-                <div style={{
-                  width: 46, height: 46, borderRadius: "50%",
-                  background: hex + "14",
-                  border: `1px solid ${hex}30`,
-                  display: "flex", alignItems: "center", justifyContent: "center",
-                  position: "relative", zIndex: 1,
-                }}>
-                  <Icon size={18} strokeWidth={1.5} style={{ color: c }} />
-                </div>
-              </div>
+          <motion.div
+            ref={ref}
+            variants={containerVariants}
+            initial="hidden"
+            animate={inView ? "visible" : "hidden"}
+            style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, position: "relative", zIndex: 1 }}
+          >
+            {STEPS.map(({ n, Icon, t, d, c, hex, tag }, i) => {
+              const isActive = activeIdx >= i;
+              const isHovered = hoveredIdx === i;
+              return (
+                <motion.div
+                  key={n}
+                  variants={cardVariants}
+                  whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
+                  onMouseEnter={() => setHoveredIdx(i)}
+                  onMouseLeave={() => setHoveredIdx(null)}
+                  style={{
+                    padding: "28px 26px",
+                    borderRadius: 22,
+                    border: `1px solid ${isHovered ? hex + "aa" : isActive ? hex + "50" : "var(--ld-border)"}`,
+                    background: isHovered ? `linear-gradient(160deg, var(--ld-card), ${hex}08)` : "var(--ld-card)",
+                    boxShadow: isHovered
+                      ? `0 0 60px ${hex}38, 0 16px 48px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.07)`
+                      : isActive
+                      ? `0 0 28px ${hex}18, 0 4px 20px rgba(0,0,0,0.2)`
+                      : "0 4px 20px rgba(0,0,0,0.12)",
+                    transition: "border-color 0.4s ease, box-shadow 0.4s ease, background 0.4s ease",
+                    position: "relative",
+                    cursor: "default",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  {/* Step tag */}
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+                    {/* Icon */}
+                    <div style={{
+                      width: 56, height: 56, borderRadius: 16,
+                      background: `linear-gradient(135deg, ${hex}22, ${hex}0a)`,
+                      border: `1px solid ${hex}35`,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      boxShadow: isHovered ? `0 0 20px ${hex}30` : "none",
+                      transition: "box-shadow 0.3s ease",
+                    }}>
+                      <Icon size={24} strokeWidth={1.5} style={{ color: c }} />
+                    </div>
+                    {/* Step number */}
+                    <span style={{
+                      fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.12em",
+                      fontFamily: "var(--font-geist-mono)", color: hex,
+                      padding: "4px 10px", borderRadius: 100,
+                      background: hex + "12", border: `1px solid ${hex}28`,
+                    }}>{n}</span>
+                  </div>
 
-              {/* Content */}
-              <div style={{ paddingTop: 8, flex: 1 }}>
-                <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: c, marginBottom: 10, opacity: 0.8 }}>{tag}</p>
-                <h3 style={{ fontSize: "1.25rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 10, letterSpacing: "-0.01em" }}>{t}</h3>
-                <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.72, maxWidth: "48ch" }}>{d}</p>
-              </div>
+                  {/* Tag */}
+                  <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: c, marginBottom: 10, opacity: 0.75 }}>{tag}</p>
 
-              {/* Step number — right side */}
-              <div style={{ flexShrink: 0, paddingTop: 4 }}>
-                <span style={{ fontSize: "0.62rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: "var(--ld-muted)", opacity: 0.3, letterSpacing: "0.08em" }}>{n}</span>
-              </div>
-            </motion.div>
-          ))}
+                  {/* Title */}
+                  <h3 style={{ fontSize: "1.1875rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 14, lineHeight: 1.25, letterSpacing: "-0.01em" }}>{t}</h3>
+
+                  {/* Description */}
+                  <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.75, flex: 1 }}>{d}</p>
+
+                </motion.div>
+              );
+            })}
+          </motion.div>
         </div>
-
-        {/* CTA below timeline */}
-        <motion.div {...up(0.3)} style={{ marginTop: 56 }}>
+        {/* CTA below cards */}
+        <motion.div {...up(0.3)} style={{ textAlign: "center", marginTop: 40 }}>
           <motion.a
             href="#contact"
             whileHover={{ scale: 1.04, boxShadow: "0 0 40px var(--ld-glow)" }}
@@ -1939,11 +1925,11 @@ function AboutSection() {
         </motion.div>
 
         <motion.div {...up(0.1)}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>About</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.03em", marginBottom: 18, lineHeight: 1.05 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>About</p>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 18, lineHeight: 1.2 }}>
             Building Systems That Scale Operations
           </h2>
-          <p style={{ fontSize: "0.875rem", lineHeight: 1.7, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
             I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist focused on building systems that reduce manual work, improve response speed, and streamline operations.
             <br /><br />
             From lead handling to backend workflows, I design automations that help businesses save time and scale efficiently.
@@ -2012,11 +1998,11 @@ const TESTIMONIALS = [
 
 function TestimonialsSection() {
   return (
-    <section style={{ padding: "60px 28px 64px", background: "var(--ld-card2)" }}>
+    <section style={{ padding: "80px 28px 64px", background: "var(--ld-card2)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Changed</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Changed</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
             What Changes After Automation
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
@@ -2226,11 +2212,11 @@ const AUTOMATIONS = [
 
 function WhatIAutomateSection() {
   return (
-    <section style={{ padding: "60px 28px 80px", background: "var(--ld-card2)" }}>
+    <section style={{ padding: "80px 28px", background: "var(--ld-card2)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ marginBottom: 48 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Automate</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Automate</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 2.75rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
             Common Workflows That Run Better Automated
           </h2>
         </motion.div>
@@ -2240,10 +2226,13 @@ function WhatIAutomateSection() {
             <motion.div
               key={label}
               {...up(i * 0.05)}
-              whileHover={{ x: 2, borderLeftColor: `${c}60` }}
+              whileHover={{ y: -3, borderColor: `${c}45`, background: `${c}06` }}
               style={{
-                padding: "16px 16px 16px 20px",
-                borderLeft: `2px solid ${c}30`,
+                padding: "20px 20px",
+                background: "var(--ld-card)",
+                border: "1px solid var(--ld-border)",
+                borderRadius: 14,
+                boxShadow: "var(--ld-shadow)",
                 transition: "all 0.22s ease",
                 cursor: "default",
                 display: "flex",
@@ -2251,11 +2240,13 @@ function WhatIAutomateSection() {
                 gap: 10,
               }}
             >
-              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <Icon size={16} strokeWidth={1.5} style={{ color: c, flexShrink: 0 }} />
-                <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)" }}>{label}</p>
+              <div style={{ width: 36, height: 36, borderRadius: 10, background: `${c}12`, border: `1px solid ${c}22`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={16} strokeWidth={1.5} style={{ color: c }} />
               </div>
-              <p style={{ fontSize: "0.8125rem", color: "var(--ld-muted)", lineHeight: 1.6 }}>{d}</p>
+              <div>
+                <p style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 5 }}>{label}</p>
+                <p style={{ fontSize: "0.8125rem", color: "var(--ld-muted)", lineHeight: 1.6 }}>{d}</p>
+              </div>
             </motion.div>
           ))}
         </div>
@@ -2276,36 +2267,39 @@ const WHO = [
 
 function WhoIWorkWithSection() {
   return (
-    <section style={{ padding: "100px 28px", background: "var(--ld-bg)" }}>
+    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ marginBottom: 56 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.2em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Who I Work With</p>
-          <h2 style={{ fontSize: "clamp(2.25rem, 4.5vw, 3.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Who I Work With</p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
             Built for Teams That Run on Leads and Workflows
           </h2>
-          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch" }}>
+          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
             Automation systems designed for teams handling leads, operations, content, and customer workflows.
           </p>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "0 60px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 18 }}>
           {WHO.map(({ Icon, c, label, d }, i) => (
             <motion.div
               key={label}
               {...up(i * 0.06)}
+              whileHover={{ y: -4, borderColor: `${c}50`, boxShadow: `0 0 28px ${c}12, 0 8px 32px rgba(0,0,0,0.25)` }}
               style={{
-                display: "flex",
-                gap: 16,
-                padding: "20px 0",
-                alignItems: "flex-start",
-                borderBottom: "1px solid var(--ld-border)",
+                padding: "28px 24px",
+                background: "var(--ld-card)",
+                border: "1px solid var(--ld-border)",
+                borderRadius: 18,
+                boxShadow: "var(--ld-shadow)",
+                transition: "all 0.28s ease",
+                cursor: "default",
               }}
             >
-              <Icon size={18} strokeWidth={1.5} style={{ color: c, flexShrink: 0, marginTop: 3 }} />
-              <div>
-                <h3 style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 5 }}>{label}</h3>
-                <p style={{ fontSize: "0.8125rem", color: "var(--ld-muted)", lineHeight: 1.65 }}>{d}</p>
+              <div style={{ width: 44, height: 44, borderRadius: 12, marginBottom: 16, background: `${c}12`, border: `1px solid ${c}25`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={20} strokeWidth={1.5} style={{ color: c }} />
               </div>
+              <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 8 }}>{label}</h3>
+              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.65 }}>{d}</p>
             </motion.div>
           ))}
         </div>
@@ -2511,7 +2505,6 @@ export default function LandingPage() {
         <Navbar />
         <HeroSection />
         <TrustBar />
-        <StatementSection />
         <ResultsSection />
         <ServicesSection />
         <ProjectsSection />
