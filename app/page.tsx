@@ -1771,81 +1771,10 @@ function HowIWorkSection() {
   );
 }
 
-/* ── Cert Modal ─────────────────────────────────────────────── */
-function CertModal({ cert, onClose }: { cert: { label: string; img: string; color: string }; onClose: () => void }) {
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
-    window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
-  }, [onClose]);
-
-  return (
-    <>
-      <motion.div
-        key="cert-backdrop"
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        transition={{ duration: 0.2 }}
-        onClick={onClose}
-        style={{ position: "fixed", inset: 0, zIndex: 3000, background: "rgba(3,5,14,0.9)", backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)", cursor: "pointer" }}
-      />
-      <motion.div
-        key="cert-panel"
-        initial={{ opacity: 0, scale: 0.92, y: 24 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 16 }}
-        transition={{ type: "spring", stiffness: 320, damping: 28, mass: 0.85 }}
-        drag="y"
-        dragConstraints={{ top: 0, bottom: 0 }}
-        dragElastic={{ top: 0, bottom: 0.28 }}
-        onDragEnd={(_, info) => { if (info.offset.y > 80) onClose(); }}
-        style={{ position: "fixed", inset: 0, zIndex: 3001, display: "flex", alignItems: "center", justifyContent: "center", padding: "16px", pointerEvents: "none" }}
-      >
-        <div
-          onClick={e => e.stopPropagation()}
-          style={{
-            pointerEvents: "auto", width: "100%", maxWidth: 900,
-            background: "var(--ld-card)", border: "1px solid var(--ld-border)",
-            borderRadius: 20, overflow: "hidden",
-            boxShadow: "0 40px 100px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.07)",
-          }}
-        >
-          {/* Header */}
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px", borderBottom: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
-            <div>
-              <p style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: cert.color, marginBottom: 3, opacity: 0.85 }}>Verified Certification</p>
-              <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)" }}>{cert.label}</p>
-            </div>
-            <motion.button
-              onClick={onClose}
-              whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.92 }}
-              style={{ width: 34, height: 34, borderRadius: 9, background: "var(--ld-bg)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "var(--ld-muted)", fontSize: "1.1rem", lineHeight: 1 }}
-            >×</motion.button>
-          </div>
-
-          {/* Certificate image */}
-          <div style={{ background: "#080c18", touchAction: "pinch-zoom", overflow: "hidden" }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={cert.img} alt={cert.label}
-              style={{ width: "100%", height: "auto", display: "block", maxHeight: "65vh", objectFit: "contain" }}
-            />
-          </div>
-
-          {/* Footer */}
-          <div className="flex sm:hidden" style={{ alignItems: "center", padding: "10px 20px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
-            <p style={{ fontSize: "0.7rem", color: "var(--ld-muted)", opacity: 0.5 }}>Tap outside or swipe down to close</p>
-          </div>
-        </div>
-      </motion.div>
-    </>
-  );
-}
 
 /* ── About ─────────────────────────────────────────────────── */
 function AboutSection() {
   const [pulse,    setPulse]    = useState(false);
-  const [openCert, setOpenCert] = useState<{ label: string; img: string; color: string } | null>(null);
 
   function handleClick() {
     if (pulse) return;
@@ -1934,56 +1863,8 @@ function AboutSection() {
             <br /><br />
             From lead handling to backend workflows, I design automations that help businesses save time and scale efficiently.
           </p>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 16 }}>
-            {[
-              {
-                label: "n8n Certified", color: "#EA4B71", img: "/certs/n8n-cert.png",
-                logo: <svg viewBox="0 0 24 24" width="13" height="13" fill="#EA4B71" style={{ flexShrink: 0 }}><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 3.6a8.4 8.4 0 1 1 0 16.8A8.4 8.4 0 0 1 12 3.6zm-3.6 5.4v6h1.8V10.8l3 4.2 3-4.2V15h1.8V9H16.2l-2.4 3.36L11.4 9H8.4z"/></svg>,
-              },
-              {
-                label: "Zapier Certified", color: "#FF4A00", img: "/certs/zapier-cert.png",
-                logo: <svg viewBox="0 0 24 24" width="13" height="13" fill="#FF4A00" style={{ flexShrink: 0 }}><path d="M24 10.98h-7.13L21.9 5.94l-2.03-2.85-5.46 4.2V0h-4.82v7.28L4.13 3.09 2.1 5.94l5.03 5.04H0v3.5h7.13L2.1 19.52 4.13 22 9.6 17.8V24h4.82v-6.2l5.46 4.2 2.03-2.85-5.03-4.68H24v-3.5z"/></svg>,
-              },
-              {
-                label: "Make Certified", color: "#9333EA", img: "/certs/make-cert.png",
-                logo: <svg viewBox="0 0 24 24" width="13" height="13" fill="#9333EA" style={{ flexShrink: 0 }}><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.95 7.05A7 7 0 0 1 19 12h-2a5 5 0 0 0-1.464-3.536L16.95 7.05zM5 12a7 7 0 0 1 7-7V3a9 9 0 0 0 0 18v-2a7 7 0 0 1-7-7zm7 7a7 7 0 0 1-4.95-2.05l-1.414 1.414A9 9 0 0 0 21 12h-2a7 7 0 0 1-7 7z"/></svg>,
-              },
-              {
-                label: "Certified Prompt Engineer", color: "#3B82F6", img: "/certs/prompt-cert.png",
-                logo: <Sparkles size={13} strokeWidth={2} style={{ color: "#3B82F6", flexShrink: 0 }} />,
-              },
-            ].map(({ label, color, img, logo }) => (
-              <motion.button
-                key={label}
-                type="button"
-                onClick={() => setOpenCert({ label, img, color })}
-                whileHover={{ y: -2, boxShadow: `0 0 18px ${color}28`, borderColor: `${color}55` }}
-                whileTap={{ scale: 0.97 }}
-                transition={{ type: "spring", stiffness: 300, damping: 22 }}
-                style={{
-                  display: "inline-flex", alignItems: "center", gap: 7,
-                  fontSize: "0.775rem", fontWeight: 600,
-                  padding: "7px 14px", borderRadius: 100,
-                  background: `${color}0e`,
-                  border: `1px solid ${color}28`,
-                  color: "var(--ld-text)",
-                  cursor: "pointer",
-                  transition: "border-color 0.2s ease, box-shadow 0.2s ease",
-                }}
-              >
-                {logo}
-                {label}
-              </motion.button>
-            ))}
-          </div>
         </motion.div>
       </div>
-
-      <AnimatePresence>
-        {openCert && (
-          <CertModal key={openCert.label} cert={openCert} onClose={() => setOpenCert(null)} />
-        )}
-      </AnimatePresence>
     </section>
   );
 }
