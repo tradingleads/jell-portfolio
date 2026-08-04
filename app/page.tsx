@@ -653,12 +653,11 @@ function HeroSection() {
         <div className="text-center sm:text-left">
 
           <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
-            <span className="ld-gradient">Save Time. Capture More Leads.</span>{" "}
-            Automate Manual Work.
+            <span className="ld-gradient">Build Better Business Systems.</span>
           </motion.h1>
 
           <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.78, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
-            I build AI systems for service businesses — automating lead handling, bookings, support, and repetitive workflows.
+            I build zero-touch workflows, AI automations, and system integrations that remove bottlenecks, reduce manual work, and keep your business moving.
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
