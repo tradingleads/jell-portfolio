@@ -1971,12 +1971,12 @@ function CTASection() {
 
       <div style={{ maxWidth: 680, margin: "0 auto", position: "relative" }}>
 
-        {/* Header — left-aligned, asymmetric */}
-        <motion.div {...up()} style={{ marginBottom: "clamp(24px, 4vw, 32px)", maxWidth: "56ch" }}>
+        {/* Header — centered */}
+        <motion.div {...up()} style={{ marginBottom: "clamp(24px, 4vw, 32px)", textAlign: "center" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
             Book a Call
           </p>
-          <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
+          <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
         </motion.div>
