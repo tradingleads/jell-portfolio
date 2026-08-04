@@ -1941,7 +1941,7 @@ function CalendlyInlineEmbed({ date }: { date: Date }) {
   }
 
   return (
-    <div style={{ position: "relative", height: 700, overflowY: "auto", overflowX: "hidden" }}>
+    <div style={{ position: "relative", height: 460, overflowY: "auto", overflowX: "hidden" }}>
       {!ready && (
         <div style={{ position: "absolute", inset: 0 }}>
           <CalendlySkeleton />
@@ -2140,34 +2140,37 @@ function CTASection() {
 
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
 
-        {/* Text block */}
-        <motion.div {...up()} style={{ textAlign: "center", maxWidth: 680, margin: "0 auto clamp(48px, 7vw, 72px)" }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
-            Book a Call
-          </p>
-          <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
-            If You Could Automate One Thing Tomorrow...<br />What Would It Be?
-          </h2>
-          <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "56ch", margin: "0 auto" }}>
-            Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
-          </p>
-        </motion.div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "clamp(40px, 6vw, 72px)", alignItems: "center" }}>
 
-        {/* Calendar — primary visual element */}
-        <motion.div {...up(0.1)} style={{ maxWidth: 560, margin: "0 auto" }}>
-          <div style={{
-            borderRadius: 28,
-            border: "1px solid var(--ld-border)",
-            background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
-            boxShadow: "var(--ld-shadowLg)",
-            overflow: "hidden",
-          }}>
-            <div style={{ padding: "clamp(28px, 4.5vw, 36px)" }}>
-              <MiniScheduler />
+          {/* Left — text */}
+          <motion.div {...up()} className="text-center md:text-left">
+            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
+              Book a Call
+            </p>
+            <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
+              If You Could Automate One Thing Tomorrow...<br />What Would It Be?
+            </h2>
+            <p className="mx-auto md:mx-0" style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
+              Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
+            </p>
+          </motion.div>
+
+          {/* Right — calendar, primary visual element */}
+          <motion.div {...up(0.1)}>
+            <div style={{
+              borderRadius: 28,
+              border: "1px solid var(--ld-border)",
+              background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
+              boxShadow: "var(--ld-shadowLg)",
+              overflow: "hidden",
+            }}>
+              <div style={{ padding: "clamp(22px, 3.5vw, 30px)" }}>
+                <MiniScheduler />
+              </div>
             </div>
-          </div>
-        </motion.div>
+          </motion.div>
 
+        </div>
       </div>
     </section>
   );
