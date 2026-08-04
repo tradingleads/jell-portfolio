@@ -1972,9 +1972,6 @@ function CTASection() {
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
             Book a Call
           </p>
-          <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
-            If You Could Automate One Thing Tomorrow...<br />What Would It Be?
-          </h2>
           <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
