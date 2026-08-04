@@ -892,12 +892,12 @@ function ResultsSection() {
 
 /* ── Services ──────────────────────────────────────────────── */
 const SERVICES = [
-  { Icon: Zap,           c: "var(--ld-accent)",  t: "Instant Lead Qualification",          d: "Automatically capture, qualify, and route inbound leads so your team only talks to ready-to-buy prospects." },
-  { Icon: Bot,           c: "var(--ld-purple)",  t: "Automated Booking & Follow-Ups",      d: "Reduce no-shows and back-and-forth scheduling with automated confirmations, reminders, and follow-ups." },
-  { Icon: MessageSquare, c: "var(--ld-blue)",    t: "24/7 AI Customer Support",            d: "Answer common questions instantly, qualify inquiries, and escalate important conversations automatically." },
-  { Icon: Film,          c: "var(--ld-accent)",  t: "Content Distribution Workflows",      d: "Turn one piece of content into platform-ready posts and distribute them automatically across channels." },
-  { Icon: Database,      c: "var(--ld-purple)",  t: "Automated CRM & Pipeline Updates",   d: "Keep your CRM updated automatically with lead tracking, tagging, follow-ups, and contact management." },
-  { Icon: Users,         c: "var(--ld-blue)",    t: "Manual Tasks Removed",               d: "Eliminate repetitive admin work with automated processes, notifications, data entry, and internal workflows." },
+  { Icon: Zap,       c: "var(--ld-accent)",  t: "Zero-Touch Workflows",       d: "Hands-free workflows that run automatically from start to finish." },
+  { Icon: RefreshCw, c: "var(--ld-purple)",  t: "End-to-End Automation",      d: "Complete workflow automation that removes bottlenecks and reduces manual work." },
+  { Icon: Database,  c: "var(--ld-blue)",    t: "System Integrations",        d: "Connect Airtable, Google Sheets, Notion, Slack, Gmail, CRMs, and other business tools." },
+  { Icon: Bot,       c: "var(--ld-accent)",  t: "AI-Powered Workflows",       d: "Use AI to automate repetitive tasks and support daily operations." },
+  { Icon: FileText,  c: "var(--ld-purple)",  t: "SOP-Ready Systems",          d: "Every workflow includes clear documentation for easy handoff." },
+  { Icon: Wrench,    c: "var(--ld-blue)",    t: "Custom Automation Solutions", d: "Automation solutions tailored to your unique business processes." },
 ];
 
 function ServicesSection() {
@@ -905,10 +905,7 @@ function ServicesSection() {
     <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Gets Fixed</p>
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", maxWidth: "22ch" }}>
-            Where Automation Creates Leverage
-          </h2>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Deliver</p>
         </motion.div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
           {SERVICES.map(({ Icon, c, t, d }, i) => (
