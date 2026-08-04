@@ -1938,13 +1938,13 @@ function CalendlyInlineEmbed() {
   }
 
   return (
-    <div style={{ position: "relative", minHeight: 700 }}>
+    <div style={{ position: "relative", height: 700, overflowY: "auto", overflowX: "hidden" }}>
       {!ready && (
         <div style={{ position: "absolute", inset: 0 }}>
           <CalendlySkeleton />
         </div>
       )}
-      <div ref={containerRef} style={{ minHeight: 700, width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
+      <div ref={containerRef} style={{ minHeight: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
     </div>
   );
 }
