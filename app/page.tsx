@@ -14,8 +14,8 @@ const MouseGradient = dynamic(() => import("@/components/MouseGradient"), { ssr:
 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
-  MessageSquare, Mail, BarChart3, TrendingUp, CheckCircle,
-  ArrowUpRight, Clock, Sparkles, Activity, Phone, Linkedin,
+  MessageSquare, Mail, BarChart3, CheckCircle,
+  ArrowUpRight, Sparkles, Activity, Phone, Linkedin,
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight, Briefcase, GraduationCap,
   Home, Building2, HeartPulse, ShoppingBag, CalendarCheck,
@@ -36,26 +36,6 @@ const up = (delay = 0) => ({
 });
 
 /* ── Animated counter ──────────────────────────────────── */
-function Counter({ target, suffix = "" }: { target: number; suffix?: string }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const inV = useInView(ref, { once: true });
-  const [n, setN] = useState(0);
-  useEffect(() => {
-    if (!inV) return;
-    let f: number;
-    const t0 = performance.now();
-    const dur = 2000;
-    const tick = (now: number) => {
-      const p = Math.min((now - t0) / dur, 1);
-      setN(Math.round(target * (1 - Math.pow(1 - p, 3))));
-      if (p < 1) f = requestAnimationFrame(tick);
-    };
-    f = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(f);
-  }, [inV, target]);
-  return <span ref={ref}>{n}{suffix}</span>;
-}
-
 /* ── Floating particles ─────────────────────────────────── */
 const Particles = memo(function Particles() {
   const [pts, setPts] = useState<{ id: number; x: number; y: number; s: number; d: number; dl: number }[]>([]);
@@ -846,45 +826,6 @@ function TrustBar() {
         </motion.div>
         <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 80, background: "linear-gradient(to right, var(--ld-card2), transparent)", pointerEvents: "none" }} />
         <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: 80, background: "linear-gradient(to left, var(--ld-card2), transparent)", pointerEvents: "none" }} />
-      </div>
-    </section>
-  );
-}
-
-/* ── Results ───────────────────────────────────────────────── */
-const STATS = [
-  { val: null,  target: 70, suffix: "%+", label: "Average reduction in manual work",    Icon: BarChart3,  c: "var(--ld-accent)"  },
-  { val: "24/7",target: null, suffix: "",  label: "Active — no human required",          Icon: Clock,      c: "var(--ld-blue)"    },
-  { val: null,  target: 3,  suffix: "×",  label: "Faster lead response time",           Icon: TrendingUp, c: "var(--ld-purple)"  },
-  { val: "<60s",target: null, suffix: "",  label: "To qualify an inbound lead",          Icon: Activity,   c: "var(--ld-accent)"  },
-];
-
-function ResultsSection() {
-  return (
-    <section id="results" style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Measured Impact</p>
-          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
-            Save Time. Recover Revenue. Scale Smarter.
-          </h2>
-        </motion.div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 18 }}>
-          {STATS.map(({ val, target, suffix, label, Icon, c }, i) => (
-            <motion.div key={label} {...up(i * 0.08)}
-              whileHover={{ y: -4, boxShadow: `0 0 0 1px ${c}22, 0 20px 60px rgba(0,0,0,0.55), 0 0 40px ${c}0a` }}
-              style={{ padding: "clamp(20px, 4vw, 36px) clamp(18px, 3vw, 28px)", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 22, boxShadow: "var(--ld-shadow)", transition: "all 0.28s ease" }}
-            >
-              <div style={{ width: 44, height: 44, borderRadius: 12, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Icon size={20} strokeWidth={1.5} style={{ color: c }} />
-              </div>
-              <p style={{ fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 900, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 8, lineHeight: 1 }}>
-                {val ?? (target !== null ? <Counter target={target} suffix={suffix} /> : "—")}
-              </p>
-              <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.55 }}>{label}</p>
-            </motion.div>
-          ))}
-        </div>
       </div>
     </section>
   );
@@ -2382,7 +2323,6 @@ export default function LandingPage() {
         <Navbar />
         <HeroSection />
         <TrustBar />
-        <ResultsSection />
         <ServicesSection />
         <ProjectsSection />
         <HowIWorkSection />
