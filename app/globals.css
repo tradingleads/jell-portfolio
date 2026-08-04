@@ -78,6 +78,45 @@
   --ld-nav-bg:    rgba(5,7,11,0.92);
 }
 
+/* ─── shadcn-style component tokens (mapped onto landing tokens) ── */
+:root {
+  --sc-background:        var(--ld-bg);
+  --sc-foreground:        var(--ld-text);
+  --sc-card:              var(--ld-card);
+  --sc-card-foreground:   var(--ld-text);
+  --sc-muted-foreground:  var(--ld-muted);
+  --sc-primary:           var(--ld-accent);
+  --sc-primary-foreground: #ffffff;
+  --sc-secondary:         var(--ld-card2);
+  --sc-secondary-foreground: var(--ld-text);
+  --sc-accent:            var(--ld-card2);
+  --sc-accent-foreground: var(--ld-text);
+  --sc-destructive:       #dc2626;
+  --sc-destructive-foreground: #ffffff;
+  --sc-border:            var(--ld-border);
+  --sc-input:             var(--ld-border);
+  --sc-ring:              var(--ld-accent);
+}
+
+.dark {
+  --sc-background:        var(--ld-bg);
+  --sc-foreground:        var(--ld-text);
+  --sc-card:              var(--ld-card);
+  --sc-card-foreground:   var(--ld-text);
+  --sc-muted-foreground:  var(--ld-muted);
+  --sc-primary:           var(--ld-accent);
+  --sc-primary-foreground: #ffffff;
+  --sc-secondary:         var(--ld-card2);
+  --sc-secondary-foreground: var(--ld-text);
+  --sc-accent:            var(--ld-card2);
+  --sc-accent-foreground: var(--ld-text);
+  --sc-destructive:       #ef4444;
+  --sc-destructive-foreground: #ffffff;
+  --sc-border:            var(--ld-border);
+  --sc-input:             var(--ld-border);
+  --sc-ring:              var(--ld-accent);
+}
+
 /* Gradient text — blue to violet */
 .ld-gradient {
   background: linear-gradient(135deg, #3B82F6, #8B5CF6);

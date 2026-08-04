@@ -8,6 +8,7 @@ import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
 import Lightbox from "@/components/Lightbox";
 import type { OrbState } from "@/components/AIOrb";
+import { Calendar } from "@/components/ui/mini-calendar";
 
 const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
 const FloatingDock  = dynamic(() => import("@/components/FloatingDock"),  { ssr: false });
@@ -1953,56 +1954,16 @@ function CalendlyInlineEmbed({ date }: { date: Date }) {
 }
 
 /* ── Mini Scheduler ────────────────────────────────────────── */
+function nextAvailableWeekday(): Date {
+  const d = new Date();
+  d.setDate(d.getDate() + 1);
+  while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1);
+  return d;
+}
+
 function MiniScheduler() {
-  const scrollRef  = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const hasDragged = useRef(false);
-  const dragStartX = useRef(0);
-  const dragScroll = useRef(0);
-
-  const weekdays = useMemo(() => {
-    const days: Date[] = [];
-    const d = new Date();
-    d.setDate(d.getDate() + 1);
-    while (days.length < 21) {
-      if (d.getDay() !== 0 && d.getDay() !== 6) days.push(new Date(d));
-      d.setDate(d.getDate() + 1);
-    }
-    return days;
-  }, []);
-
   const [step, setStep] = useState<1 | 2>(1);
-  const [selDate, setSelDate] = useState<Date>(weekdays[0]);
-  const DAY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-
-  const nudge = (dir: "l" | "r") =>
-    scrollRef.current?.scrollBy({ left: dir === "r" ? 160 : -160, behavior: "smooth" });
-
-  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    isDragging.current = true;
-    hasDragged.current = false;
-    dragStartX.current = e.pageX;
-    dragScroll.current = scrollRef.current?.scrollLeft ?? 0;
-    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
-  };
-  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging.current || !scrollRef.current) return;
-    const walk = dragStartX.current - e.pageX;
-    if (Math.abs(walk) > 4) hasDragged.current = true;
-    scrollRef.current.scrollLeft = dragScroll.current + walk * 1.1;
-  };
-  const onMouseUp = () => {
-    isDragging.current = false;
-    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
-  };
-
-  const arrowBtn: React.CSSProperties = {
-    position: "absolute", top: "50%", transform: "translateY(-50%)",
-    width: 24, height: 24, borderRadius: 7, zIndex: 2,
-    border: "1px solid var(--ld-border)", background: "var(--ld-card)",
-    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
-    color: "var(--ld-muted)", padding: 0, flexShrink: 0,
-  };
+  const [selDate, setSelDate] = useState<Date>(() => nextAvailableWeekday());
 
   const nextBtn: React.CSSProperties = {
     display: "inline-flex", alignItems: "center", gap: 6,
@@ -2046,55 +2007,11 @@ function MiniScheduler() {
               Available Dates
             </p>
 
-            {/* Scrollable date strip */}
-            <div style={{ position: "relative", marginBottom: 4 }}>
-              <button type="button" onClick={() => nudge("l")} style={{ ...arrowBtn, left: 0 }}>
-                <ChevronLeft size={12} strokeWidth={2.5} />
-              </button>
-
-              <div
-                ref={scrollRef}
-                className="hide-scrollbar"
-                onMouseDown={onMouseDown}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
-                onMouseLeave={onMouseUp}
-                style={{
-                  display: "flex", gap: 6, overflowX: "auto",
-                  paddingLeft: 32, paddingRight: 32, paddingBottom: 2,
-                  cursor: "grab", userSelect: "none",
-                }}
-              >
-                {weekdays.map((date, i) => {
-                  const active = date.toDateString() === selDate.toDateString();
-                  return (
-                    <button
-                      key={i} type="button"
-                      onClick={() => { if (!hasDragged.current) setSelDate(date); }}
-                      style={{
-                        flexShrink: 0, padding: "8px 11px", borderRadius: 10,
-                        cursor: "pointer", textAlign: "center",
-                        border: `1px solid ${active ? "var(--ld-accent)" : "var(--ld-border)"}`,
-                        background: active ? "var(--ld-accent)" : "transparent",
-                        color: active ? "#fff" : "var(--ld-muted)",
-                        transition: "all 0.15s ease",
-                      }}
-                    >
-                      <span style={{ display: "block", fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", opacity: 0.8 }}>
-                        {DAY[date.getDay()]}
-                      </span>
-                      <span style={{ display: "block", fontSize: "0.92rem", fontWeight: 800, lineHeight: 1.2 }}>
-                        {date.getDate()}
-                      </span>
-                    </button>
-                  );
-                })}
-              </div>
-
-              <button type="button" onClick={() => nudge("r")} style={{ ...arrowBtn, right: 0 }}>
-                <ChevronRight size={12} strokeWidth={2.5} />
-              </button>
-            </div>
+            <Calendar
+              selected={selDate}
+              onSelect={setSelDate}
+              disableWeekends
+            />
 
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 22 }}>
               <motion.button type="button" onClick={() => setStep(2)}
