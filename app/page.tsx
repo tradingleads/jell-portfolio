@@ -1547,21 +1547,27 @@ function ProjectsSection() {
 const STEPS = [
   {
     n: "01", Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "Find What's Costing You Money",
-    d: "Audit your workflow to uncover missed leads, wasted time, and high-ROI automation opportunities.",
-    tag: "Discovery & Audit",
+    t: "Discover",
+    d: "Understand your business, workflow, and goals.",
+    tag: "Discover",
   },
   {
-    n: "02", Icon: Wrench, hex: "#2563EB", c: "var(--ld-blue)",
-    t: "Build the System That Saves Time",
-    d: "Build custom automation systems that remove manual work, reduce errors, and save time.",
-    tag: "Design & Build",
+    n: "02", Icon: Settings2, hex: "#2563EB", c: "var(--ld-blue)",
+    t: "Plan",
+    d: "Map the best automation solution for your process.",
+    tag: "Plan",
   },
   {
-    n: "03", Icon: Rocket, hex: "#7C3AED", c: "var(--ld-purple)",
-    t: "Launch, Optimize, Scale",
-    d: "Launch, refine, and improve automation systems to increase efficiency and support growth.",
-    tag: "Deploy & Optimize",
+    n: "03", Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
+    t: "Build",
+    d: "Develop, test, and connect everything together.",
+    tag: "Build",
+  },
+  {
+    n: "04", Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
+    t: "Launch",
+    d: "Deploy your system, document it, and make sure it runs smoothly.",
+    tag: "Launch",
   },
 ];
 
@@ -1595,12 +1601,11 @@ function HowIWorkSection() {
 
       <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>How It Works</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 8 }}>
-            From Missed Leads to Automated Growth
+            How We&apos;ll Work Together
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--ld-muted)", maxWidth: "52ch", margin: "0 auto", lineHeight: 1.7 }}>
-            A focused done-for-you process designed to eliminate wasted time, missed leads, slow follow-ups, and manual busywork.
+            A simple process designed to take your idea from manual work to a reliable business system.
           </p>
         </motion.div>
 
@@ -1608,9 +1613,9 @@ function HowIWorkSection() {
         <div style={{ position: "relative" }}>
           {/* Connector line — desktop only, runs through card vertical center */}
           <div className="hidden md:block" style={{
-            position: "absolute", top: "50%", left: "calc(16.5% + 12px)", right: "calc(16.5% + 12px)",
+            position: "absolute", top: "50%", left: "calc(12.5% + 12px)", right: "calc(12.5% + 12px)",
             height: 1, transform: "translateY(-50%)",
-            background: `linear-gradient(90deg, #3B82F628, #2563EB50, #7C3AED28)`,
+            background: `linear-gradient(90deg, #3B82F628, #2563EB50, #7C3AED50, #3B82F628)`,
             zIndex: 0,
           }} />
 
