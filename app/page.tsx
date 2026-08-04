@@ -1870,13 +1870,16 @@ const CalendlySkeleton = memo(function CalendlySkeleton() {
   );
 });
 
-function CalendlyInlineEmbed() {
+function CalendlyInlineEmbed({ date }: { date: Date }) {
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
 
   const embedUrl = useMemo(() => {
+    const y   = date.getFullYear();
+    const mon = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
     const dark = resolvedTheme !== "light";
     const colors = dark
       ? { bg: "0b1020", text: "ffffff", accent: "3b82f6" }
@@ -1888,8 +1891,8 @@ function CalendlyInlineEmbed() {
       text_color: colors.text,
       primary_color: colors.accent,
     });
-    return `${CALENDLY}?${params.toString()}`;
-  }, [resolvedTheme]);
+    return `${CALENDLY}/${y}-${mon}-${day}?${params.toString()}`;
+  }, [date, resolvedTheme]);
 
   useEffect(() => {
     let cancelled = false;
@@ -1949,6 +1952,186 @@ function CalendlyInlineEmbed() {
   );
 }
 
+/* ── Mini Scheduler ────────────────────────────────────────── */
+function MiniScheduler() {
+  const scrollRef  = useRef<HTMLDivElement>(null);
+  const isDragging = useRef(false);
+  const hasDragged = useRef(false);
+  const dragStartX = useRef(0);
+  const dragScroll = useRef(0);
+
+  const weekdays = useMemo(() => {
+    const days: Date[] = [];
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    while (days.length < 21) {
+      if (d.getDay() !== 0 && d.getDay() !== 6) days.push(new Date(d));
+      d.setDate(d.getDate() + 1);
+    }
+    return days;
+  }, []);
+
+  const [step, setStep] = useState<1 | 2>(1);
+  const [selDate, setSelDate] = useState<Date>(weekdays[0]);
+  const DAY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  const nudge = (dir: "l" | "r") =>
+    scrollRef.current?.scrollBy({ left: dir === "r" ? 160 : -160, behavior: "smooth" });
+
+  const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    isDragging.current = true;
+    hasDragged.current = false;
+    dragStartX.current = e.pageX;
+    dragScroll.current = scrollRef.current?.scrollLeft ?? 0;
+    if (scrollRef.current) scrollRef.current.style.cursor = "grabbing";
+  };
+  const onMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging.current || !scrollRef.current) return;
+    const walk = dragStartX.current - e.pageX;
+    if (Math.abs(walk) > 4) hasDragged.current = true;
+    scrollRef.current.scrollLeft = dragScroll.current + walk * 1.1;
+  };
+  const onMouseUp = () => {
+    isDragging.current = false;
+    if (scrollRef.current) scrollRef.current.style.cursor = "grab";
+  };
+
+  const arrowBtn: React.CSSProperties = {
+    position: "absolute", top: "50%", transform: "translateY(-50%)",
+    width: 24, height: 24, borderRadius: 7, zIndex: 2,
+    border: "1px solid var(--ld-border)", background: "var(--ld-card)",
+    cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center",
+    color: "var(--ld-muted)", padding: 0, flexShrink: 0,
+  };
+
+  const nextBtn: React.CSSProperties = {
+    display: "inline-flex", alignItems: "center", gap: 6,
+    padding: "10px 20px", borderRadius: 100,
+    fontSize: "0.8125rem", fontWeight: 700,
+    border: "none", cursor: "pointer",
+    background: "var(--ld-accent)", color: "#fff",
+  };
+  const prevBtn: React.CSSProperties = {
+    display: "inline-flex", alignItems: "center", gap: 6,
+    padding: "10px 18px", borderRadius: 100,
+    fontSize: "0.8125rem", fontWeight: 600,
+    border: "1px solid var(--ld-border)", cursor: "pointer",
+    background: "transparent", color: "var(--ld-muted)",
+  };
+
+  const stepAnim = {
+    initial: { opacity: 0, x: 14 },
+    animate: { opacity: 1, x: 0 },
+    exit: { opacity: 0, x: -14 },
+    transition: { duration: 0.28, ease: E },
+  };
+
+  return (
+    <div>
+      {/* Step indicator */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 24 }}>
+        {[1, 2].map(n => (
+          <div key={n} style={{
+            width: n === step ? 20 : 6, height: 6, borderRadius: 3,
+            background: n <= step ? "var(--ld-accent)" : "var(--ld-border)",
+            transition: "all 0.3s ease",
+          }} />
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div key="step1" {...stepAnim}>
+            <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 10 }}>
+              Available Dates
+            </p>
+
+            {/* Scrollable date strip */}
+            <div style={{ position: "relative", marginBottom: 4 }}>
+              <button type="button" onClick={() => nudge("l")} style={{ ...arrowBtn, left: 0 }}>
+                <ChevronLeft size={12} strokeWidth={2.5} />
+              </button>
+
+              <div
+                ref={scrollRef}
+                className="hide-scrollbar"
+                onMouseDown={onMouseDown}
+                onMouseMove={onMouseMove}
+                onMouseUp={onMouseUp}
+                onMouseLeave={onMouseUp}
+                style={{
+                  display: "flex", gap: 6, overflowX: "auto",
+                  paddingLeft: 32, paddingRight: 32, paddingBottom: 2,
+                  cursor: "grab", userSelect: "none",
+                }}
+              >
+                {weekdays.map((date, i) => {
+                  const active = date.toDateString() === selDate.toDateString();
+                  return (
+                    <button
+                      key={i} type="button"
+                      onClick={() => { if (!hasDragged.current) setSelDate(date); }}
+                      style={{
+                        flexShrink: 0, padding: "8px 11px", borderRadius: 10,
+                        cursor: "pointer", textAlign: "center",
+                        border: `1px solid ${active ? "var(--ld-accent)" : "var(--ld-border)"}`,
+                        background: active ? "var(--ld-accent)" : "transparent",
+                        color: active ? "#fff" : "var(--ld-muted)",
+                        transition: "all 0.15s ease",
+                      }}
+                    >
+                      <span style={{ display: "block", fontSize: "0.55rem", fontWeight: 700, letterSpacing: "0.07em", textTransform: "uppercase", opacity: 0.8 }}>
+                        {DAY[date.getDay()]}
+                      </span>
+                      <span style={{ display: "block", fontSize: "0.92rem", fontWeight: 800, lineHeight: 1.2 }}>
+                        {date.getDate()}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button type="button" onClick={() => nudge("r")} style={{ ...arrowBtn, right: 0 }}>
+                <ChevronRight size={12} strokeWidth={2.5} />
+              </button>
+            </div>
+
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 22 }}>
+              <motion.button type="button" onClick={() => setStep(2)}
+                whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
+                style={nextBtn}
+              >
+                Next <ArrowRight size={14} strokeWidth={2.5} />
+              </motion.button>
+            </div>
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div key="step2" {...stepAnim}>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+              <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)" }}>
+                {selDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
+              </p>
+              <button type="button" onClick={() => setStep(1)} style={{ ...prevBtn, padding: "6px 12px", fontSize: "0.72rem" }}>
+                <ChevronLeft size={12} strokeWidth={2.5} /> Change date
+              </button>
+            </div>
+
+            <CalendlyInlineEmbed date={selDate} />
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {step === 1 && (
+        <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.4, textAlign: "center", marginTop: 20 }}>
+          Secure booking powered by Calendly
+        </p>
+      )}
+    </div>
+  );
+}
+
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
@@ -1980,7 +2163,7 @@ function CTASection() {
             overflow: "hidden",
           }}>
             <div style={{ padding: "clamp(28px, 4.5vw, 36px)" }}>
-              <CalendlyInlineEmbed />
+              <MiniScheduler />
             </div>
           </div>
         </motion.div>
