@@ -2040,7 +2040,7 @@ function CTASection() {
               If You Could Automate One Thing Tomorrow...<br /><br />What Would It Be?
             </h2>
             <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 28, maxWidth: "34ch" }}>
-              Book an audit or reach out directly — I&apos;ll help you identify the fastest automation wins. Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
+              Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {CONTACTS.map(({ Icon, label, sub, href, color }) => (
