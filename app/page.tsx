@@ -652,7 +652,7 @@ function HeroSection() {
         {/* Left */}
         <div className="text-center sm:text-left">
 
-          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(1.8rem, 5vw, 3.4rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(2.2rem, 6vw, 4.2rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
             <span className="ld-gradient">Build Better Business Systems.</span>
           </motion.h1>
 
