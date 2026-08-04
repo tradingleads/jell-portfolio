@@ -1,8 +1,7 @@
 "use client";
 
-import { useEffect, useState, memo, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, memo, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -1836,133 +1835,6 @@ function TestimonialsSection() {
   );
 }
 
-/* ── Calendly inline embed ────────────────────────────────── */
-declare global {
-  interface Window {
-    Calendly?: {
-      initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void;
-    };
-  }
-}
-
-const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
-
-const CalendlySkeleton = memo(function CalendlySkeleton() {
-  return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-      {[0, 1, 2].map(i => (
-        <motion.div key={i}
-          animate={{ opacity: [0.35, 0.65, 0.35] }}
-          transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
-          style={{ height: i === 0 ? 32 : 52, borderRadius: 10, background: "var(--ld-border)" }}
-        />
-      ))}
-      <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
-        {[0, 1, 2, 3].map(i => (
-          <motion.div key={i}
-            animate={{ opacity: [0.35, 0.65, 0.35] }}
-            transition={{ duration: 1.6, repeat: Infinity, delay: 0.3 + i * 0.1, ease: "easeInOut" }}
-            style={{ flex: 1, height: 40, borderRadius: 9, background: "var(--ld-border)" }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-});
-
-function CalendlyInlineEmbed({ date }: { date: Date }) {
-  const { resolvedTheme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  const [failed, setFailed] = useState(false);
-
-  const embedUrl = useMemo(() => {
-    const y   = date.getFullYear();
-    const mon = String(date.getMonth() + 1).padStart(2, "0");
-    const dark = resolvedTheme !== "light";
-    const colors = dark
-      ? { bg: "0b1020", text: "ffffff", accent: "3b82f6" }
-      : { bg: "ffffff", text: "111111", accent: "2563eb" };
-    const params = new URLSearchParams({
-      hide_gdpr_banner: "1",
-      hide_event_type_details: "1",
-      month: `${y}-${mon}`,
-      background_color: colors.bg,
-      text_color: colors.text,
-      primary_color: colors.accent,
-    });
-    return `${CALENDLY}?${params.toString()}`;
-  }, [date, resolvedTheme]);
-
-  useEffect(() => {
-    let cancelled = false;
-    setReady(false);
-    setFailed(false);
-
-    const init = () => {
-      if (cancelled || !containerRef.current || !window.Calendly) return;
-      containerRef.current.innerHTML = "";
-      window.Calendly.initInlineWidget({ url: embedUrl, parentElement: containerRef.current });
-      setReady(true);
-    };
-
-    const failTimer = setTimeout(() => { if (!cancelled) setFailed(prev => prev || !window.Calendly); }, 8000);
-
-    if (window.Calendly) {
-      init();
-    } else {
-      let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT_SRC}"]`);
-      if (!script) {
-        script = document.createElement("script");
-        script.src = CALENDLY_SCRIPT_SRC;
-        script.async = true;
-        script.onerror = () => { if (!cancelled) setFailed(true); };
-        document.body.appendChild(script);
-      }
-      script.addEventListener("load", init);
-      return () => { script?.removeEventListener("load", init); clearTimeout(failTimer); cancelled = true; };
-    }
-    return () => { clearTimeout(failTimer); cancelled = true; };
-  }, [embedUrl]);
-
-  if (failed) {
-    return (
-      <div>
-        <p style={{ fontSize: "0.8rem", color: "#ef4444", lineHeight: 1.6, marginBottom: 12 }}>
-          The booking calendar couldn&apos;t load. You can open it directly instead.
-        </p>
-        <a href={embedUrl} target="_blank" rel="noopener noreferrer"
-          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 18px", borderRadius: 100, fontSize: "0.8125rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
-        >
-          Open Calendly <ArrowUpRight size={14} strokeWidth={2.5} />
-        </a>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ position: "relative", height: 700, overflowY: "auto", overflowX: "hidden" }}>
-      {!ready && (
-        <div style={{ position: "absolute", inset: 0 }}>
-          <CalendlySkeleton />
-        </div>
-      )}
-      <div ref={containerRef} style={{ minHeight: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
-    </div>
-  );
-}
-
-/* ── Mini Scheduler ────────────────────────────────────────── */
-function MiniScheduler() {
-  const [today] = useState<Date>(() => new Date());
-
-  return (
-    <div>
-      <CalendlyInlineEmbed date={today} />
-    </div>
-  );
-}
-
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
@@ -1986,7 +1858,7 @@ function CTASection() {
             </p>
           </motion.div>
 
-          {/* Right — calendar, primary visual element */}
+          {/* Right — direct booking link (calendar widget TBD) */}
           <motion.div {...up(0.1)}>
             <div style={{
               borderRadius: 28,
@@ -1994,10 +1866,19 @@ function CTASection() {
               background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
               boxShadow: "var(--ld-shadowLg)",
               overflow: "hidden",
+              padding: "clamp(32px, 5vw, 48px)",
+              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18, textAlign: "center",
             }}>
-              <div style={{ padding: "clamp(22px, 3.5vw, 30px)" }}>
-                <MiniScheduler />
-              </div>
+              <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.6, maxWidth: "32ch" }}>
+                Pick a time that works for you and I&apos;ll confirm within a day.
+              </p>
+              <motion.a
+                href={CALENDLY} target="_blank" rel="noopener noreferrer"
+                whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
+                style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 24px", borderRadius: 100, fontSize: "0.85rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
+              >
+                Book a Call <ArrowUpRight size={14} strokeWidth={1.5} />
+              </motion.a>
             </div>
           </motion.div>
 
