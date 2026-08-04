@@ -2002,7 +2002,7 @@ function CTASection() {
         {/* Text block */}
         <motion.div {...up()} style={{ textAlign: "center", maxWidth: 680, margin: "0 auto clamp(48px, 7vw, 72px)" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
-            Book a Discovery Call
+            Book a Call
           </p>
           <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
             If You Could Automate One Thing Tomorrow...<br />What Would It Be?
