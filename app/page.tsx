@@ -1783,15 +1783,6 @@ function AboutSection() {
             </motion.div>
           </motion.div>
 
-          {/* Role text below photo */}
-          <motion.div
-            animate={{ filter: ["drop-shadow(0 0 4px rgba(59,130,246,0.0))", "drop-shadow(0 0 10px rgba(139,92,246,0.45))", "drop-shadow(0 0 4px rgba(59,130,246,0.0))"] }}
-            transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", repeatDelay: 2 }}
-          >
-            <p className="ld-text-shimmer" style={{ fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", textAlign: "center" }}>
-              AI Automation Specialist
-            </p>
-          </motion.div>
         </motion.div>
 
         <motion.div {...up(0.1)}>
