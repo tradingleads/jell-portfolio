@@ -1938,9 +1938,16 @@ function CalendlyInlineEmbed() {
   }
 
   return (
-    <div style={{ position: "relative", height: 700, overflowY: "auto", overflowX: "hidden" }}>
+    <div style={{
+      position: "relative",
+      width: "100%",
+      height: 500,
+      borderRadius: 12,
+      overflowY: "auto",
+      overflowX: "hidden",
+    }}>
       {!ready && (
-        <div style={{ position: "absolute", inset: 0 }}>
+        <div style={{ position: "absolute", inset: 0, padding: 20 }}>
           <CalendlySkeleton />
         </div>
       )}
@@ -1971,18 +1978,8 @@ function CTASection() {
         </motion.div>
 
         {/* Calendar — primary visual element */}
-        <motion.div {...up(0.1)} style={{ maxWidth: 560, margin: "0 auto" }}>
-          <div style={{
-            borderRadius: 28,
-            border: "1px solid var(--ld-border)",
-            background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
-            boxShadow: "var(--ld-shadowLg)",
-            overflow: "hidden",
-          }}>
-            <div style={{ padding: "clamp(28px, 4.5vw, 36px)" }}>
-              <CalendlyInlineEmbed />
-            </div>
-          </div>
+        <motion.div {...up(0.1)} style={{ width: 750, maxWidth: "100%", margin: "0 auto" }}>
+          <CalendlyInlineEmbed />
         </motion.div>
 
       </div>
