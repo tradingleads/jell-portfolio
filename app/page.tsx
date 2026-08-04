@@ -645,7 +645,7 @@ function HeroSection() {
               whileHover={{ scale: 1.03, boxShadow: "0 0 32px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto justify-center"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 28px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", boxShadow: "0 0 20px var(--ld-glow)" }}>
-              Book a Free Discovery Call <ArrowRight size={16} strokeWidth={2.5} />
+              Book a Call <ArrowRight size={16} strokeWidth={2.5} />
             </motion.a>
             <motion.a href="#projects"
               whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
