@@ -296,6 +296,26 @@ body::after {
 /* ─── Lightbox spinner ───────────────────────────────────────── */
 @keyframes lb-spin { to { transform: rotate(360deg); } }
 
+/* ─── Landing-page form input ───────────────────────────────── */
+.ld-input {
+  width: 100%;
+  display: block;
+  background: var(--ld-card2);
+  border: 1px solid var(--ld-border);
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--ld-text);
+  font-family: inherit;
+  outline: none;
+  resize: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.ld-input::placeholder { color: var(--ld-muted); opacity: 0.6; }
+.ld-input:focus { border-color: var(--ld-accent); box-shadow: 0 0 0 3px var(--ld-glow); }
+.ld-input.ld-input-error { border-color: #ef4444; }
+
 /* ─── Click Ripple ───────────────────────────────────────────── */
 .click-ripple {
   position: fixed;
