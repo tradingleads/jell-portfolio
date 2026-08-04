@@ -2011,12 +2011,6 @@ function MiniScheduler() {
 
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
-  const CONTACTS = [
-    { Icon: Phone,    label: "WhatsApp",  sub: "Quick message support",  href: WHATSAPP,                                  color: "#22c55e" },
-    { Icon: Mail,     label: "Email",     sub: "For detailed inquiries",  href: "mailto:jellurmeneta64@gmail.com",          color: "var(--ld-accent)" },
-    { Icon: Linkedin, label: "LinkedIn",  sub: "Professional profile",    href: "https://www.linkedin.com/in/jellurmeneta", color: "#0ea5e9" },
-  ];
-
   return (
     <section id="contact" style={{ padding: "80px 28px 0", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "30%", width: 500, height: 300, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
@@ -2042,28 +2036,6 @@ function CTASection() {
             <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 28, maxWidth: "34ch" }}>
               Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
             </p>
-            <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-              {CONTACTS.map(({ Icon, label, sub, href, color }) => (
-                <motion.a
-                  key={label}
-                  href={href}
-                  target={href.startsWith("mailto") ? undefined : "_blank"}
-                  rel="noopener noreferrer"
-                  whileHover={{ x: 3, borderColor: `${color}55` }}
-                  whileTap={{ scale: 0.98 }}
-                  style={{ display: "flex", alignItems: "center", gap: 12, padding: "13px 16px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 12, textDecoration: "none", transition: "border-color 0.2s ease" }}
-                >
-                  <div style={{ width: 36, height: 36, borderRadius: 9, flexShrink: 0, background: `${color}10`, border: `1px solid ${color}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Icon size={16} strokeWidth={1.5} style={{ color }} />
-                  </div>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 1 }}>{label}</p>
-                    <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", opacity: 0.6 }}>{sub}</p>
-                  </div>
-                  <ArrowRight size={13} strokeWidth={2} style={{ color: "var(--ld-muted)", opacity: 0.35, flexShrink: 0 }} />
-                </motion.a>
-              ))}
-            </div>
           </motion.div>
 
           {/* Right — booking card */}
@@ -2081,6 +2053,52 @@ function CTASection() {
             </div>
           </motion.div>
 
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Contact ───────────────────────────────────────────────── */
+const CONTACTS = [
+  { Icon: Phone,    label: "WhatsApp",  sub: "Quick message support",   href: WHATSAPP,                                   color: "#22c55e" },
+  { Icon: Linkedin, label: "LinkedIn",  sub: "Professional profile",    href: "https://www.linkedin.com/in/jellurmeneta", color: "#0ea5e9" },
+  { Icon: Mail,     label: "Email",     sub: "For detailed inquiries",  href: "mailto:jellurmeneta64@gmail.com",          color: "var(--ld-accent)" },
+];
+
+function ContactSection() {
+  return (
+    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 48 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Contact</p>
+          <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)" }}>
+            Reach Out Directly
+          </h2>
+        </motion.div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 18 }}>
+          {CONTACTS.map(({ Icon, label, sub, href, color }, i) => (
+            <motion.a
+              key={label}
+              {...up(i * 0.06)}
+              href={href}
+              target={href.startsWith("mailto") ? undefined : "_blank"}
+              rel="noopener noreferrer"
+              whileHover={{ y: -4, borderColor: `${color}55` }}
+              whileTap={{ scale: 0.98 }}
+              style={{ display: "flex", alignItems: "center", gap: 12, padding: "20px 20px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 16, textDecoration: "none", boxShadow: "var(--ld-shadow)", transition: "border-color 0.2s ease" }}
+            >
+              <div style={{ width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: `${color}10`, border: `1px solid ${color}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <Icon size={18} strokeWidth={1.5} style={{ color }} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 2 }}>{label}</p>
+                <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", opacity: 0.65 }}>{sub}</p>
+              </div>
+              <ArrowRight size={14} strokeWidth={2} style={{ color: "var(--ld-muted)", opacity: 0.35, flexShrink: 0 }} />
+            </motion.a>
+          ))}
         </div>
       </div>
     </section>
@@ -2211,6 +2229,7 @@ export default function LandingPage() {
         <AboutSection />
         <TestimonialsSection />
         <CTASection />
+        <ContactSection />
         <PortfolioSection />
         <Footer />
       </div>
