@@ -1688,24 +1688,6 @@ function HowIWorkSection() {
             })}
           </motion.div>
         </div>
-        {/* CTA below cards */}
-        <motion.div {...up(0.3)} style={{ textAlign: "center", marginTop: 40 }}>
-          <motion.a
-            href="#contact"
-            whileHover={{ scale: 1.04, boxShadow: "0 0 40px var(--ld-glow)" }}
-            whileTap={{ scale: 0.97 }}
-            style={{
-              display: "inline-flex", alignItems: "center", gap: 8,
-              padding: "14px 32px", borderRadius: 100,
-              background: "var(--ld-accent)", color: "#fff",
-              fontWeight: 700, fontSize: "1rem", textDecoration: "none",
-              boxShadow: "0 0 24px var(--ld-glow)",
-              fontFamily: "var(--font-display)",
-            }}
-          >
-            Book an Automation Audit <ArrowRight size={16} strokeWidth={2.5} />
-          </motion.a>
-        </motion.div>
 
       </div>
     </section>
