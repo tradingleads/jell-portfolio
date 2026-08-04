@@ -1883,7 +1883,7 @@ function CalendlyInlineEmbed() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [height, setHeight] = useState(560);
+  const [height, setHeight] = useState(480);
 
   const embedUrl = useMemo(() => {
     const dark = resolvedTheme !== "light";
@@ -1905,7 +1905,7 @@ function CalendlyInlineEmbed() {
       if (e.origin !== "https://calendly.com") return;
       const data = e.data as { event?: string; payload?: { height?: number } };
       if (data.event === "calendly.page_height" && data.payload?.height) {
-        setHeight(Math.max(460, Math.min(640, data.payload.height)));
+        setHeight(Math.max(420, Math.min(560, data.payload.height)));
       }
     };
     window.addEventListener("message", onMessage);
@@ -1973,13 +1973,13 @@ function CalendlyInlineEmbed() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="contact" style={{ padding: "clamp(56px, 8vw, 96px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+    <section id="contact" style={{ padding: "clamp(40px, 6vw, 72px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 780, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 680, margin: "0 auto", position: "relative" }}>
 
         {/* Header — left-aligned, asymmetric */}
-        <motion.div {...up()} style={{ marginBottom: "clamp(32px, 5vw, 48px)", maxWidth: "56ch" }}>
+        <motion.div {...up()} style={{ marginBottom: "clamp(24px, 4vw, 32px)", maxWidth: "56ch" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
             Book a Call
           </p>
