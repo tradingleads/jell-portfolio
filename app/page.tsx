@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState, memo, useRef, useCallback } from "react";
+import { useEffect, useState, memo, useRef, useCallback, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -1835,54 +1836,174 @@ function TestimonialsSection() {
   );
 }
 
+/* ── Calendly inline embed ────────────────────────────────── */
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void;
+    };
+  }
+}
+
+const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
+
+const CalendlySkeleton = memo(function CalendlySkeleton() {
+  return (
+    <div style={{ display: "flex", gap: 24, padding: "clamp(24px, 3.5vw, 36px)" }}>
+      <div style={{ flex: "1.1 1 0", display: "flex", flexDirection: "column", gap: 10 }}>
+        <motion.div animate={{ opacity: [0.35, 0.65, 0.35] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          style={{ height: 24, width: "60%", borderRadius: 6, background: "var(--ld-border)" }} />
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, marginTop: 10 }}>
+          {Array.from({ length: 35 }).map((_, i) => (
+            <motion.div key={i}
+              animate={{ opacity: [0.3, 0.55, 0.3] }}
+              transition={{ duration: 1.6, repeat: Infinity, delay: (i % 7) * 0.05, ease: "easeInOut" }}
+              style={{ aspectRatio: "1", borderRadius: 8, background: "var(--ld-border)" }}
+            />
+          ))}
+        </div>
+      </div>
+      <div style={{ flex: "0.8 1 0", display: "flex", flexDirection: "column", gap: 8 }}>
+        <motion.div animate={{ opacity: [0.35, 0.65, 0.35] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
+          style={{ height: 18, width: "50%", borderRadius: 6, background: "var(--ld-border)", marginBottom: 6 }} />
+        {Array.from({ length: 6 }).map((_, i) => (
+          <motion.div key={i}
+            animate={{ opacity: [0.35, 0.65, 0.35] }}
+            transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.08, ease: "easeInOut" }}
+            style={{ height: 40, borderRadius: 100, background: "var(--ld-border)" }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+});
+
+function CalendlyInlineEmbed() {
+  const { resolvedTheme } = useTheme();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const [height, setHeight] = useState(680);
+
+  const embedUrl = useMemo(() => {
+    const dark = resolvedTheme !== "light";
+    const colors = dark
+      ? { bg: "10131a", text: "ffffff", accent: "3b82f6" }
+      : { bg: "ffffff", text: "111111", accent: "2563eb" };
+    const params = new URLSearchParams({
+      hide_gdpr_banner: "1",
+      hide_event_type_details: "1",
+      background_color: colors.bg,
+      text_color: colors.text,
+      primary_color: colors.accent,
+    });
+    return `${CALENDLY}?${params.toString()}`;
+  }, [resolvedTheme]);
+
+  useEffect(() => {
+    const onMessage = (e: MessageEvent) => {
+      if (e.origin !== "https://calendly.com") return;
+      const data = e.data as { event?: string; payload?: { height?: number } };
+      if (data.event === "calendly.page_height" && data.payload?.height) {
+        setHeight(Math.max(560, Math.min(920, data.payload.height)));
+      }
+    };
+    window.addEventListener("message", onMessage);
+    return () => window.removeEventListener("message", onMessage);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    setReady(false);
+    setFailed(false);
+
+    const init = () => {
+      if (cancelled || !containerRef.current || !window.Calendly) return;
+      containerRef.current.innerHTML = "";
+      window.Calendly.initInlineWidget({ url: embedUrl, parentElement: containerRef.current });
+      setReady(true);
+    };
+
+    const failTimer = setTimeout(() => { if (!cancelled) setFailed(prev => prev || !window.Calendly); }, 8000);
+
+    if (window.Calendly) {
+      init();
+    } else {
+      let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT_SRC}"]`);
+      if (!script) {
+        script = document.createElement("script");
+        script.src = CALENDLY_SCRIPT_SRC;
+        script.async = true;
+        script.onerror = () => { if (!cancelled) setFailed(true); };
+        document.body.appendChild(script);
+      }
+      script.addEventListener("load", init);
+      return () => { script?.removeEventListener("load", init); clearTimeout(failTimer); cancelled = true; };
+    }
+    return () => { clearTimeout(failTimer); cancelled = true; };
+  }, [embedUrl]);
+
+  if (failed) {
+    return (
+      <div style={{ padding: "clamp(28px, 4vw, 40px)" }}>
+        <p style={{ fontSize: "0.85rem", color: "#ef4444", lineHeight: 1.6, marginBottom: 14 }}>
+          The booking calendar couldn&apos;t load. You can open it directly instead.
+        </p>
+        <a href={embedUrl} target="_blank" rel="noopener noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", borderRadius: 100, fontSize: "0.85rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
+        >
+          Open Calendly <ArrowUpRight size={14} strokeWidth={1.5} />
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: "relative", height, transition: "height 0.35s ease" }}>
+      {!ready && (
+        <div style={{ position: "absolute", inset: 0 }}>
+          <CalendlySkeleton />
+        </div>
+      )}
+      <div ref={containerRef} style={{ height: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
+    </div>
+  );
+}
+
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
     <section id="contact" style={{ padding: "clamp(72px, 10vw, 120px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 960, margin: "0 auto", position: "relative" }}>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "clamp(40px, 6vw, 72px)", alignItems: "center" }}>
+        {/* Header — left-aligned, asymmetric */}
+        <motion.div {...up()} style={{ marginBottom: "clamp(32px, 5vw, 48px)", maxWidth: "56ch" }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
+            Book a Call
+          </p>
+          <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
+            If You Could Automate One Thing Tomorrow...<br />What Would It Be?
+          </h2>
+          <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
+            Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
+          </p>
+        </motion.div>
 
-          {/* Left — text */}
-          <motion.div {...up()} className="text-center md:text-left">
-            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
-              Book a Call
-            </p>
-            <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
-              If You Could Automate One Thing Tomorrow...<br />What Would It Be?
-            </h2>
-            <p className="mx-auto md:mx-0" style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch" }}>
-              Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
-            </p>
-          </motion.div>
+        {/* Calendar — full-width, premium surface */}
+        <motion.div {...up(0.1)}>
+          <div style={{
+            borderRadius: 32,
+            border: "1px solid var(--ld-border)",
+            background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
+            boxShadow: "var(--ld-shadowLg)",
+            overflow: "hidden",
+          }}>
+            <CalendlyInlineEmbed />
+          </div>
+        </motion.div>
 
-          {/* Right — direct booking link (calendar widget TBD) */}
-          <motion.div {...up(0.1)}>
-            <div style={{
-              borderRadius: 28,
-              border: "1px solid var(--ld-border)",
-              background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
-              boxShadow: "var(--ld-shadowLg)",
-              overflow: "hidden",
-              padding: "clamp(32px, 5vw, 48px)",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 18, textAlign: "center",
-            }}>
-              <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.6, maxWidth: "32ch" }}>
-                Pick a time that works for you and I&apos;ll confirm within a day.
-              </p>
-              <motion.a
-                href={CALENDLY} target="_blank" rel="noopener noreferrer"
-                whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
-                style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 24px", borderRadius: 100, fontSize: "0.85rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
-              >
-                Book a Call <ArrowUpRight size={14} strokeWidth={1.5} />
-              </motion.a>
-            </div>
-          </motion.div>
-
-        </div>
       </div>
     </section>
   );
