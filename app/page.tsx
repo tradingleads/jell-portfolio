@@ -1879,7 +1879,6 @@ function CalendlyInlineEmbed({ date }: { date: Date }) {
   const embedUrl = useMemo(() => {
     const y   = date.getFullYear();
     const mon = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
     const dark = resolvedTheme !== "light";
     const colors = dark
       ? { bg: "0b1020", text: "ffffff", accent: "3b82f6" }
@@ -1887,11 +1886,12 @@ function CalendlyInlineEmbed({ date }: { date: Date }) {
     const params = new URLSearchParams({
       hide_gdpr_banner: "1",
       hide_event_type_details: "1",
+      month: `${y}-${mon}`,
       background_color: colors.bg,
       text_color: colors.text,
       primary_color: colors.accent,
     });
-    return `${CALENDLY}/${y}-${mon}-${day}?${params.toString()}`;
+    return `${CALENDLY}?${params.toString()}`;
   }, [date, resolvedTheme]);
 
   useEffect(() => {
