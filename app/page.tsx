@@ -8,7 +8,6 @@ import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
 import Lightbox from "@/components/Lightbox";
 import type { OrbState } from "@/components/AIOrb";
-import { Calendar } from "@/components/ui/mini-calendar";
 
 const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
 const FloatingDock  = dynamic(() => import("@/components/FloatingDock"),  { ssr: false });
@@ -1954,97 +1953,12 @@ function CalendlyInlineEmbed({ date }: { date: Date }) {
 }
 
 /* ── Mini Scheduler ────────────────────────────────────────── */
-function nextAvailableWeekday(): Date {
-  const d = new Date();
-  d.setDate(d.getDate() + 1);
-  while (d.getDay() === 0 || d.getDay() === 6) d.setDate(d.getDate() + 1);
-  return d;
-}
-
 function MiniScheduler() {
-  const [step, setStep] = useState<1 | 2>(1);
-  const [selDate, setSelDate] = useState<Date>(() => nextAvailableWeekday());
-
-  const nextBtn: React.CSSProperties = {
-    display: "inline-flex", alignItems: "center", gap: 6,
-    padding: "10px 20px", borderRadius: 100,
-    fontSize: "0.8125rem", fontWeight: 700,
-    border: "none", cursor: "pointer",
-    background: "var(--ld-accent)", color: "#fff",
-  };
-  const prevBtn: React.CSSProperties = {
-    display: "inline-flex", alignItems: "center", gap: 6,
-    padding: "10px 18px", borderRadius: 100,
-    fontSize: "0.8125rem", fontWeight: 600,
-    border: "1px solid var(--ld-border)", cursor: "pointer",
-    background: "transparent", color: "var(--ld-muted)",
-  };
-
-  const stepAnim = {
-    initial: { opacity: 0, x: 14 },
-    animate: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: -14 },
-    transition: { duration: 0.28, ease: E },
-  };
+  const [today] = useState<Date>(() => new Date());
 
   return (
     <div>
-      {/* Step indicator */}
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 24 }}>
-        {[1, 2].map(n => (
-          <div key={n} style={{
-            width: n === step ? 20 : 6, height: 6, borderRadius: 3,
-            background: n <= step ? "var(--ld-accent)" : "var(--ld-border)",
-            transition: "all 0.3s ease",
-          }} />
-        ))}
-      </div>
-
-      <AnimatePresence mode="wait">
-        {step === 1 && (
-          <motion.div key="step1" {...stepAnim}>
-            <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 10 }}>
-              Available Dates
-            </p>
-
-            <Calendar
-              selected={selDate}
-              onSelect={setSelDate}
-              disableWeekends
-            />
-
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 22 }}>
-              <motion.button type="button" onClick={() => setStep(2)}
-                whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
-                style={nextBtn}
-              >
-                Next <ArrowRight size={14} strokeWidth={2.5} />
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
-
-        {step === 2 && (
-          <motion.div key="step2" {...stepAnim}>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
-              <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)" }}>
-                {selDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
-              </p>
-              <button type="button" onClick={() => setStep(1)} style={{ ...prevBtn, padding: "6px 12px", fontSize: "0.72rem" }}>
-                <ChevronLeft size={12} strokeWidth={2.5} /> Change date
-              </button>
-            </div>
-
-            <CalendlyInlineEmbed date={selDate} />
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {step === 1 && (
-        <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.4, textAlign: "center", marginTop: 20 }}>
-          Secure booking powered by Calendly
-        </p>
-      )}
+      <CalendlyInlineEmbed date={today} />
     </div>
   );
 }
