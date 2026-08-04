@@ -2,6 +2,7 @@
 
 import { useEffect, useState, memo, useRef, useCallback, useMemo } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
+import { useTheme } from "next-themes";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -14,7 +15,7 @@ const MouseGradient = dynamic(() => import("@/components/MouseGradient"), { ssr:
 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
-  MessageSquare, Mail, CheckCircle,
+  MessageSquare, Mail,
   ArrowUpRight, Sparkles, Activity, Phone, Linkedin,
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight,
@@ -1835,23 +1836,123 @@ function TestimonialsSection() {
   );
 }
 
-/* ── Mini Scheduler ────────────────────────────────────────── */
-interface DiscoveryForm {
-  task: string;
-  budget: string;
-  timeframe: string;
-  details: string;
-  source: string;
+/* ── Calendly inline embed ────────────────────────────────── */
+declare global {
+  interface Window {
+    Calendly?: {
+      initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void;
+    };
+  }
 }
-const DISCOVERY_FIELDS: { key: keyof DiscoveryForm; label: string; placeholder: string; textarea?: boolean }[] = [
-  { key: "task",      label: "Which task or process would you love to stop doing manually?",        placeholder: "e.g. Following up with new leads",        textarea: true },
-  { key: "budget",    label: "Got a rough idea of how much you're looking to spend?",                placeholder: "e.g. $500 – $1,000" },
-  { key: "timeframe", label: "Any deadline or timeframe you're aiming for?",                          placeholder: "e.g. Within the next month" },
-  { key: "details",   label: "Got any info or details that'll help me get ready for our meeting?",    placeholder: "Anything you'd like me to know beforehand", textarea: true },
-  { key: "source",    label: "Just curious — how did you find me?",                                   placeholder: "e.g. LinkedIn, referral, Google" },
-];
-const EMPTY_DISCOVERY_FORM: DiscoveryForm = { task: "", budget: "", timeframe: "", details: "", source: "" };
 
+const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
+
+const CalendlySkeleton = memo(function CalendlySkeleton() {
+  return (
+    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+      {[0, 1, 2].map(i => (
+        <motion.div key={i}
+          animate={{ opacity: [0.35, 0.65, 0.35] }}
+          transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.15, ease: "easeInOut" }}
+          style={{ height: i === 0 ? 32 : 52, borderRadius: 10, background: "var(--ld-border)" }}
+        />
+      ))}
+      <div style={{ display: "flex", gap: 8, marginTop: 4 }}>
+        {[0, 1, 2, 3].map(i => (
+          <motion.div key={i}
+            animate={{ opacity: [0.35, 0.65, 0.35] }}
+            transition={{ duration: 1.6, repeat: Infinity, delay: 0.3 + i * 0.1, ease: "easeInOut" }}
+            style={{ flex: 1, height: 40, borderRadius: 9, background: "var(--ld-border)" }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+});
+
+function CalendlyInlineEmbed({ date }: { date: Date }) {
+  const { resolvedTheme } = useTheme();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
+  const [failed, setFailed] = useState(false);
+
+  const embedUrl = useMemo(() => {
+    const y   = date.getFullYear();
+    const mon = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const dark = resolvedTheme !== "light";
+    const colors = dark
+      ? { bg: "0b1020", text: "ffffff", accent: "3b82f6" }
+      : { bg: "ffffff", text: "111111", accent: "2563eb" };
+    const params = new URLSearchParams({
+      hide_gdpr_banner: "1",
+      hide_event_type_details: "1",
+      background_color: colors.bg,
+      text_color: colors.text,
+      primary_color: colors.accent,
+    });
+    return `${CALENDLY}/${y}-${mon}-${day}?${params.toString()}`;
+  }, [date, resolvedTheme]);
+
+  useEffect(() => {
+    let cancelled = false;
+    setReady(false);
+    setFailed(false);
+
+    const init = () => {
+      if (cancelled || !containerRef.current || !window.Calendly) return;
+      containerRef.current.innerHTML = "";
+      window.Calendly.initInlineWidget({ url: embedUrl, parentElement: containerRef.current });
+      setReady(true);
+    };
+
+    const failTimer = setTimeout(() => { if (!cancelled) setFailed(prev => prev || !window.Calendly); }, 8000);
+
+    if (window.Calendly) {
+      init();
+    } else {
+      let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT_SRC}"]`);
+      if (!script) {
+        script = document.createElement("script");
+        script.src = CALENDLY_SCRIPT_SRC;
+        script.async = true;
+        script.onerror = () => { if (!cancelled) setFailed(true); };
+        document.body.appendChild(script);
+      }
+      script.addEventListener("load", init);
+      return () => { script?.removeEventListener("load", init); clearTimeout(failTimer); cancelled = true; };
+    }
+    return () => { clearTimeout(failTimer); cancelled = true; };
+  }, [embedUrl]);
+
+  if (failed) {
+    return (
+      <div>
+        <p style={{ fontSize: "0.8rem", color: "#ef4444", lineHeight: 1.6, marginBottom: 12 }}>
+          The booking calendar couldn&apos;t load. You can open it directly instead.
+        </p>
+        <a href={embedUrl} target="_blank" rel="noopener noreferrer"
+          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 18px", borderRadius: 100, fontSize: "0.8125rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
+        >
+          Open Calendly <ArrowUpRight size={14} strokeWidth={2.5} />
+        </a>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ position: "relative", minHeight: 640 }}>
+      {!ready && (
+        <div style={{ position: "absolute", inset: 0 }}>
+          <CalendlySkeleton />
+        </div>
+      )}
+      <div ref={containerRef} style={{ minHeight: 640, width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
+    </div>
+  );
+}
+
+/* ── Mini Scheduler ────────────────────────────────────────── */
 function MiniScheduler() {
   const scrollRef  = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
@@ -1870,14 +1971,9 @@ function MiniScheduler() {
     return days;
   }, []);
 
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
+  const [step, setStep] = useState<1 | 2>(1);
   const [selDate, setSelDate] = useState<Date>(weekdays[0]);
-  const [selTime, setSelTime] = useState<string | null>(null);
-  const [form, setForm] = useState<DiscoveryForm>(EMPTY_DISCOVERY_FORM);
-  const [submitAttempted, setSubmitAttempted] = useState(false);
-
-  const DAY   = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  const TIMES = ["9:00 AM", "10:00 AM", "11:30 AM", "1:00 PM", "3:00 PM"];
+  const DAY = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
 
   const nudge = (dir: "l" | "r") =>
     scrollRef.current?.scrollBy({ left: dir === "r" ? 160 : -160, behavior: "smooth" });
@@ -1900,27 +1996,6 @@ function MiniScheduler() {
     if (scrollRef.current) scrollRef.current.style.cursor = "grab";
   };
 
-  const updateField = (key: keyof DiscoveryForm, value: string) =>
-    setForm(prev => ({ ...prev, [key]: value }));
-
-  const formComplete = DISCOVERY_FIELDS.every(f => form[f.key].trim().length > 0);
-
-  const confirmBooking = () => {
-    if (!formComplete) { setSubmitAttempted(true); return; }
-    const y   = selDate.getFullYear();
-    const mon = String(selDate.getMonth() + 1).padStart(2, "0");
-    const day = String(selDate.getDate()).padStart(2, "0");
-    window.open(`${CALENDLY}?date=${y}-${mon}-${day}`, "_blank");
-    setStep(4);
-  };
-
-  const resetFlow = () => {
-    setStep(1);
-    setSelTime(null);
-    setForm(EMPTY_DISCOVERY_FORM);
-    setSubmitAttempted(false);
-  };
-
   const arrowBtn: React.CSSProperties = {
     position: "absolute", top: "50%", transform: "translateY(-50%)",
     width: 24, height: 24, borderRadius: 7, zIndex: 2,
@@ -1929,15 +2004,13 @@ function MiniScheduler() {
     color: "var(--ld-muted)", padding: 0, flexShrink: 0,
   };
 
-  const nextBtn = (enabled: boolean): React.CSSProperties => ({
+  const nextBtn: React.CSSProperties = {
     display: "inline-flex", alignItems: "center", gap: 6,
     padding: "10px 20px", borderRadius: 100,
     fontSize: "0.8125rem", fontWeight: 700,
-    border: "none", cursor: enabled ? "pointer" : "not-allowed",
+    border: "none", cursor: "pointer",
     background: "var(--ld-accent)", color: "#fff",
-    opacity: enabled ? 1 : 0.4,
-    transition: "opacity 0.2s ease",
-  });
+  };
   const prevBtn: React.CSSProperties = {
     display: "inline-flex", alignItems: "center", gap: 6,
     padding: "10px 18px", borderRadius: 100,
@@ -1957,7 +2030,7 @@ function MiniScheduler() {
     <div>
       {/* Step indicator */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8, marginBottom: 24 }}>
-        {[1, 2, 3, 4].map(n => (
+        {[1, 2].map(n => (
           <div key={n} style={{
             width: n === step ? 20 : 6, height: 6, borderRadius: 3,
             background: n <= step ? "var(--ld-accent)" : "var(--ld-border)",
@@ -2026,7 +2099,7 @@ function MiniScheduler() {
             <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 22 }}>
               <motion.button type="button" onClick={() => setStep(2)}
                 whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
-                style={nextBtn(true)}
+                style={nextBtn}
               >
                 Next <ArrowRight size={14} strokeWidth={2.5} />
               </motion.button>
@@ -2036,135 +2109,25 @@ function MiniScheduler() {
 
         {step === 2 && (
           <motion.div key="step2" {...stepAnim}>
-            <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 10 }}>
-              Available Times
-            </p>
-            <div style={{ display: "flex", gap: 7, flexWrap: "wrap" }}>
-              {TIMES.map(t => {
-                const active = selTime === t;
-                return (
-                  <motion.button key={t} type="button"
-                    onClick={() => setSelTime(t)}
-                    whileHover={{ y: -2, boxShadow: "0 0 14px rgba(59,130,246,0.25)", borderColor: "var(--ld-accent)" }}
-                    whileTap={{ scale: 0.96 }}
-                    style={{
-                      padding: "8px 14px", borderRadius: 9, cursor: "pointer",
-                      fontSize: "0.8rem", fontWeight: 600,
-                      border: `1px solid ${active ? "var(--ld-accent)" : "var(--ld-border)"}`,
-                      background: active ? "var(--ld-accent)" : "transparent",
-                      color: active ? "#fff" : "var(--ld-text)",
-                      transition: "all 0.15s ease",
-                    }}
-                  >
-                    {t}
-                  </motion.button>
-                );
-              })}
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 22 }}>
-              <button type="button" onClick={() => setStep(1)} style={prevBtn}>
-                <ChevronLeft size={14} strokeWidth={2.5} /> Previous
-              </button>
-              <motion.button type="button" disabled={!selTime} onClick={() => selTime && setStep(3)}
-                whileHover={selTime ? { y: -1 } : undefined} whileTap={selTime ? { scale: 0.97 } : undefined}
-                style={nextBtn(!!selTime)}
-              >
-                Next <ArrowRight size={14} strokeWidth={2.5} />
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
-
-        {step === 3 && (
-          <motion.div key="step3" {...stepAnim}>
-            <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 4 }}>
-              A Few Quick Questions
-            </p>
-            <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", opacity: 0.75, marginBottom: 18, lineHeight: 1.5 }}>
-              Just enough to help me prep for our call.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
-              {DISCOVERY_FIELDS.map(f => {
-                const empty = form[f.key].trim().length === 0;
-                const showError = submitAttempted && empty;
-                return (
-                  <div key={f.key}>
-                    <label style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-text)", marginBottom: 6, lineHeight: 1.4 }}>
-                      {f.label}
-                    </label>
-                    {f.textarea ? (
-                      <textarea
-                        className={`ld-input${showError ? " ld-input-error" : ""}`}
-                        rows={2}
-                        value={form[f.key]}
-                        onChange={e => updateField(f.key, e.target.value)}
-                        placeholder={f.placeholder}
-                      />
-                    ) : (
-                      <input
-                        type="text"
-                        className={`ld-input${showError ? " ld-input-error" : ""}`}
-                        value={form[f.key]}
-                        onChange={e => updateField(f.key, e.target.value)}
-                        placeholder={f.placeholder}
-                      />
-                    )}
-                    {showError && (
-                      <p style={{ fontSize: "0.7rem", color: "#ef4444", marginTop: 5 }}>
-                        This field is required.
-                      </p>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "space-between", marginTop: 22 }}>
-              <button type="button" onClick={() => setStep(2)} style={prevBtn}>
-                <ChevronLeft size={14} strokeWidth={2.5} /> Previous
-              </button>
-              <motion.button type="button" onClick={confirmBooking}
-                whileHover={{ y: -1 }} whileTap={{ scale: 0.97 }}
-                style={nextBtn(true)}
-              >
-                Confirm Booking <ArrowRight size={14} strokeWidth={2.5} />
-              </motion.button>
-            </div>
-          </motion.div>
-        )}
-
-        {step === 4 && (
-          <motion.div key="step4" {...stepAnim} style={{ textAlign: "center", padding: "8px 0" }}>
-            <div style={{
-              width: 52, height: 52, borderRadius: "50%", margin: "0 auto 18px",
-              background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-            }}>
-              <CheckCircle size={24} strokeWidth={1.75} style={{ color: "var(--ld-accent)" }} />
-            </div>
-            <h3 style={{ fontSize: "1.0625rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 8 }}>
-              You&apos;re All Set!
-            </h3>
-            <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "38ch", margin: "0 auto 4px" }}>
-              I&apos;ve received your booking and I&apos;m looking forward to meeting you.
-            </p>
-            {selTime && (
-              <p style={{ fontSize: "0.8rem", color: "var(--ld-accent)", fontWeight: 600, marginTop: 10 }}>
-                {selDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })} &nbsp;·&nbsp; {selTime}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 14 }}>
+              <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)" }}>
+                {selDate.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
               </p>
-            )}
-            <button type="button" onClick={resetFlow} style={{ ...prevBtn, margin: "22px auto 0" }}>
-              Book Another Time
-            </button>
+              <button type="button" onClick={() => setStep(1)} style={{ ...prevBtn, padding: "6px 12px", fontSize: "0.72rem" }}>
+                <ChevronLeft size={12} strokeWidth={2.5} /> Change date
+              </button>
+            </div>
+
+            <CalendlyInlineEmbed date={selDate} />
           </motion.div>
         )}
       </AnimatePresence>
 
-      <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.4, textAlign: "center", marginTop: 20 }}>
-        Secure booking powered by Calendly
-      </p>
+      {step === 1 && (
+        <p style={{ fontSize: "0.68rem", color: "var(--ld-muted)", opacity: 0.4, textAlign: "center", marginTop: 20 }}>
+          Secure booking powered by Calendly
+        </p>
+      )}
     </div>
   );
 }
