@@ -2012,48 +2012,40 @@ function MiniScheduler() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="contact" style={{ padding: "80px 28px 0", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
-      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "30%", width: 500, height: 300, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
+    <section id="contact" style={{ padding: "clamp(72px, 10vw, 120px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1100, margin: "0 auto", position: "relative" }}>
 
-        {/* Badge */}
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 48 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 16px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)" }}>
-            <Sparkles size={10} strokeWidth={2.5} />
-            Work With Me
-          </span>
+        {/* Text block */}
+        <motion.div {...up()} style={{ textAlign: "center", maxWidth: 680, margin: "0 auto clamp(48px, 7vw, 72px)" }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
+            Book a Discovery Call
+          </p>
+          <h2 style={{ fontSize: "clamp(1.35rem, 2.6vw, 1.9rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.25, marginBottom: 16 }}>
+            If You Could Automate One Thing Tomorrow...<br />What Would It Be?
+          </h2>
+          <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "56ch", margin: "0 auto" }}>
+            Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
+          </p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 22, fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", opacity: 0.7, letterSpacing: "0.01em" }}>
+            <span>30 mins</span>
+            <span style={{ opacity: 0.5 }}>·</span>
+            <span>No pressure</span>
+            <span style={{ opacity: 0.5 }}>·</span>
+            <span>Clear next steps</span>
+          </div>
         </motion.div>
 
-        {/* 2-column */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "clamp(32px, 5vw, 60px)", alignItems: "end", paddingBottom: 80 }}>
-
-          {/* Left */}
-          <motion.div {...up(0.05)}>
-            <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 12 }}>
-              If You Could Automate One Thing Tomorrow...<br /><br />What Would It Be?
-            </h2>
-            <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 28, maxWidth: "34ch" }}>
-              Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
-            </p>
-          </motion.div>
-
-          {/* Right — booking card */}
-          <motion.div {...up(0.1)}>
-            <div style={{ borderRadius: 18, border: "1px solid var(--ld-border)", background: "var(--ld-card)", boxShadow: "var(--ld-shadowLg)", overflow: "hidden" }}>
-              <div style={{ padding: "24px 22px 22px" }}>
-                <h3 style={{ fontSize: "1.0625rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 4 }}>
-                  Book a Consultation
-                </h3>
-                <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", marginBottom: 18, letterSpacing: "0.01em" }}>
-                  30 mins &nbsp;·&nbsp; No pressure &nbsp;·&nbsp; Clear next steps
-                </p>
-                <MiniScheduler />
-              </div>
+        {/* Calendar — primary visual element */}
+        <motion.div {...up(0.1)} style={{ maxWidth: 560, margin: "0 auto" }}>
+          <div style={{ borderRadius: 24, border: "1px solid var(--ld-border)", background: "var(--ld-card)", boxShadow: "var(--ld-shadowLg)", overflow: "hidden" }}>
+            <div style={{ padding: "clamp(24px, 4vw, 32px)" }}>
+              <MiniScheduler />
             </div>
-          </motion.div>
+          </div>
+        </motion.div>
 
-        </div>
       </div>
     </section>
   );
