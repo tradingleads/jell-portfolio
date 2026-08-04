@@ -651,7 +651,7 @@ function HeroSection() {
               whileHover={{ borderColor: "var(--ld-accent)", color: "var(--ld-accent)" }}
               className="w-full sm:w-auto justify-center"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 26px", borderRadius: 100, border: "1px solid var(--ld-borderC)", color: "var(--ld-muted)", fontWeight: 600, fontSize: "0.9375rem", textDecoration: "none", transition: "all 0.2s ease" }}>
-              See Proven Systems <ArrowUpRight size={15} strokeWidth={2} />
+              View My Work <ArrowUpRight size={15} strokeWidth={2} />
             </motion.a>
           </motion.div>
 
