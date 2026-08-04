@@ -2028,19 +2028,18 @@ function CTASection() {
           <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "56ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginTop: 22, fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", opacity: 0.7, letterSpacing: "0.01em" }}>
-            <span>30 mins</span>
-            <span style={{ opacity: 0.5 }}>·</span>
-            <span>No pressure</span>
-            <span style={{ opacity: 0.5 }}>·</span>
-            <span>Clear next steps</span>
-          </div>
         </motion.div>
 
         {/* Calendar — primary visual element */}
         <motion.div {...up(0.1)} style={{ maxWidth: 560, margin: "0 auto" }}>
-          <div style={{ borderRadius: 24, border: "1px solid var(--ld-border)", background: "var(--ld-card)", boxShadow: "var(--ld-shadowLg)", overflow: "hidden" }}>
-            <div style={{ padding: "clamp(24px, 4vw, 32px)" }}>
+          <div style={{
+            borderRadius: 28,
+            border: "1px solid var(--ld-border)",
+            background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
+            boxShadow: "0 28px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            overflow: "hidden",
+          }}>
+            <div style={{ padding: "clamp(28px, 4.5vw, 36px)" }}>
               <MiniScheduler />
             </div>
           </div>
