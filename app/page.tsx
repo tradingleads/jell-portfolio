@@ -2018,7 +2018,7 @@ function CTASection() {
             borderRadius: 28,
             border: "1px solid var(--ld-border)",
             background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
-            boxShadow: "0 28px 70px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            boxShadow: "var(--ld-shadowLg)",
             overflow: "hidden",
           }}>
             <div style={{ padding: "clamp(28px, 4.5vw, 36px)" }}>
