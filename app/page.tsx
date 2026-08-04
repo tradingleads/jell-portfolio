@@ -1948,13 +1948,17 @@ function CalendlyInlineEmbed() {
   }
 
   return (
-    <div style={{ position: "relative", height: CALENDLY_EMBED_HEIGHT, overflowY: "auto", overflowX: "hidden" }}>
+    <div style={{ position: "relative", height: CALENDLY_EMBED_HEIGHT, overflow: "hidden" }}>
       {!ready && (
         <div style={{ position: "absolute", inset: 0 }}>
           <CalendlySkeleton />
         </div>
       )}
-      <div ref={containerRef} style={{ minHeight: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
+      <div
+        ref={containerRef}
+        className="calendly-embed-fill"
+        style={{ height: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }}
+      />
     </div>
   );
 }
