@@ -1798,12 +1798,10 @@ function AboutSection() {
         <motion.div {...up(0.1)}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>About</p>
           <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 18, lineHeight: 1.2 }}>
-            Building Systems That Scale Operations
+            Hi, I&apos;m Jell.
           </h2>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
-            I&apos;m <strong style={{ color: "var(--ld-text)" }}>Jell Urmeneta</strong>, an automation specialist focused on building systems that reduce manual work, improve response speed, and streamline operations.
-            <br /><br />
-            From lead handling to backend workflows, I design automations that help businesses save time and scale efficiently.
+            I build AI-powered business systems that simplify operations through workflow automation, system integrations, and process optimization. My focus is creating reliable systems that remove repetitive work and help businesses operate more efficiently.
           </p>
         </motion.div>
       </div>
