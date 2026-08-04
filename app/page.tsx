@@ -2037,10 +2037,10 @@ function CTASection() {
           {/* Left */}
           <motion.div {...up(0.05)}>
             <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.03em", lineHeight: 1.15, marginBottom: 12 }}>
-              Let&apos;s Find What<br />You Can Automate
+              If You Could Automate One Thing Tomorrow...<br /><br />What Would It Be?
             </h2>
             <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, marginBottom: 28, maxWidth: "34ch" }}>
-              Book an audit or reach out directly — I&apos;ll help you identify the fastest automation wins.
+              Book an audit or reach out directly — I&apos;ll help you identify the fastest automation wins. Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {CONTACTS.map(({ Icon, label, sub, href, color }) => (
