@@ -1878,12 +1878,13 @@ const CalendlySkeleton = memo(function CalendlySkeleton() {
   );
 });
 
+const CALENDLY_EMBED_HEIGHT = 420;
+
 function CalendlyInlineEmbed() {
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-  const [height, setHeight] = useState(480);
 
   const embedUrl = useMemo(() => {
     const dark = resolvedTheme !== "light";
@@ -1899,18 +1900,6 @@ function CalendlyInlineEmbed() {
     });
     return `${CALENDLY}?${params.toString()}`;
   }, [resolvedTheme]);
-
-  useEffect(() => {
-    const onMessage = (e: MessageEvent) => {
-      if (e.origin !== "https://calendly.com") return;
-      const data = e.data as { event?: string; payload?: { height?: number } };
-      if (data.event === "calendly.page_height" && data.payload?.height) {
-        setHeight(Math.max(420, Math.min(560, data.payload.height)));
-      }
-    };
-    window.addEventListener("message", onMessage);
-    return () => window.removeEventListener("message", onMessage);
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -1959,13 +1948,13 @@ function CalendlyInlineEmbed() {
   }
 
   return (
-    <div style={{ position: "relative", height, transition: "height 0.35s ease" }}>
+    <div style={{ position: "relative", height: CALENDLY_EMBED_HEIGHT, overflowY: "auto", overflowX: "hidden" }}>
       {!ready && (
         <div style={{ position: "absolute", inset: 0 }}>
           <CalendlySkeleton />
         </div>
       )}
-      <div ref={containerRef} style={{ height: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
+      <div ref={containerRef} style={{ minHeight: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }} />
     </div>
   );
 }
