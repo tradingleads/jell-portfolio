@@ -1931,15 +1931,17 @@ function CalInlineEmbed() {
   const mountedRef = useRef(false);
 
   useEffect(() => {
-    // next-themes reports resolvedTheme as undefined for a moment after
-    // mount, before it reads localStorage/system preference. Mounting Cal's
-    // embed on that undefined value silently defaulted to "dark" every
-    // time, and Cal's "ui" command doesn't reliably repaint content that
-    // already rendered -- so a light-mode visitor could get stuck with a
-    // dark calendar. Wait for the real value before ever mounting.
-    if (resolvedTheme === undefined) return;
-
-    const dark = resolvedTheme !== "light";
+    // Read the theme straight from the DOM class instead of trusting
+    // next-themes' resolvedTheme value. next-themes sets html.class via a
+    // blocking inline script before hydration, so the DOM is already
+    // correct by the time this effect runs -- but resolvedTheme's own React
+    // state can report a transient/wrong value (e.g. OS-level dark
+    // preference) before settling on the actual stored choice. Mounting
+    // Cal.com on that wrong transient value stuck it dark on a light page,
+    // since Cal's "ui" command doesn't reliably repaint content it has
+    // already rendered. resolvedTheme is still the effect's dependency, so
+    // this re-checks the DOM whenever the hook thinks something changed.
+    const dark = document.documentElement.classList.contains("dark");
     const uiConfig = {
       theme: dark ? "dark" : "light",
       hideEventTypeDetails: true,
