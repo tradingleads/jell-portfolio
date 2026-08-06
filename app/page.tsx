@@ -1921,7 +1921,7 @@ const BookingCalendarSkeleton = memo(function BookingCalendarSkeleton() {
   );
 });
 
-const CAL_EMBED_HEIGHT = 640;
+const CAL_EMBED_HEIGHT = 580;
 
 function CalInlineEmbed() {
   const { resolvedTheme } = useTheme();
@@ -2011,16 +2011,21 @@ function CTASection() {
           </p>
         </motion.div>
 
-        {/* Calendar — full-width, premium surface */}
-        <motion.div {...up(0.1)}>
+        {/* Calendar — compact floating glass card, hugging the embed */}
+        <motion.div {...up(0.1)} style={{ maxWidth: 780, margin: "0 auto" }}>
           <div style={{
-            borderRadius: 26,
-            border: "1px solid var(--ld-border)",
-            background: "linear-gradient(165deg, var(--ld-card), var(--ld-card2))",
-            boxShadow: "var(--ld-shadowLg)",
+            borderRadius: 28,
+            border: "1px solid rgba(255,255,255,0.08)",
+            background: "rgba(10, 14, 26, 0.55)",
+            backdropFilter: "blur(20px)",
+            WebkitBackdropFilter: "blur(20px)",
+            boxShadow: "0 20px 50px -12px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
             overflow: "hidden",
+            padding: 10,
           }}>
-            <CalInlineEmbed />
+            <div style={{ borderRadius: 20, overflow: "hidden" }}>
+              <CalInlineEmbed />
+            </div>
           </div>
         </motion.div>
 
