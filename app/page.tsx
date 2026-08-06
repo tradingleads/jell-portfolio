@@ -846,7 +846,7 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)" }}>
+    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)", scrollMarginTop: 90 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} style={{ marginBottom: 60 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Deliver</p>
@@ -1363,7 +1363,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)" }}>
+    <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1598,7 +1598,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+    <section id="process" style={{ padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
       {/* Subtle background glow */}
       <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -1710,7 +1710,7 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
+    <section id="about" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 64, alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
@@ -2014,7 +2014,7 @@ function CalInlineEmbed() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="contact" style={{ padding: "clamp(40px, 6vw, 72px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
+    <section id="contact" style={{ padding: "clamp(40px, 6vw, 72px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
