@@ -1921,7 +1921,7 @@ const BookingCalendarSkeleton = memo(function BookingCalendarSkeleton() {
   );
 });
 
-const CAL_EMBED_HEIGHT = 640;
+const CAL_EMBED_HEIGHT = 520;
 
 function CalInlineEmbed() {
   const { resolvedTheme } = useTheme();
