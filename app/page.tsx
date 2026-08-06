@@ -2011,7 +2011,7 @@ function CTASection() {
         </motion.div>
 
         {/* Calendar — compact floating glass card, hugging the embed */}
-        <motion.div {...up(0.1)} style={{ maxWidth: 840, margin: "0 auto" }}>
+        <motion.div {...up(0.1)} style={{ maxWidth: 920, margin: "0 auto" }}>
           <div style={{
             borderRadius: 28,
             border: "1px solid rgba(255,255,255,0.08)",
