@@ -78,11 +78,11 @@
   --ld-nav-bg:    rgba(5,7,11,0.92);
 }
 
-/* Calendly's widget.js sizes its own iframe to the content it measures,
-   which ignores our fixed-height wrapper and leaves dead space. Force
-   the injected iframe to fill the wrapper; the iframe's own page then
-   scrolls internally instead. */
-.calendly-embed-fill iframe {
+/* Booking widget scripts (Cal.com, previously Calendly) size their own
+   iframe to the content they measure, which can ignore our fixed-height
+   wrapper and leave dead space. Force the injected iframe to fill the
+   wrapper; the iframe's own page then scrolls internally instead. */
+.booking-embed-fill iframe {
   width: 100% !important;
   height: 100% !important;
   border: 0 !important;

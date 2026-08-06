@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, memo, useRef, useCallback, useMemo } from "react";
+import { useEffect, useState, memo, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useTheme } from "next-themes";
 import Link from "next/link";
@@ -23,8 +23,11 @@ import {
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
-const CALENDLY = "https://calendly.com/jellurmeneta64/new-meeting";
-const WHATSAPP  = "https://wa.me/639485530304";
+const CAL_USERNAME  = "jell-urmeneta-hjzfyv";
+const CAL_EVENT_SLUG = "book-a-discovery-call";
+const CAL_LINK      = `${CAL_USERNAME}/${CAL_EVENT_SLUG}`;
+const CAL_URL        = `https://cal.com/${CAL_LINK}`;
+const WHATSAPP       = "https://wa.me/639485530304";
 
 /* ── Animation helpers ─────────────────────────────────── */
 const E = [0.16, 1, 0.3, 1] as const;
@@ -1172,7 +1175,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
 
             {/* CTA */}
             <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-              <motion.a href={CALENDLY} target="_blank" rel="noopener noreferrer"
+              <motion.a href={CAL_URL} target="_blank" rel="noopener noreferrer"
                 whileHover={{ scale: 1.03, boxShadow: "0 0 30px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 24px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none", boxShadow: "0 0 18px var(--ld-glow)" }}>
                 Build Similar System <ArrowRight size={15} strokeWidth={2.5} />
@@ -1836,18 +1839,58 @@ function TestimonialsSection() {
   );
 }
 
-/* ── Calendly inline embed ────────────────────────────────── */
+/* ── Cal.com inline embed ─────────────────────────────────── */
+type CalApi = ((...args: unknown[]) => void) & {
+  ns?: Record<string, (...args: unknown[]) => void>;
+  loaded?: boolean;
+  q?: unknown[];
+};
+
 declare global {
   interface Window {
-    Calendly?: {
-      initInlineWidget: (opts: { url: string; parentElement: HTMLElement }) => void;
-    };
+    Cal?: CalApi;
   }
 }
 
-const CALENDLY_SCRIPT_SRC = "https://assets.calendly.com/assets/external/widget.js";
+const CAL_SCRIPT_SRC = "https://app.cal.com/embed/embed.js";
+const CAL_NAMESPACE = CAL_EVENT_SLUG;
 
-const CalendlySkeleton = memo(function CalendlySkeleton() {
+// Mirrors Cal.com's official loader snippet: defines window.Cal as a
+// queueing shim so calls made before embed.js finishes loading aren't lost.
+function loadCalApi() {
+  const w = window as unknown as { Cal?: CalApi & { q: unknown[] } };
+  if (w.Cal) return;
+
+  const queue = (api: { q: unknown[] }, args: unknown) => { api.q.push(args); };
+
+  const Cal = ((...args: unknown[]) => {
+    const cal = w.Cal!;
+    if (!cal.loaded) {
+      cal.ns = {};
+      cal.q = cal.q || [];
+      document.head.appendChild(document.createElement("script")).src = CAL_SCRIPT_SRC;
+      cal.loaded = true;
+    }
+    if (args[0] === "init") {
+      const namespace = args[1];
+      const api = ((...a: unknown[]) => queue(api as unknown as { q: unknown[] }, a)) as CalApi & { q: unknown[] };
+      api.q = [];
+      if (typeof namespace === "string") {
+        cal.ns![namespace] = cal.ns![namespace] || api;
+        queue(cal.ns![namespace] as unknown as { q: unknown[] }, args);
+        queue(cal as unknown as { q: unknown[] }, ["initNamespace", namespace]);
+      } else {
+        queue(cal as unknown as { q: unknown[] }, args);
+      }
+      return;
+    }
+    queue(cal as unknown as { q: unknown[] }, args);
+  }) as CalApi & { q: unknown[] };
+  Cal.q = [];
+  w.Cal = Cal;
+}
+
+const BookingCalendarSkeleton = memo(function BookingCalendarSkeleton() {
   return (
     <div style={{ display: "flex", gap: 24, padding: "clamp(24px, 3.5vw, 36px)" }}>
       <div style={{ flex: "1.1 1 0", display: "flex", flexDirection: "column", gap: 10 }}>
@@ -1878,59 +1921,46 @@ const CalendlySkeleton = memo(function CalendlySkeleton() {
   );
 });
 
-const CALENDLY_EMBED_HEIGHT = 420;
+const CAL_EMBED_HEIGHT = 420;
 
-function CalendlyInlineEmbed() {
+function CalInlineEmbed() {
   const { resolvedTheme } = useTheme();
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
-
-  const embedUrl = useMemo(() => {
-    const dark = resolvedTheme !== "light";
-    const colors = dark
-      ? { bg: "10131a", text: "ffffff", accent: "3b82f6" }
-      : { bg: "ffffff", text: "111111", accent: "2563eb" };
-    const params = new URLSearchParams({
-      hide_gdpr_banner: "1",
-      hide_event_type_details: "1",
-      background_color: colors.bg,
-      text_color: colors.text,
-      primary_color: colors.accent,
-    });
-    return `${CALENDLY}?${params.toString()}`;
-  }, [resolvedTheme]);
 
   useEffect(() => {
     let cancelled = false;
     setReady(false);
     setFailed(false);
 
-    const init = () => {
-      if (cancelled || !containerRef.current || !window.Calendly) return;
-      containerRef.current.innerHTML = "";
-      window.Calendly.initInlineWidget({ url: embedUrl, parentElement: containerRef.current });
-      setReady(true);
-    };
+    loadCalApi();
+    const Cal = window.Cal!;
+    const dark = resolvedTheme !== "light";
 
-    const failTimer = setTimeout(() => { if (!cancelled) setFailed(prev => prev || !window.Calendly); }, 8000);
+    Cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
+    Cal.ns![CAL_NAMESPACE]("inline", {
+      elementOrSelector: containerRef.current,
+      calLink: CAL_LINK,
+      config: { layout: "month_view", theme: dark ? "dark" : "light" },
+    });
+    Cal.ns![CAL_NAMESPACE]("ui", {
+      theme: dark ? "dark" : "light",
+      hideEventTypeDetails: true,
+      layout: "month_view",
+      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
+    });
+    Cal.ns![CAL_NAMESPACE]("on", {
+      action: "linkReady",
+      callback: () => { if (!cancelled) setReady(true); },
+    });
 
-    if (window.Calendly) {
-      init();
-    } else {
-      let script = document.querySelector<HTMLScriptElement>(`script[src="${CALENDLY_SCRIPT_SRC}"]`);
-      if (!script) {
-        script = document.createElement("script");
-        script.src = CALENDLY_SCRIPT_SRC;
-        script.async = true;
-        script.onerror = () => { if (!cancelled) setFailed(true); };
-        document.body.appendChild(script);
-      }
-      script.addEventListener("load", init);
-      return () => { script?.removeEventListener("load", init); clearTimeout(failTimer); cancelled = true; };
-    }
+    const failTimer = setTimeout(() => {
+      if (!cancelled) setFailed(prev => prev || !document.querySelector(`script[src="${CAL_SCRIPT_SRC}"]`));
+    }, 8000);
+
     return () => { clearTimeout(failTimer); cancelled = true; };
-  }, [embedUrl]);
+  }, [resolvedTheme]);
 
   if (failed) {
     return (
@@ -1938,25 +1968,25 @@ function CalendlyInlineEmbed() {
         <p style={{ fontSize: "0.85rem", color: "#ef4444", lineHeight: 1.6, marginBottom: 14 }}>
           The booking calendar couldn&apos;t load. You can open it directly instead.
         </p>
-        <a href={embedUrl} target="_blank" rel="noopener noreferrer"
+        <a href={CAL_URL} target="_blank" rel="noopener noreferrer"
           style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", borderRadius: 100, fontSize: "0.85rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
         >
-          Open Calendly <ArrowUpRight size={14} strokeWidth={1.5} />
+          Open Cal.com <ArrowUpRight size={14} strokeWidth={1.5} />
         </a>
       </div>
     );
   }
 
   return (
-    <div style={{ position: "relative", height: CALENDLY_EMBED_HEIGHT, overflow: "hidden" }}>
+    <div style={{ position: "relative", height: CAL_EMBED_HEIGHT, overflow: "hidden" }}>
       {!ready && (
         <div style={{ position: "absolute", inset: 0 }}>
-          <CalendlySkeleton />
+          <BookingCalendarSkeleton />
         </div>
       )}
       <div
         ref={containerRef}
-        className="calendly-embed-fill"
+        className="booking-embed-fill"
         style={{ height: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }}
       />
     </div>
@@ -1990,7 +2020,7 @@ function CTASection() {
             boxShadow: "var(--ld-shadowLg)",
             overflow: "hidden",
           }}>
-            <CalendlyInlineEmbed />
+            <CalInlineEmbed />
           </div>
         </motion.div>
 
