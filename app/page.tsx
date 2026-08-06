@@ -2012,7 +2012,7 @@ function CTASection() {
         </motion.div>
 
         {/* Calendar — compact floating glass card, hugging the embed */}
-        <motion.div {...up(0.1)} style={{ maxWidth: 920, margin: "0 auto" }}>
+        <motion.div {...up(0.1)} style={{ maxWidth: 840, margin: "0 auto" }}>
           <div style={{
             borderRadius: 28,
             border: "1px solid rgba(255,255,255,0.08)",
@@ -2021,7 +2021,7 @@ function CTASection() {
             WebkitBackdropFilter: "blur(20px)",
             boxShadow: "0 20px 50px -12px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
             overflow: "hidden",
-            padding: 10,
+            padding: "10px 4px 5px 4px",
           }}>
             <div style={{ borderRadius: 20, overflow: "hidden" }}>
               <CalInlineEmbed />
