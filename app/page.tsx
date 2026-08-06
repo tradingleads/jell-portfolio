@@ -2039,7 +2039,7 @@ function CTASection() {
             WebkitBackdropFilter: "blur(20px)",
             boxShadow: "0 20px 50px -12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             overflow: "hidden",
-            padding: 10,
+            padding: 28,
           }}>
             <div style={{ borderRadius: 20, overflow: "hidden" }}>
               <CalInlineEmbed />
