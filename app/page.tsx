@@ -1921,7 +1921,7 @@ const BookingCalendarSkeleton = memo(function BookingCalendarSkeleton() {
   );
 });
 
-const CAL_EMBED_HEIGHT = 420;
+const CAL_EMBED_HEIGHT = 640;
 
 function CalInlineEmbed() {
   const { resolvedTheme } = useTheme();
@@ -1999,7 +1999,7 @@ function CTASection() {
     <section id="contact" style={{ padding: "clamp(40px, 6vw, 72px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden" }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 680, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
 
         {/* Header — centered */}
         <motion.div {...up()} style={{ marginBottom: "clamp(24px, 4vw, 32px)", textAlign: "center" }}>
