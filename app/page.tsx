@@ -1929,10 +1929,11 @@ function CalInlineEmbed() {
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
 
+  // Mount the embed exactly once. Re-running "inline" on every theme toggle
+  // tears down and re-fetches Cal's entire booking page from scratch, which
+  // is what made switching themes feel like a fresh multi-second load.
   useEffect(() => {
     let cancelled = false;
-    setReady(false);
-    setFailed(false);
 
     loadCalApi();
     const Cal = window.Cal!;
@@ -1959,7 +1960,22 @@ function CalInlineEmbed() {
     }, 8000);
 
     return () => { clearTimeout(failTimer); cancelled = true; };
-  }, [resolvedTheme]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Live theme sync: Cal's "ui" command restyles the already-mounted embed
+  // in place via postMessage, no reload needed.
+  useEffect(() => {
+    if (!ready) return;
+    const Cal = window.Cal;
+    if (!Cal?.ns?.[CAL_NAMESPACE]) return;
+    const dark = resolvedTheme !== "light";
+    Cal.ns[CAL_NAMESPACE]("ui", {
+      theme: dark ? "dark" : "light",
+      hideEventTypeDetails: true,
+      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
+    });
+  }, [resolvedTheme, ready]);
 
   if (failed) {
     return (
