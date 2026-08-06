@@ -1942,12 +1942,11 @@ function CalInlineEmbed() {
     Cal.ns![CAL_NAMESPACE]("inline", {
       elementOrSelector: containerRef.current,
       calLink: CAL_LINK,
-      config: { layout: "month_view", theme: dark ? "dark" : "light" },
+      config: { theme: dark ? "dark" : "light" },
     });
     Cal.ns![CAL_NAMESPACE]("ui", {
       theme: dark ? "dark" : "light",
       hideEventTypeDetails: true,
-      layout: "month_view",
       styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
     });
     Cal.ns![CAL_NAMESPACE]("on", {
