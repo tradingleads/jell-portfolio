@@ -1928,54 +1928,57 @@ function CalInlineEmbed() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
   const [failed, setFailed] = useState(false);
+  const mountedRef = useRef(false);
 
-  // Mount the embed exactly once. Re-running "inline" on every theme toggle
-  // tears down and re-fetches Cal's entire booking page from scratch, which
-  // is what made switching themes feel like a fresh multi-second load.
   useEffect(() => {
-    let cancelled = false;
+    // next-themes reports resolvedTheme as undefined for a moment after
+    // mount, before it reads localStorage/system preference. Mounting Cal's
+    // embed on that undefined value silently defaulted to "dark" every
+    // time, and Cal's "ui" command doesn't reliably repaint content that
+    // already rendered -- so a light-mode visitor could get stuck with a
+    // dark calendar. Wait for the real value before ever mounting.
+    if (resolvedTheme === undefined) return;
+
+    const dark = resolvedTheme !== "light";
+    const uiConfig = {
+      theme: dark ? "dark" : "light",
+      hideEventTypeDetails: true,
+      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
+    };
 
     loadCalApi();
     const Cal = window.Cal!;
-    const dark = resolvedTheme !== "light";
 
-    Cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
-    Cal.ns![CAL_NAMESPACE]("inline", {
-      elementOrSelector: containerRef.current,
-      calLink: CAL_LINK,
-      config: { theme: dark ? "dark" : "light" },
-    });
-    Cal.ns![CAL_NAMESPACE]("ui", {
-      theme: dark ? "dark" : "light",
-      hideEventTypeDetails: true,
-      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
-    });
-    Cal.ns![CAL_NAMESPACE]("on", {
-      action: "linkReady",
-      callback: () => { if (!cancelled) setReady(true); },
-    });
+    if (!mountedRef.current) {
+      mountedRef.current = true;
+      let cancelled = false;
 
-    const failTimer = setTimeout(() => {
-      if (!cancelled) setFailed(prev => prev || !document.querySelector(`script[src="${CAL_SCRIPT_SRC}"]`));
-    }, 8000);
+      Cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
+      Cal.ns![CAL_NAMESPACE]("inline", {
+        elementOrSelector: containerRef.current,
+        calLink: CAL_LINK,
+        config: { theme: uiConfig.theme },
+      });
+      Cal.ns![CAL_NAMESPACE]("ui", uiConfig);
+      Cal.ns![CAL_NAMESPACE]("on", {
+        action: "linkReady",
+        callback: () => { if (!cancelled) setReady(true); },
+      });
 
-    return () => { clearTimeout(failTimer); cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+      const failTimer = setTimeout(() => {
+        if (!cancelled) setFailed(prev => prev || !document.querySelector(`script[src="${CAL_SCRIPT_SRC}"]`));
+      }, 8000);
 
-  // Live theme sync: Cal's "ui" command restyles the already-mounted embed
-  // in place via postMessage, no reload needed.
-  useEffect(() => {
-    if (!ready) return;
-    const Cal = window.Cal;
-    if (!Cal?.ns?.[CAL_NAMESPACE]) return;
-    const dark = resolvedTheme !== "light";
-    Cal.ns[CAL_NAMESPACE]("ui", {
-      theme: dark ? "dark" : "light",
-      hideEventTypeDetails: true,
-      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
-    });
-  }, [resolvedTheme, ready]);
+      return () => { clearTimeout(failTimer); cancelled = true; };
+    }
+
+    // Already mounted: a later theme toggle. Live-restyle in place via
+    // postMessage instead of re-running "inline" (which would tear down
+    // and re-fetch Cal's whole booking page from scratch).
+    if (Cal.ns?.[CAL_NAMESPACE]) {
+      Cal.ns[CAL_NAMESPACE]("ui", uiConfig);
+    }
+  }, [resolvedTheme]);
 
   if (failed) {
     return (
