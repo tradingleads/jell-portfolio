@@ -2020,7 +2020,7 @@ function CTASection() {
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
 
         {/* Header — centered */}
-        <motion.div {...up()} style={{ marginBottom: "clamp(24px, 4vw, 32px)", textAlign: "center" }}>
+        <motion.div {...up()} style={{ marginBottom: "clamp(40px, 6vw, 72px)", textAlign: "center" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
             Book a Call
           </p>
