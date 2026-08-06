@@ -2014,13 +2014,13 @@ function CTASection() {
         <motion.div {...up(0.1)} style={{ maxWidth: 920, margin: "0 auto" }}>
           <div style={{
             borderRadius: 28,
-            border: "1px solid rgba(255,255,255,0.08)",
-            background: "rgba(10, 14, 26, 0.55)",
+            border: "1px solid var(--ld-glass-border)",
+            background: "var(--ld-glass-bg)",
             backdropFilter: "blur(20px)",
             WebkitBackdropFilter: "blur(20px)",
-            boxShadow: "0 20px 50px -12px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            boxShadow: "0 20px 50px -12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
             overflow: "hidden",
-            padding: 22,
+            padding: 10,
           }}>
             <div style={{ borderRadius: 20, overflow: "hidden" }}>
               <CalInlineEmbed />
