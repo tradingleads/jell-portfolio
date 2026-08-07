@@ -11,7 +11,7 @@ export default function CalendlyEmbed() {
 
         {/* Outer frame with more space, always fully opaque */}
         <div className="relative rounded-2xl p-3 bg-gradient-to-b from-zinc-400/10 via-zinc-400/4 to-transparent dark:from-blue-500/10 dark:via-blue-400/5 shadow-[0_0_16px_-10px_rgba(0,0,0,0.06)] dark:shadow-[0_0_16px_-10px_rgba(59,130,246,0.15)]">
-          <div className="rounded-xl overflow-hidden bg-white dark:bg-[#0b1220] border border-black/5 dark:border-white/10 h-[600px] lg:h-[465px]">
+          <div className="calendly-frame rounded-xl overflow-hidden bg-white dark:bg-[#0b1220] border border-black/5 dark:border-white/10 h-[600px] lg:h-[465px]">
             <InlineWidget
               url="https://calendly.com/jellurmeneta64/new-meeting"
               styles={{

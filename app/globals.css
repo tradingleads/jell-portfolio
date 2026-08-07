@@ -300,6 +300,26 @@ body::after {
 /* ─── Lightbox spinner ───────────────────────────────────────── */
 @keyframes lb-spin { to { transform: rotate(360deg); } }
 
+/* ─── Calendly mobile stability fix ─────────────────────────────
+   Calendly's own script re-posts a new height for its iframe on
+   every step change (and again when the on-screen keyboard opens
+   or closes), which otherwise resizes the frame and shifts the
+   page under the user's thumb while they're typing. Below the lg
+   breakpoint we pin the frame to its container height and let
+   Calendly's content scroll internally instead of resizing the
+   frame. Desktop is untouched — no rule below applies at lg+. ─── */
+@media (max-width: 1023px) {
+  .calendly-frame {
+    height: 600px !important;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  .calendly-frame iframe {
+    height: 100% !important;
+    min-height: 100% !important;
+  }
+}
+
 /* ─── Click Ripple ───────────────────────────────────────────── */
 .click-ripple {
   position: fixed;
