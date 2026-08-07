@@ -7,6 +7,7 @@ import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
 import Lightbox from "@/components/Lightbox";
 import CalendlyEmbed from "@/components/CalendlyEmbed";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { OrbState } from "@/components/AIOrb";
 
 const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
@@ -24,7 +25,7 @@ import {
 
 /* ── Constants ─────────────────────────────────────────── */
 const CAL_URL        = "https://calendly.com/jellurmeneta64/new-meeting";
-const WHATSAPP       = "https://wa.me/639485530304";
+const WHATSAPP       = "https://api.whatsapp.com/send/?phone=639485530304&type=phone_number&app_absent=0";
 
 /* ── Animation helpers ─────────────────────────────────── */
 const E = [0.16, 1, 0.3, 1] as const;
@@ -1018,13 +1019,14 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
     ...(p.extraImages ?? []),
   ];
 
+  useBodyScrollLock(true);
+
   useEffect(() => {
-    document.body.style.overflow = "hidden";
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape" && lbIdx === null) onClose();
     };
     window.addEventListener("keydown", onKey);
-    return () => { document.body.style.overflow = ""; window.removeEventListener("keydown", onKey); };
+    return () => { window.removeEventListener("keydown", onKey); };
   }, [onClose, lbIdx]);
 
   return (

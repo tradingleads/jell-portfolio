@@ -3,6 +3,7 @@
 import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, RotateCcw } from "lucide-react";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 
 /* ── Types ────────────────────────────────────────────────────── */
 export interface LightboxImage {
@@ -181,10 +182,7 @@ const Lightbox = memo(function Lightbox({
   }, [idx]);
 
   /* Scroll lock */
-  useEffect(() => {
-    document.body.style.overflow = "hidden";
-    return () => { document.body.style.overflow = ""; };
-  }, []);
+  useBodyScrollLock(true);
 
   /* Preload adjacent */
   useEffect(() => {
