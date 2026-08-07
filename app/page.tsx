@@ -2,7 +2,6 @@
 
 import { useEffect, useState, memo, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
-import { useTheme } from "next-themes";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -1839,179 +1838,6 @@ function TestimonialsSection() {
   );
 }
 
-/* ── Cal.com inline embed ─────────────────────────────────── */
-type CalApi = ((...args: unknown[]) => void) & {
-  ns?: Record<string, (...args: unknown[]) => void>;
-  loaded?: boolean;
-  q?: unknown[];
-};
-
-declare global {
-  interface Window {
-    Cal?: CalApi;
-  }
-}
-
-const CAL_SCRIPT_SRC = "https://app.cal.com/embed/embed.js";
-const CAL_NAMESPACE = CAL_EVENT_SLUG;
-
-// Mirrors Cal.com's official loader snippet: defines window.Cal as a
-// queueing shim so calls made before embed.js finishes loading aren't lost.
-function loadCalApi() {
-  const w = window as unknown as { Cal?: CalApi & { q: unknown[] } };
-  if (w.Cal) return;
-
-  const queue = (api: { q: unknown[] }, args: unknown) => { api.q.push(args); };
-
-  const Cal = ((...args: unknown[]) => {
-    const cal = w.Cal!;
-    if (!cal.loaded) {
-      cal.ns = {};
-      cal.q = cal.q || [];
-      document.head.appendChild(document.createElement("script")).src = CAL_SCRIPT_SRC;
-      cal.loaded = true;
-    }
-    if (args[0] === "init") {
-      const namespace = args[1];
-      const api = ((...a: unknown[]) => queue(api as unknown as { q: unknown[] }, a)) as CalApi & { q: unknown[] };
-      api.q = [];
-      if (typeof namespace === "string") {
-        cal.ns![namespace] = cal.ns![namespace] || api;
-        queue(cal.ns![namespace] as unknown as { q: unknown[] }, args);
-        queue(cal as unknown as { q: unknown[] }, ["initNamespace", namespace]);
-      } else {
-        queue(cal as unknown as { q: unknown[] }, args);
-      }
-      return;
-    }
-    queue(cal as unknown as { q: unknown[] }, args);
-  }) as CalApi & { q: unknown[] };
-  Cal.q = [];
-  w.Cal = Cal;
-}
-
-const BookingCalendarSkeleton = memo(function BookingCalendarSkeleton() {
-  return (
-    <div style={{ display: "flex", gap: 24, padding: "clamp(24px, 3.5vw, 36px)" }}>
-      <div style={{ flex: "1.1 1 0", display: "flex", flexDirection: "column", gap: 10 }}>
-        <motion.div animate={{ opacity: [0.35, 0.65, 0.35] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          style={{ height: 24, width: "60%", borderRadius: 6, background: "var(--ld-border)" }} />
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(7, 1fr)", gap: 6, marginTop: 10 }}>
-          {Array.from({ length: 35 }).map((_, i) => (
-            <motion.div key={i}
-              animate={{ opacity: [0.3, 0.55, 0.3] }}
-              transition={{ duration: 1.6, repeat: Infinity, delay: (i % 7) * 0.05, ease: "easeInOut" }}
-              style={{ aspectRatio: "1", borderRadius: 8, background: "var(--ld-border)" }}
-            />
-          ))}
-        </div>
-      </div>
-      <div style={{ flex: "0.8 1 0", display: "flex", flexDirection: "column", gap: 8 }}>
-        <motion.div animate={{ opacity: [0.35, 0.65, 0.35] }} transition={{ duration: 1.6, repeat: Infinity, ease: "easeInOut" }}
-          style={{ height: 18, width: "50%", borderRadius: 6, background: "var(--ld-border)", marginBottom: 6 }} />
-        {Array.from({ length: 6 }).map((_, i) => (
-          <motion.div key={i}
-            animate={{ opacity: [0.35, 0.65, 0.35] }}
-            transition={{ duration: 1.6, repeat: Infinity, delay: i * 0.08, ease: "easeInOut" }}
-            style={{ height: 40, borderRadius: 100, background: "var(--ld-border)" }}
-          />
-        ))}
-      </div>
-    </div>
-  );
-});
-
-const CAL_EMBED_HEIGHT = 520;
-
-function CalInlineEmbed() {
-  const { resolvedTheme } = useTheme();
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const mountedRef = useRef(false);
-
-  useEffect(() => {
-    // Read the theme straight from the DOM class instead of trusting
-    // next-themes' resolvedTheme value. next-themes sets html.class via a
-    // blocking inline script before hydration, so the DOM is already
-    // correct by the time this effect runs -- but resolvedTheme's own React
-    // state can report a transient/wrong value (e.g. OS-level dark
-    // preference) before settling on the actual stored choice. Mounting
-    // Cal.com on that wrong transient value stuck it dark on a light page,
-    // since Cal's "ui" command doesn't reliably repaint content it has
-    // already rendered. resolvedTheme is still the effect's dependency, so
-    // this re-checks the DOM whenever the hook thinks something changed.
-    const dark = document.documentElement.classList.contains("dark");
-    const uiConfig = {
-      theme: dark ? "dark" : "light",
-      hideEventTypeDetails: true,
-      styles: { branding: { brandColor: dark ? "#3b82f6" : "#2563eb" } },
-    };
-
-    loadCalApi();
-    const Cal = window.Cal!;
-
-    if (!mountedRef.current) {
-      mountedRef.current = true;
-      let cancelled = false;
-
-      Cal("init", CAL_NAMESPACE, { origin: "https://cal.com" });
-      Cal.ns![CAL_NAMESPACE]("inline", {
-        elementOrSelector: containerRef.current,
-        calLink: CAL_LINK,
-        config: { theme: uiConfig.theme },
-      });
-      Cal.ns![CAL_NAMESPACE]("ui", uiConfig);
-      Cal.ns![CAL_NAMESPACE]("on", {
-        action: "linkReady",
-        callback: () => { if (!cancelled) setReady(true); },
-      });
-
-      const failTimer = setTimeout(() => {
-        if (!cancelled) setFailed(prev => prev || !document.querySelector(`script[src="${CAL_SCRIPT_SRC}"]`));
-      }, 8000);
-
-      return () => { clearTimeout(failTimer); cancelled = true; };
-    }
-
-    // Already mounted: a later theme toggle. Live-restyle in place via
-    // postMessage instead of re-running "inline" (which would tear down
-    // and re-fetch Cal's whole booking page from scratch).
-    if (Cal.ns?.[CAL_NAMESPACE]) {
-      Cal.ns[CAL_NAMESPACE]("ui", uiConfig);
-    }
-  }, [resolvedTheme]);
-
-  if (failed) {
-    return (
-      <div style={{ padding: "clamp(28px, 4vw, 40px)" }}>
-        <p style={{ fontSize: "0.85rem", color: "#ef4444", lineHeight: 1.6, marginBottom: 14 }}>
-          The booking calendar couldn&apos;t load. You can open it directly instead.
-        </p>
-        <a href={CAL_URL} target="_blank" rel="noopener noreferrer"
-          style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "12px 22px", borderRadius: 100, fontSize: "0.85rem", fontWeight: 700, background: "var(--ld-accent)", color: "#fff", textDecoration: "none" }}
-        >
-          Open Cal.com <ArrowUpRight size={14} strokeWidth={1.5} />
-        </a>
-      </div>
-    );
-  }
-
-  return (
-    <div style={{ position: "relative", height: CAL_EMBED_HEIGHT, overflow: "hidden" }}>
-      {!ready && (
-        <div style={{ position: "absolute", inset: 0 }}>
-          <BookingCalendarSkeleton />
-        </div>
-      )}
-      <div
-        ref={containerRef}
-        className="booking-embed-fill"
-        style={{ height: "100%", width: "100%", opacity: ready ? 1 : 0, transition: "opacity 0.3s ease" }}
-      />
-    </div>
-  );
-}
 
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
@@ -2022,31 +1848,13 @@ function CTASection() {
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
 
         {/* Header — centered */}
-        <motion.div {...up()} style={{ marginBottom: "clamp(40px, 6vw, 72px)", textAlign: "center" }}>
+        <motion.div {...up()} style={{ textAlign: "center" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>
             Book a Call
           </p>
           <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
-        </motion.div>
-
-        {/* Calendar — compact floating glass card, hugging the embed */}
-        <motion.div {...up(0.1)} style={{ maxWidth: 920, margin: "0 auto" }}>
-          <div style={{
-            borderRadius: 28,
-            border: "1px solid var(--ld-glass-border)",
-            background: "var(--ld-glass-bg)",
-            backdropFilter: "blur(20px)",
-            WebkitBackdropFilter: "blur(20px)",
-            boxShadow: "0 20px 50px -12px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.06)",
-            overflow: "hidden",
-            padding: 28,
-          }}>
-            <div style={{ borderRadius: 20, overflow: "hidden" }}>
-              <CalInlineEmbed />
-            </div>
-          </div>
         </motion.div>
 
       </div>

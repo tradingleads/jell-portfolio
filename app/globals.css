@@ -82,16 +82,6 @@
   --ld-glass-border: rgba(255,255,255,0.08);
 }
 
-/* Booking widget scripts (Cal.com, previously Calendly) size their own
-   iframe to the content they measure, which can ignore our fixed-height
-   wrapper and leave dead space. Force the injected iframe to fill the
-   wrapper; the iframe's own page then scrolls internally instead. */
-.booking-embed-fill iframe {
-  width: 100% !important;
-  height: 100% !important;
-  border: 0 !important;
-}
-
 /* Gradient text — blue to violet */
 .ld-gradient {
   background: linear-gradient(135deg, #3B82F6, #8B5CF6);
