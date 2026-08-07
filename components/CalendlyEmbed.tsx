@@ -16,7 +16,8 @@ export default function CalendlyEmbed() {
               url="https://calendly.com/jellurmeneta64/new-meeting"
               styles={{
                 height: "440px",
-                minWidth: "320px",
+                width: "100%",
+                minWidth: "0",
               }}
               pageSettings={{
                 backgroundColor: "ffffff",
