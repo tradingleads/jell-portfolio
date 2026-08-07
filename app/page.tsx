@@ -6,6 +6,7 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
 import Lightbox from "@/components/Lightbox";
+import CalendlyEmbed from "@/components/CalendlyEmbed";
 import type { OrbState } from "@/components/AIOrb";
 
 const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
@@ -1855,6 +1856,10 @@ function CTASection() {
           <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "42ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
+        </motion.div>
+
+        <motion.div {...up(0.1)} style={{ marginTop: 40 }}>
+          <CalendlyEmbed />
         </motion.div>
 
       </div>
