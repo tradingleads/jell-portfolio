@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { InlineWidget } from "react-calendly";
 
 const CALENDLY_URL = "https://calendly.com/jellurmeneta64/new-meeting";
-const EMBED_HEIGHT = 540;
+const EMBED_HEIGHT = 440;
 
 const CalendlySkeleton = memo(function CalendlySkeleton() {
   return (
@@ -43,7 +43,7 @@ const CalendlySkeleton = memo(function CalendlySkeleton() {
 
 function CalendlyEmbed() {
   return (
-    <div className="max-w-xl mx-auto">
+    <div className="max-w-md mx-auto">
       <div
         className="rounded-2xl overflow-hidden"
         style={{
