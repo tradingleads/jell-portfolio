@@ -15,7 +15,7 @@ export default function CalendlyEmbed() {
             <InlineWidget
               url="https://calendly.com/jellurmeneta64/new-meeting"
               styles={{
-                height: "440px",
+                height: "600px",
                 width: "100%",
                 minWidth: "0",
               }}
