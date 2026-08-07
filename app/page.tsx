@@ -1852,7 +1852,7 @@ function CTASection() {
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
             Book a Call
           </p>
-          <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
+          <p style={{ fontSize: "0.9375rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
         </motion.div>
