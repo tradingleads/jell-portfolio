@@ -23,10 +23,7 @@ import {
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
-const CAL_USERNAME  = "jell-urmeneta-hjzfyv";
-const CAL_EVENT_SLUG = "book-a-discovery-call";
-const CAL_LINK      = `${CAL_USERNAME}/${CAL_EVENT_SLUG}`;
-const CAL_URL        = `https://cal.com/${CAL_LINK}`;
+const CAL_URL        = "https://calendly.com/jellurmeneta64/new-meeting";
 const WHATSAPP       = "https://wa.me/639485530304";
 
 /* ── Animation helpers ─────────────────────────────────── */
@@ -1183,7 +1180,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
               <motion.a href={WHATSAPP} target="_blank" rel="noopener noreferrer"
                 whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.97 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 22px", borderRadius: 100, border: "1px solid var(--ld-border)", color: "var(--ld-muted)", fontWeight: 500, fontSize: "0.9rem", textDecoration: "none" }}>
-                <Phone size={14} strokeWidth={1.5} /> Ask a question
+                <Phone size={14} strokeWidth={1.5} /> For Inquiries
               </motion.a>
             </div>
           </div>
