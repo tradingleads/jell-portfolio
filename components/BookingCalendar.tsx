@@ -3,48 +3,77 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  ChevronLeft, ChevronRight, Clock, Globe, Video, MonitorPlay,
-  Check, ArrowLeft, User, Mail, MessageSquare, CalendarX, Loader2,
-  ArrowUpRight,
+  ChevronLeft, ChevronRight, ChevronDown, Clock, Globe, Video, MonitorPlay,
+  Check, ArrowLeft, User, Mail, CalendarX, Loader2, AlertCircle, ArrowUpRight,
 } from "lucide-react";
-
-/* ── Event config ──────────────────────────────────────────────── */
-const EVENT = {
-  title: "Free 30-min Discovery Call",
-  duration: "30 min",
-  host: "Jell Urmeneta",
-  description:
-    "A no-pressure chat about your project — what you need, what's possible, and whether we're a fit to work together.",
-};
-
-const LOCATIONS = [
-  { id: "zoom", label: "Zoom", Icon: Video },
-  { id: "meet", label: "Google Meet", Icon: MonitorPlay },
-] as const;
+import { BOOKING_CONFIG, CUSTOM_QUESTIONS, LOCATIONS } from "@/lib/bookingConfig";
 
 type LocationId = (typeof LOCATIONS)[number]["id"];
 type Step = "pick" | "details" | "done";
+type BusyInterval = { start: string; end: string };
+
+const LOCATION_ICONS: Record<LocationId, typeof Video> = { zoom: Video, meet: MonitorPlay };
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_LABELS = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
-const BASE_SLOTS = [
-  "9:00 AM", "9:30 AM", "10:00 AM", "10:30 AM", "11:00 AM", "11:30 AM",
-  "1:00 PM", "1:30 PM", "2:00 PM", "2:30 PM", "3:00 PM", "3:30 PM", "4:00 PM", "4:30 PM",
+
+const FALLBACK_TZ_LIST = [
+  "UTC", "America/Los_Angeles", "America/Denver", "America/Chicago", "America/New_York",
+  "America/Sao_Paulo", "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Moscow",
+  "Africa/Cairo", "Asia/Dubai", "Asia/Kolkata", "Asia/Dhaka", "Asia/Bangkok",
+  "Asia/Singapore", "Asia/Manila", "Asia/Shanghai", "Asia/Tokyo", "Australia/Sydney",
+  "Pacific/Auckland",
 ];
+
+const TZ_LIST: string[] = (() => {
+  try {
+    if (typeof Intl.supportedValuesOf === "function") return Intl.supportedValuesOf("timeZone");
+  } catch { /* fall through */ }
+  return FALLBACK_TZ_LIST;
+})();
 
 const E = [0.16, 1, 0.3, 1] as const;
 
-/* ── Date helpers ──────────────────────────────────────────────── */
-function sameDay(a: Date, b: Date) {
-  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+/* ── Timezone-aware date helpers ─────────────────────────────────
+   JS Date has no named-timezone constructor, so wall-clock times in
+   a given IANA zone are resolved by comparing how the same instant
+   formats in that zone vs. UTC and correcting for the difference. */
+const pad = (n: number) => String(n).padStart(2, "0");
+
+function dateKeyInTz(date: Date, tz: string) {
+  return new Intl.DateTimeFormat("en-CA", { timeZone: tz, year: "numeric", month: "2-digit", day: "2-digit" }).format(date);
 }
 
-function isWeekend(d: Date) {
-  const day = d.getDay();
-  return day === 0 || day === 6;
+function wallTimeToUtc(dateKey: string, hh: number, mm: number, tz: string) {
+  const guess = new Date(`${dateKey}T${pad(hh)}:${pad(mm)}:00Z`);
+  const asTz = new Date(guess.toLocaleString("en-US", { timeZone: tz }));
+  const asUtc = new Date(guess.toLocaleString("en-US", { timeZone: "UTC" }));
+  return new Date(guess.getTime() + (asUtc.getTime() - asTz.getTime()));
+}
+
+function addDaysToKey(dateKey: string, delta: number) {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + delta);
+  return `${dt.getUTCFullYear()}-${pad(dt.getUTCMonth() + 1)}-${pad(dt.getUTCDate())}`;
+}
+
+function weekdayOfDateKey(dateKey: string) {
+  const [y, m, d] = dateKey.split("-").map(Number);
+  return new Date(y, m - 1, d).getDay();
+}
+
+function cellKey(date: Date) {
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
+}
+
+function offsetLabel(tz: string) {
+  const part = new Intl.DateTimeFormat("en-US", { timeZone: tz, timeZoneName: "shortOffset" })
+    .formatToParts(new Date()).find(p => p.type === "timeZoneName");
+  return part?.value ?? "";
 }
 
 function buildMonthGrid(viewYear: number, viewMonth: number) {
@@ -60,89 +89,123 @@ function buildMonthGrid(viewYear: number, viewMonth: number) {
   return cells;
 }
 
-/* Deterministic mock availability — no backend behind this yet, so
-   slots are derived from the date itself rather than random per render. */
-function slotsForDate(date: Date) {
-  const seed = date.getFullYear() * 372 + date.getMonth() * 31 + date.getDate();
-  if (seed % 9 === 0) return [];
-  const start = seed % 3;
-  const count = 6 + (seed % 6);
-  return BASE_SLOTS.slice(start, start + count);
-}
+/* Every working half-hour on one host-local day, as absolute UTC instants. */
+function hostSlotsForDay(hostDateKey: string, hostTz: string) {
+  if (BOOKING_CONFIG.blockedDates.includes(hostDateKey)) return [];
+  if (!BOOKING_CONFIG.workingDays.includes(weekdayOfDateKey(hostDateKey))) return [];
 
-function findNextAvailable(from: Date, today: Date) {
-  const d = new Date(from);
-  for (let i = 0; i < 45; i++) {
-    d.setDate(d.getDate() + 1);
-    if (!isWeekend(d) && d >= today && slotsForDate(d).length > 0) return new Date(d);
-  }
-  return null;
-}
-
-function parseTimeOnDate(date: Date, time: string) {
-  const match = time.match(/(\d+):(\d+)\s?(AM|PM)/i);
-  const d = new Date(date);
-  if (!match) return d;
-  let h = parseInt(match[1], 10);
-  const m = parseInt(match[2], 10);
-  if (/pm/i.test(match[3]) && h !== 12) h += 12;
-  if (/am/i.test(match[3]) && h === 12) h = 0;
-  d.setHours(h, m, 0, 0);
-  return d;
-}
-
-function googleCalendarUrl(opts: { title: string; description: string; start: Date; end: Date; location: string }) {
-  const fmt = (d: Date) => d.toISOString().replace(/[-:]|\.\d{3}/g, "");
-  const params = new URLSearchParams({
-    action: "TEMPLATE",
-    text: opts.title,
-    dates: `${fmt(opts.start)}/${fmt(opts.end)}`,
-    details: opts.description,
-    location: opts.location,
+  const [sh, sm] = BOOKING_CONFIG.workingHours.start.split(":").map(Number);
+  const [eh, em] = BOOKING_CONFIG.workingHours.end.split(":").map(Number);
+  const breaks = BOOKING_CONFIG.breaks.map(b => {
+    const [bsh, bsm] = b.start.split(":").map(Number);
+    const [beh, bem] = b.end.split(":").map(Number);
+    return { start: bsh * 60 + bsm, end: beh * 60 + bem };
   });
-  return `https://calendar.google.com/calendar/render?${params.toString()}`;
+
+  const slots: Date[] = [];
+  for (let t = sh * 60 + sm; t < eh * 60 + em; t += 30) {
+    if (breaks.some(b => t >= b.start && t < b.end)) continue;
+    slots.push(wallTimeToUtc(hostDateKey, Math.floor(t / 60), t % 60, hostTz));
+  }
+  return slots;
+}
+
+function isBusy(slotStart: Date, durationMinutes: number, busy: BusyInterval[]) {
+  const slotEnd = new Date(slotStart.getTime() + durationMinutes * 60 * 1000);
+  return busy.some(b => slotStart < new Date(b.end) && slotEnd > new Date(b.start));
 }
 
 /* ── Root component ────────────────────────────────────────────── */
 export default function BookingCalendar() {
-  const today = useMemo(() => { const t = new Date(); t.setHours(0, 0, 0, 0); return t; }, []);
+  const [visitorTz, setVisitorTz] = useState(() => Intl.DateTimeFormat().resolvedOptions().timeZone);
 
-  const [viewYear, setViewYear] = useState(today.getFullYear());
-  const [viewMonth, setViewMonth] = useState(today.getMonth());
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [slotsLoading, setSlotsLoading] = useState(false);
-  const [location, setLocation] = useState<LocationId>("zoom");
+  const nowRef = useMemo(() => new Date(), []);
+  const todayKey = useMemo(() => dateKeyInTz(nowRef, visitorTz), [nowRef, visitorTz]);
+
+  const initialNow = useMemo(() => new Date(), []);
+  const [viewYear, setViewYear] = useState(initialNow.getFullYear());
+  const [viewMonth, setViewMonth] = useState(initialNow.getMonth());
+
+  const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
+
+  const [busyIntervals, setBusyIntervals] = useState<BusyInterval[]>([]);
+  const [monthLoading, setMonthLoading] = useState(true);
+  const [availabilityConfigured, setAvailabilityConfigured] = useState(true);
+
+  const [location, setLocation] = useState<LocationId>(LOCATIONS[0].id);
   const [step, setStep] = useState<Step>("pick");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [notes, setNotes] = useState("");
+  const [answers, setAnswers] = useState<string[]>(() => CUSTOM_QUESTIONS.map(() => ""));
   const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
   const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+  const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
 
-  const tz = useMemo(() => {
-    const zone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const offset = new Intl.DateTimeFormat("en-US", { timeZoneName: "shortOffset" })
-      .formatToParts(new Date()).find(p => p.type === "timeZoneName")?.value ?? "";
-    return `${zone}${offset ? ` (${offset})` : ""}`;
-  }, []);
+  const tzOptions = useMemo(
+    () => TZ_LIST
+      .map(zone => ({ zone, label: `${zone.replace(/_/g, " ")} (${offsetLabel(zone)})` }))
+      .sort((a, b) => a.zone.localeCompare(b.zone)),
+    []
+  );
 
-  const cells = useMemo(() => buildMonthGrid(viewYear, viewMonth), [viewYear, viewMonth]);
-  const daySlots = useMemo(() => (selectedDate ? slotsForDate(selectedDate) : []), [selectedDate]);
-  const canGoPrev = !(viewYear === today.getFullYear() && viewMonth === today.getMonth());
-
+  // Jump the visible month back to "today" (in the newly chosen zone) and
+  // drop any in-progress selection, since its meaning has shifted.
   useEffect(() => {
-    if (!selectedDate) return;
-    setSlotsLoading(true);
-    const t = setTimeout(() => setSlotsLoading(false), 380);
-    return () => clearTimeout(t);
-  }, [selectedDate]);
+    const [y, m] = todayKey.split("-").map(Number);
+    setViewYear(y);
+    setViewMonth(m - 1);
+    setSelectedDateKey(null);
+    setSelectedSlot(null);
+    setStep("pick");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [visitorTz]);
 
+  // Pull real busy blocks for the visible month so slots reflect the actual calendar.
   useEffect(() => {
-    if (!submitting) return;
-    const t = setTimeout(() => { setSubmitting(false); setStep("done"); }, 650);
-    return () => clearTimeout(t);
-  }, [submitting]);
+    setMonthLoading(true);
+    const cells = buildMonthGrid(viewYear, viewMonth);
+    const first = cells[0].date;
+    const last = cells[cells.length - 1].date;
+    const rangeStart = new Date(first.getFullYear(), first.getMonth(), first.getDate());
+    const rangeEnd = new Date(last.getFullYear(), last.getMonth(), last.getDate() + 1);
+    const controller = new AbortController();
+
+    fetch(`/api/availability?start=${encodeURIComponent(rangeStart.toISOString())}&end=${encodeURIComponent(rangeEnd.toISOString())}`, { signal: controller.signal })
+      .then(r => r.json())
+      .then(data => {
+        setBusyIntervals(Array.isArray(data.busy) ? data.busy : []);
+        setAvailabilityConfigured(data.configured !== false);
+      })
+      .catch(err => { if (err?.name !== "AbortError") setBusyIntervals([]); })
+      .finally(() => setMonthLoading(false));
+
+    return () => controller.abort();
+  }, [viewYear, viewMonth]);
+
+  const monthAvailability = useMemo(() => {
+    const map = new Map<string, Date[]>();
+    const cells = buildMonthGrid(viewYear, viewMonth);
+    const now = new Date();
+    for (const { date, inMonth } of cells) {
+      if (!inMonth) continue;
+      const key = cellKey(date);
+      if (key < todayKey) { map.set(key, []); continue; }
+      const candidates = [addDaysToKey(key, -1), key, addDaysToKey(key, 1)]
+        .flatMap(hostKey => hostSlotsForDay(hostKey, BOOKING_CONFIG.hostTimeZone));
+      const slots = candidates
+        .filter(instant => dateKeyInTz(instant, visitorTz) === key)
+        .filter(instant => instant.getTime() > now.getTime())
+        .filter(instant => !isBusy(instant, BOOKING_CONFIG.durationMinutes, busyIntervals))
+        .sort((a, b) => a.getTime() - b.getTime());
+      map.set(key, slots);
+    }
+    return map;
+  }, [viewYear, viewMonth, visitorTz, todayKey, busyIntervals]);
+
+  const canGoPrev = !(viewYear === Number(todayKey.slice(0, 4)) && viewMonth === Number(todayKey.slice(5, 7)) - 1);
+  const daySlots = selectedDateKey ? (monthAvailability.get(selectedDateKey) ?? []) : [];
 
   function goToMonth(dir: -1 | 1) {
     setViewMonth(m => {
@@ -154,20 +217,37 @@ export default function BookingCalendar() {
     });
   }
 
-  function selectDate(d: Date) {
-    setSelectedDate(d);
-    setSelectedTime(null);
+  function selectDate(key: string) {
+    setSelectedDateKey(key);
+    setSelectedSlot(null);
   }
 
-  function jumpToDate(d: Date) {
-    setViewYear(d.getFullYear());
-    setViewMonth(d.getMonth());
-    selectDate(d);
+  function jumpToDate(key: string) {
+    const [y, m] = key.split("-").map(Number);
+    setViewYear(y);
+    setViewMonth(m - 1);
+    selectDate(key);
   }
 
-  function pickTime(time: string) {
-    setSelectedTime(time);
+  function findNextAvailableKey(fromKey: string) {
+    let cursor = fromKey;
+    for (let i = 0; i < 45; i++) {
+      cursor = addDaysToKey(cursor, 1);
+      const candidates = [addDaysToKey(cursor, -1), cursor, addDaysToKey(cursor, 1)]
+        .flatMap(hostKey => hostSlotsForDay(hostKey, BOOKING_CONFIG.hostTimeZone));
+      const has = candidates.some(instant => dateKeyInTz(instant, visitorTz) === cursor && instant.getTime() > Date.now());
+      if (has) return cursor;
+    }
+    return null;
+  }
+
+  function pickSlot(slot: Date) {
+    setSelectedSlot(slot);
     setStep("details");
+  }
+
+  function updateAnswer(i: number, value: string) {
+    setAnswers(prev => { const next = [...prev]; next[i] = value; return next; });
   }
 
   function handleConfirm(e: React.FormEvent) {
@@ -177,53 +257,95 @@ export default function BookingCalendar() {
     if (!email.trim()) next.email = "Enter your email";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email";
     setErrors(next);
-    if (Object.keys(next).length > 0) return;
+    if (Object.keys(next).length > 0 || !selectedSlot) return;
+
+    setSubmitError(null);
     setSubmitting(true);
+
+    fetch("/api/book", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: name.trim(),
+        email: email.trim(),
+        startIso: selectedSlot.toISOString(),
+        durationMinutes: BOOKING_CONFIG.durationMinutes,
+        eventTitle: BOOKING_CONFIG.eventTitle,
+        location,
+        visitorTimeZone: visitorTz,
+        answers: CUSTOM_QUESTIONS.map((q, i) => ({ question: q, answer: answers[i] ?? "" })),
+      }),
+    })
+      .then(async r => {
+        const data = await r.json();
+        if (!r.ok) throw new Error(data.error || "Something went wrong. Please try again.");
+        setBookingResult({ meetLink: data.meetLink ?? null, htmlLink: data.htmlLink ?? null });
+        setStep("done");
+      })
+      .catch(err => setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again."))
+      .finally(() => setSubmitting(false));
   }
 
-  function reset() {
-    setSelectedDate(null);
-    setSelectedTime(null);
-    setName(""); setEmail(""); setNotes(""); setErrors({});
-    setStep("pick");
-  }
-
-  const startDate = selectedDate && selectedTime ? parseTimeOnDate(selectedDate, selectedTime) : null;
-  const endDate = startDate ? new Date(startDate.getTime() + 30 * 60 * 1000) : null;
-  const locationLabel = LOCATIONS.find(l => l.id === location)?.label ?? "Zoom";
+  const locationLabel = LOCATIONS.find(l => l.id === location)?.label ?? LOCATIONS[0].label;
 
   return (
     <div className="w-full max-w-5xl mx-auto rounded-[2rem] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_48px_-16px_rgba(0,0,0,0.14)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.5),0_20px_48px_-16px_rgba(0,0,0,0.7)] overflow-hidden">
       <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
 
-        {/* ── Event info panel ─────────────────────────────────── */}
+        {/* ── Event info panel — driven by lib/bookingConfig.ts ──── */}
         <div className="p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-neutral-200 dark:border-neutral-800">
-          <div className="w-10 h-10 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 flex items-center justify-center text-sm font-semibold">
-            {EVENT.host.split(" ").map(w => w[0]).join("")}
-          </div>
-          <p className="mt-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">{EVENT.host}</p>
+          {BOOKING_CONFIG.avatarUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={BOOKING_CONFIG.avatarUrl} alt={BOOKING_CONFIG.hostName} className="w-10 h-10 rounded-full object-cover" />
+          ) : (
+            <div className="w-10 h-10 rounded-full bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 flex items-center justify-center text-sm font-semibold">
+              {BOOKING_CONFIG.avatarInitials}
+            </div>
+          )}
+          <p className="mt-3 text-xs font-medium text-neutral-500 dark:text-neutral-400">{BOOKING_CONFIG.hostName}</p>
           <h3 className="mt-2 text-xl font-semibold tracking-tight text-neutral-900 dark:text-white leading-snug">
-            {EVENT.title}
+            {BOOKING_CONFIG.eventTitle}
           </h3>
 
           <div className="mt-5 space-y-3 text-sm text-neutral-600 dark:text-neutral-400">
             <div className="flex items-center gap-2.5">
               <Clock size={16} strokeWidth={1.5} className="shrink-0" />
-              <span>{EVENT.duration}</span>
+              <span>{BOOKING_CONFIG.duration}</span>
             </div>
             <div className="flex items-center gap-2.5">
               <Video size={16} strokeWidth={1.5} className="shrink-0" />
-              <span>Zoom or Google Meet</span>
+              <span>{BOOKING_CONFIG.locationText}</span>
             </div>
             <div className="flex items-center gap-2.5">
               <Globe size={16} strokeWidth={1.5} className="shrink-0" />
-              <span className="break-words">{tz}</span>
+              <div className="relative flex-1 min-w-0">
+                <select
+                  value={visitorTz}
+                  onChange={e => setVisitorTz(e.target.value)}
+                  aria-label="Timezone"
+                  className="w-full appearance-none bg-transparent text-sm text-neutral-600 dark:text-neutral-400 border-b border-transparent hover:border-neutral-300 dark:hover:border-neutral-700 focus:outline-none focus:border-neutral-900 dark:focus:border-white pr-4 py-0.5 cursor-pointer truncate"
+                >
+                  {tzOptions.map(opt => (
+                    <option key={opt.zone} value={opt.zone} className="text-neutral-900">
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown size={11} strokeWidth={1.5} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-neutral-400" />
+              </div>
             </div>
           </div>
 
           <p className="mt-6 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[38ch]">
-            {EVENT.description}
+            {BOOKING_CONFIG.description}
           </p>
+
+          {!availabilityConfigured && (
+            <div className="mt-6 flex items-start gap-2 rounded-xl border border-amber-500/25 bg-amber-500/5 px-3 py-2.5 text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
+              <AlertCircle size={14} strokeWidth={1.5} className="shrink-0 mt-0.5" />
+              <span>Live booking isn&apos;t connected yet — reach out directly for now.</span>
+            </div>
+          )}
         </div>
 
         {/* ── Right side ────────────────────────────────────────── */}
@@ -280,21 +402,20 @@ export default function BookingCalendar() {
                   </div>
 
                   <div className="grid grid-cols-7 gap-y-1">
-                    {cells.map(({ date, inMonth }, i) => {
+                    {buildMonthGrid(viewYear, viewMonth).map(({ date, inMonth }, i) => {
                       if (!inMonth) return <div key={i} className="h-10" />;
-                      const past = date < today;
-                      const weekend = isWeekend(date);
-                      const available = !past && !weekend;
-                      const selected = selectedDate && sameDay(date, selectedDate);
-                      const isToday = sameDay(date, today);
+                      const key = cellKey(date);
+                      const available = !monthLoading && (monthAvailability.get(key)?.length ?? 0) > 0;
+                      const selected = selectedDateKey === key;
+                      const isToday = key === todayKey;
                       return (
                         <div key={i} className="flex items-center justify-center">
                           <motion.button
                             type="button"
                             disabled={!available}
-                            aria-pressed={!!selected}
+                            aria-pressed={selected}
                             aria-label={date.toDateString()}
-                            onClick={() => available && selectDate(date)}
+                            onClick={() => available && selectDate(key)}
                             whileHover={available && !selected ? { scale: 1.08 } : undefined}
                             whileTap={available ? { scale: 0.92 } : undefined}
                             transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -320,7 +441,7 @@ export default function BookingCalendar() {
 
                 {/* Time slots */}
                 <div aria-live="polite">
-                  {!selectedDate && (
+                  {!selectedDateKey && (
                     <div className="hidden xl:flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
                       <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
                       <p className="text-xs text-neutral-400 dark:text-neutral-600 leading-relaxed">
@@ -329,66 +450,80 @@ export default function BookingCalendar() {
                     </div>
                   )}
 
-                  {selectedDate && (
-                    <div>
-                      <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4">
-                        {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-                      </p>
+                  {selectedDateKey && (() => {
+                    const [yy, mm, dd] = selectedDateKey.split("-").map(Number);
+                    const headingDate = new Date(yy, mm - 1, dd);
+                    return (
+                      <div>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4">
+                          {headingDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+                        </p>
 
-                      {slotsLoading && (
-                        <div className="grid grid-cols-2 gap-2">
-                          {Array.from({ length: 8 }).map((_, i) => (
-                            <div key={i} className="h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
-                          ))}
-                        </div>
-                      )}
+                        {monthLoading && (
+                          <div className="grid grid-cols-2 gap-2">
+                            {Array.from({ length: 8 }).map((_, i) => (
+                              <div key={i} className="h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
+                            ))}
+                          </div>
+                        )}
 
-                      {!slotsLoading && daySlots.length === 0 && (
-                        <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center">
-                          <CalendarX size={18} strokeWidth={1.5} className="mx-auto text-neutral-300 dark:text-neutral-700 mb-2" />
-                          <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-                            No times available on this day
-                          </p>
-                          {(() => {
-                            const next = findNextAvailable(selectedDate, today);
-                            if (!next) return null;
-                            return (
-                              <button
-                                type="button"
-                                onClick={() => jumpToDate(next)}
-                                className="text-xs font-medium text-neutral-900 dark:text-white underline underline-offset-2 hover:opacity-70"
-                              >
-                                Try {next.toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                              </button>
-                            );
-                          })()}
-                        </div>
-                      )}
+                        {!monthLoading && daySlots.length === 0 && (
+                          <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center">
+                            <CalendarX size={18} strokeWidth={1.5} className="mx-auto text-neutral-300 dark:text-neutral-700 mb-2" />
+                            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+                              No times available on this day
+                            </p>
+                            {(() => {
+                              const next = findNextAvailableKey(selectedDateKey);
+                              if (!next) return null;
+                              const [ny, nm, nd] = next.split("-").map(Number);
+                              return (
+                                <button
+                                  type="button"
+                                  onClick={() => jumpToDate(next)}
+                                  className="text-xs font-medium text-neutral-900 dark:text-white underline underline-offset-2 hover:opacity-70"
+                                >
+                                  Try {new Date(ny, nm - 1, nd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                                </button>
+                              );
+                            })()}
+                          </div>
+                        )}
 
-                      {!slotsLoading && daySlots.length > 0 && (
-                        <div className="grid grid-cols-2 gap-2">
-                          {daySlots.map(time => (
-                            <motion.button
-                              key={time}
-                              type="button"
-                              onClick={() => pickTime(time)}
-                              whileHover={{ scale: 1.03 }}
-                              whileTap={{ scale: 0.96 }}
-                              transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                              className="h-9 rounded-full border border-neutral-200 dark:border-neutral-800 text-xs font-medium text-neutral-800 dark:text-neutral-200 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white transition-colors"
-                            >
-                              {time}
-                            </motion.button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  )}
+                        {!monthLoading && daySlots.length > 0 && (
+                          <div className="grid grid-cols-2 gap-2">
+                            {daySlots.map(slot => {
+                              const isSelected = selectedSlot?.getTime() === slot.getTime();
+                              return (
+                                <motion.button
+                                  key={slot.toISOString()}
+                                  type="button"
+                                  onClick={() => pickSlot(slot)}
+                                  aria-pressed={isSelected}
+                                  whileHover={{ scale: 1.03 }}
+                                  whileTap={{ scale: 0.96 }}
+                                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                                  className={[
+                                    "h-9 rounded-full border text-xs font-medium transition-colors",
+                                    isSelected
+                                      ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
+                                      : "border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white",
+                                  ].join(" ")}
+                                >
+                                  {slot.toLocaleTimeString("en-US", { timeZone: visitorTz, hour: "numeric", minute: "2-digit", hour12: true })}
+                                </motion.button>
+                              );
+                            })}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })()}
                 </div>
               </motion.div>
             )}
 
-            {step === "details" && selectedDate && selectedTime && (
+            {step === "details" && selectedSlot && (
               <motion.form
                 key="details"
                 onSubmit={handleConfirm}
@@ -410,12 +545,14 @@ export default function BookingCalendar() {
                 <div className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 mb-6 space-y-2.5">
                   <div className="flex items-center gap-2.5 text-sm text-neutral-800 dark:text-neutral-200">
                     <Clock size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
-                    <span>{EVENT.duration}</span>
+                    <span>{BOOKING_CONFIG.duration}</span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm text-neutral-800 dark:text-neutral-200">
                     <Globe size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
                     <span>
-                      {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · {selectedTime}
+                      {selectedSlot.toLocaleDateString("en-US", { timeZone: visitorTz, weekday: "long", month: "long", day: "numeric" })}
+                      {" · "}
+                      {selectedSlot.toLocaleTimeString("en-US", { timeZone: visitorTz, hour: "numeric", minute: "2-digit", hour12: true })}
                     </span>
                   </div>
                 </div>
@@ -424,24 +561,27 @@ export default function BookingCalendar() {
                   Location
                 </p>
                 <div className="flex gap-2 mb-6">
-                  {LOCATIONS.map(({ id, label, Icon }) => (
-                    <motion.button
-                      key={id}
-                      type="button"
-                      onClick={() => setLocation(id)}
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.97 }}
-                      transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                      className={[
-                        "flex-1 flex items-center justify-center gap-2 h-10 rounded-full text-sm font-medium border transition-colors",
-                        location === id
-                          ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
-                          : "border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900",
-                      ].join(" ")}
-                    >
-                      <Icon size={15} strokeWidth={1.5} /> {label}
-                    </motion.button>
-                  ))}
+                  {LOCATIONS.map(({ id, label }) => {
+                    const Icon = LOCATION_ICONS[id];
+                    return (
+                      <motion.button
+                        key={id}
+                        type="button"
+                        onClick={() => setLocation(id)}
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.97 }}
+                        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                        className={[
+                          "flex-1 flex items-center justify-center gap-2 h-10 rounded-full text-sm font-medium border transition-colors",
+                          location === id
+                            ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
+                            : "border-neutral-200 dark:border-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-50 dark:hover:bg-neutral-900",
+                        ].join(" ")}
+                      >
+                        <Icon size={15} strokeWidth={1.5} /> {label}
+                      </motion.button>
+                    );
+                  })}
                 </div>
 
                 <div className="space-y-4">
@@ -473,19 +613,27 @@ export default function BookingCalendar() {
                     {errors.email && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.email}</p>}
                   </div>
 
-                  <div>
-                    <label className="flex items-center gap-2 text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
-                      <MessageSquare size={13} strokeWidth={1.5} /> What's on your mind? <span className="text-neutral-300 dark:text-neutral-700 normal-case font-normal">(optional)</span>
-                    </label>
-                    <textarea
-                      value={notes}
-                      onChange={e => setNotes(e.target.value)}
-                      rows={3}
-                      placeholder="A little context helps me prepare"
-                      className="w-full px-4 py-3 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white resize-none"
-                    />
-                  </div>
+                  {CUSTOM_QUESTIONS.map((question, i) => (
+                    <div key={question}>
+                      <label className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
+                        {question} <span className="text-neutral-300 dark:text-neutral-700 font-normal">(optional)</span>
+                      </label>
+                      <input
+                        type="text"
+                        value={answers[i] ?? ""}
+                        onChange={e => updateAnswer(i, e.target.value)}
+                        className="w-full h-11 px-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white"
+                      />
+                    </div>
+                  ))}
                 </div>
+
+                {submitError && (
+                  <div className="mt-5 flex items-start gap-2 rounded-xl border border-red-500/25 bg-red-500/5 px-3 py-2.5 text-xs text-red-600 dark:text-red-400 leading-relaxed">
+                    <AlertCircle size={14} strokeWidth={1.5} className="shrink-0 mt-0.5" />
+                    <span>{submitError}</span>
+                  </div>
+                )}
 
                 <motion.button
                   type="submit"
@@ -504,7 +652,7 @@ export default function BookingCalendar() {
               </motion.form>
             )}
 
-            {step === "done" && selectedDate && selectedTime && (
+            {step === "done" && selectedSlot && (
               <motion.div
                 key="done"
                 initial={{ opacity: 0, y: 8 }}
@@ -523,7 +671,7 @@ export default function BookingCalendar() {
                 </motion.div>
 
                 <h4 className="mt-5 text-lg font-semibold text-neutral-900 dark:text-white">
-                  You're all set{name.trim() ? `, ${name.trim().split(" ")[0]}` : ""}!
+                  You&apos;re all set{name.trim() ? `, ${name.trim().split(" ")[0]}` : ""}!
                 </h4>
                 <p className="mt-1.5 text-sm text-neutral-500 dark:text-neutral-400">
                   A confirmation will be sent to {email}.
@@ -533,35 +681,33 @@ export default function BookingCalendar() {
                   <div className="flex items-center gap-2.5 text-sm text-neutral-800 dark:text-neutral-200">
                     <Clock size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
                     <span>
-                      {selectedDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })} · {selectedTime} ({EVENT.duration})
+                      {selectedSlot.toLocaleDateString("en-US", { timeZone: visitorTz, weekday: "long", month: "long", day: "numeric" })}
+                      {" · "}
+                      {selectedSlot.toLocaleTimeString("en-US", { timeZone: visitorTz, hour: "numeric", minute: "2-digit", hour12: true })}
+                      {" "}({BOOKING_CONFIG.duration})
                     </span>
                   </div>
                   <div className="flex items-center gap-2.5 text-sm text-neutral-800 dark:text-neutral-200">
-                    {location === "zoom" ? <Video size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" /> : <MonitorPlay size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />}
+                    {(() => { const Icon = LOCATION_ICONS[location]; return <Icon size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />; })()}
                     <span>{locationLabel}</span>
                   </div>
                 </div>
 
-                {startDate && endDate && (
+                {location === "meet" && bookingResult?.meetLink && (
                   <a
-                    href={googleCalendarUrl({ title: EVENT.title, description: notes || EVENT.description, start: startDate, end: endDate, location: locationLabel })}
+                    href={bookingResult.meetLink}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="mt-5 inline-flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white underline underline-offset-2"
                   >
-                    Add to Google Calendar <ArrowUpRight size={13} strokeWidth={1.5} />
+                    Join with Google Meet <ArrowUpRight size={13} strokeWidth={1.5} />
                   </a>
                 )}
-
-                <div className="mt-6">
-                  <button
-                    type="button"
-                    onClick={reset}
-                    className="text-xs font-medium text-neutral-400 dark:text-neutral-600 hover:text-neutral-900 dark:hover:text-white"
-                  >
-                    Book another time
-                  </button>
-                </div>
+                {location === "zoom" && (
+                  <p className="mt-5 text-xs text-neutral-400 dark:text-neutral-600">
+                    Your Zoom link will be sent by email shortly.
+                  </p>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
