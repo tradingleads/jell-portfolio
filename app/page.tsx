@@ -688,12 +688,11 @@ const TOOL_SLUGS = [
   "notion",
   "elevenlabs",
   "airtable",
-  "openai",           // ChatGPT
-  "googlegemini",     // Gemini
-  "anthropic",        // Claude
-  "githubcopilot",    // GitHub Copilot
+  "openai",        // ChatGPT
+  "googlegemini",  // Gemini
+  "claude",        // Claude
+  "githubcopilot", // GitHub Copilot
   "zapier",
-  "visualstudiocode", // VS Code
   "make",
   "n8n",
   "github",
@@ -701,6 +700,7 @@ const TOOL_SLUGS = [
   "slack",
   "gmail",
   "google",
+  "supabase",
 ];
 
 // Full-bleed band — spans the viewport edge-to-edge instead of the page's

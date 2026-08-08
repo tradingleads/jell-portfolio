@@ -30,10 +30,13 @@ export const cloudProps: Omit<ICloud, "children"> = {
     tooltip: "native",
     tooltipDelay: 0,
     initial: [0.1, -0.1],
-    clickToFront: 500,
+    // Slower snap-to-front on click so a click doesn't read as a sudden jolt.
+    clickToFront: 900,
     outlineColour: "#0000",
-    maxSpeed: 0.05,
-    minSpeed: 0.025,
+    // Calmer idle drift — the previous 0.05/0.025 made clicking (which briefly
+    // adds velocity) feel like the cloud was spinning out of control.
+    maxSpeed: 0.03,
+    minSpeed: 0.015,
   },
 };
 
