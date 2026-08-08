@@ -693,6 +693,7 @@ const TOOL_SLUGS = [
   "claude",          // Claude
   "github",          // GitHub (not Copilot)
   "visualstudiocode", // VS Code
+  "microsoftcopilot", // Microsoft Copilot
   "zapier",
   "make",
   "n8n",

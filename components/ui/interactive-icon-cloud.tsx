@@ -66,6 +66,35 @@ const EXTRA_ICONS: Record<string, SimpleIcon> = {
   },
 };
 
+// Microsoft Copilot has no entry in Simple Icons at all (checked the full
+// current dataset plus a broad icon search — genuinely doesn't exist there),
+// and its real mark is a four-color gradient blossom that can't be flattened
+// into Simple Icons' single-path/hex format like everything else in
+// EXTRA_ICONS. This is the official artwork (provided directly, verbatim —
+// gradients, viewBox and all) rendered as its own full-color SVG instead.
+const COPILOT_TITLE = "Microsoft Copilot";
+const COPILOT_VIEWBOX = "0 23.3 512.1 465.4";
+const COPILOT_SVG_BODY = '<radialGradient id="a" cx="-79.674" cy="645.551" r="11.637" gradientTransform="matrix(-10.9605 -13.3892 -12.5901 10.3064 7673.291 -7504.614)" gradientUnits="userSpaceOnUse"><stop offset=".096" style="stop-color:#00aeff"/><stop offset=".773" style="stop-color:#2253ce"/><stop offset="1" style="stop-color:#0736c4"/></radialGradient><path d="M374 62c-6.7-22.9-27.8-38.7-51.7-38.7h-15.7c-26 0-48.3 18.6-53 44.2l-26.9 146.8 6.7-22.9c6.7-23 27.8-38.8 51.7-38.8h91.4l38.3 14.9 36.9-14.9H441c-23.9 0-45-15.8-51.7-38.7z" style="fill:url(#a)"/><radialGradient id="b" cx="-20.581" cy="641.788" r="11.637" gradientTransform="matrix(9.8803 12.5737 12.1968 -9.5842 -7518.271 6768.395)" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:#ffb657"/><stop offset=".634" style="stop-color:#ff5f3d"/><stop offset=".923" style="stop-color:#c02b3c"/></radialGradient><path d="M143.5 449.8c6.7 23 27.8 38.9 51.8 38.9h33.4c29.2 0 53.1-23.3 53.9-52.5l3.6-141.5-7.6 26c-6.7 23-27.8 38.7-51.7 38.7h-92.2l-32.9-17.8-35.6 17.8h10.6c24 0 45.1 15.9 51.8 38.9z" style="fill:url(#b)"/><linearGradient id="c" x1="151.476" x2="178.106" y1="452.543" y2="144.451" gradientTransform="matrix(1 0 0 -1 0 514)" gradientUnits="userSpaceOnUse"><stop offset=".156" style="stop-color:#0d91e1"/><stop offset=".487" style="stop-color:#52b471"/><stop offset=".652" style="stop-color:#98bd42"/><stop offset=".937" style="stop-color:#ffc800"/></linearGradient><path d="M320 23.3H133.4C80 23.3 48 93.7 26.7 164.2 1.4 247.7-31.6 359.4 64 359.4h80.6c24.1 0 45.2-15.9 51.8-39.1 14-49 38.6-134.5 57.9-199.6 9.8-33.1 18-61.5 30.5-79.2 7.1-9.9 18.8-18.2 35.2-18.2" style="fill:url(#c)"/><linearGradient id="d" x1="154.129" x2="168.669" y1="491.116" y2="155.012" gradientTransform="matrix(1 0 0 -1 0 514)" gradientUnits="userSpaceOnUse"><stop offset="0" style="stop-color:#3dcbff"/><stop offset=".247" style="stop-color:#0588f7;stop-opacity:0"/></linearGradient><path d="M320 23.3H133.4C80 23.3 48 93.7 26.7 164.2 1.4 247.7-31.6 359.4 64 359.4h80.6c24.1 0 45.2-15.9 51.8-39.1 14-49 38.6-134.5 57.9-199.6 9.8-33.1 18-61.5 30.5-79.2 7.1-9.9 18.8-18.2 35.2-18.2" style="fill:url(#d)"/><radialGradient id="e" cx="-46.943" cy="664.318" r="11.637" gradientTransform="matrix(-12.6711 36.2357 43.4092 15.1796 -28974.764 -8263.428)" gradientUnits="userSpaceOnUse"><stop offset=".066" style="stop-color:#8c48ff"/><stop offset=".5" style="stop-color:#f2598a"/><stop offset=".896" style="stop-color:#ffb152"/></radialGradient><path d="M192 488.7h186.7c53.3 0 85.3-70.5 106.7-141 25.3-83.5 58.3-195.2-37.3-195.2h-80.6c-24.1 0-45.2 15.9-51.8 39.1-14 49-38.6 134.6-57.9 199.7-9.8 33.1-18 61.5-30.5 79.2-7.2 9.9-18.9 18.2-35.3 18.2" style="fill:url(#e)"/><linearGradient id="f" x1="352.459" x2="352.268" y1="382.231" y2="290.663" gradientTransform="matrix(1 0 0 -1 0 514)" gradientUnits="userSpaceOnUse"><stop offset=".058" style="stop-color:#f8adfa"/><stop offset=".708" style="stop-color:#a86edd;stop-opacity:0"/></linearGradient><path d="M192 488.7h186.7c53.3 0 85.3-70.5 106.7-141 25.3-83.5 58.3-195.2-37.3-195.2h-80.6c-24.1 0-45.2 15.9-51.8 39.1-14 49-38.6 134.6-57.9 199.7-9.8 33.1-18 61.5-30.5 79.2-7.2 9.9-18.9 18.2-35.3 18.2" style="fill:url(#f)"/>';
+
+const renderCopilotIcon = (onSelect?: (title: string) => void, size = 40) => {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${COPILOT_VIEWBOX}" width="${size}" height="${size}">${COPILOT_SVG_BODY}</svg>`;
+  const src = `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+  return (
+    <a
+      key="microsoftcopilot"
+      href={undefined}
+      title={COPILOT_TITLE}
+      style={{ cursor: "pointer" }}
+      onClick={(e) => {
+        e.preventDefault();
+        onSelect?.(COPILOT_TITLE);
+      }}
+    >
+      <img src={src} width={size} height={size} alt={COPILOT_TITLE} />
+    </a>
+  );
+};
+
 // bg/fallback colors mirror this site's --ld-card / --ld-muted / --ld-text
 // tokens (globals.css) so the icon bubbles blend into the panel in both themes.
 export const renderCustomIcon = (
@@ -132,7 +161,7 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    const remoteSlugs = iconSlugs.filter((s) => !EXTRA_ICONS[s]);
+    const remoteSlugs = iconSlugs.filter((s) => !EXTRA_ICONS[s] && s !== "microsoftcopilot");
     fetchSimpleIcons({ slugs: remoteSlugs })
       .then(setData)
       .catch(() => setError(true));
@@ -154,9 +183,12 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
     // Render in the order the caller listed them, pulling each from
     // whichever source actually has it.
     return iconSlugs
-      .map((slug) => EXTRA_ICONS[slug] ?? data.simpleIcons[slug])
-      .filter((icon): icon is SimpleIcon => Boolean(icon))
-      .map((icon) => renderCustomIcon(icon, resolvedTheme || "light", handleSelect));
+      .map((slug) => {
+        if (slug === "microsoftcopilot") return renderCopilotIcon(handleSelect);
+        const icon = EXTRA_ICONS[slug] ?? data.simpleIcons[slug];
+        return icon ? renderCustomIcon(icon, resolvedTheme || "light", handleSelect) : null;
+      })
+      .filter(Boolean);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, resolvedTheme, iconSlugs]);
 
