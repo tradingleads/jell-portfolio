@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState, memo, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
@@ -13,6 +13,7 @@ import type { OrbState } from "@/components/AIOrb";
 const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
 const FloatingDock  = dynamic(() => import("@/components/FloatingDock"),  { ssr: false });
 const MouseGradient = dynamic(() => import("@/components/MouseGradient"), { ssr: false });
+const IconCloud      = dynamic(() => import("@/components/ui/interactive-icon-cloud").then(m => m.IconCloud), { ssr: false });
 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
@@ -682,168 +683,40 @@ function HeroSection() {
   );
 }
 
-/* ── Trust bar ─────────────────────────────────────────────── */
-/* ── Brand logo SVGs ────────────────────────────────────────── */
-const BrandIcon = ({ name, color }: { name: string; color: string }) => {
-  const icons: Record<string, React.ReactNode> = {
-    OpenAI: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M22.28 9.82a6 6 0 0 0-.52-4.91 6.05 6.05 0 0 0-6.51-2.9A6.07 6.07 0 0 0 4.98 4.18a5.98 5.98 0 0 0-4 2.9 6.05 6.05 0 0 0 .74 7.1 5.98 5.98 0 0 0 .51 4.91 6.05 6.05 0 0 0 6.51 2.9A5.98 5.98 0 0 0 13.26 24a6.06 6.06 0 0 0 5.77-4.21 5.99 5.99 0 0 0 4-2.9 6.06 6.06 0 0 0-.75-7.07zM13.26 22.5a4.48 4.48 0 0 1-2.88-1.04l.14-.08 4.78-2.76a.8.8 0 0 0 .39-.68V11.3l2.02 1.17a.07.07 0 0 1 .04.05v5.58a4.5 4.5 0 0 1-4.49 4.4zm-9.66-4.13a4.47 4.47 0 0 1-.53-3.01l.14.08 4.78 2.76a.77.77 0 0 0 .78 0l5.84-3.37v2.33a.08.08 0 0 1-.03.06L9.74 19.95a4.5 4.5 0 0 1-6.14-1.58zM2.34 7.9a4.49 4.49 0 0 1 2.37-1.97V11.6a.77.77 0 0 0 .39.68l5.81 3.35-2.02 1.17a.08.08 0 0 1-.07 0L3.97 14c-1.6-.93-2.13-2.96-1.63-4.61zm16.6 3.85-5.81-3.35 2.02-1.17a.08.08 0 0 1 .07 0l4.83 2.79a4.49 4.49 0 0 1-.68 8.1V12.6a.79.79 0 0 0-.43-.85zm2.01-3.02-.14-.09-4.77-2.78a.78.78 0 0 0-.79 0L9.41 9.23V6.9a.07.07 0 0 1 .03-.06l4.83-2.79a4.5 4.5 0 0 1 6.68 4.66zM8.31 12.86l-2.02-1.16a.08.08 0 0 1-.04-.06V6.07A4.5 4.5 0 0 1 13.63 2.6l-.14.08-4.78 2.76a.8.8 0 0 0-.4.68v6.74zm1.1-2.37 2.6-1.5 2.61 1.5v3l-2.6 1.5-2.6-1.5V10.5z"/>
-      </svg>
-    ),
-    Claude: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M4.88 0A4.88 4.88 0 0 0 0 4.88v14.24A4.88 4.88 0 0 0 4.88 24h14.24A4.88 4.88 0 0 0 24 19.12V4.88A4.88 4.88 0 0 0 19.12 0H4.88zm9.954 4.458 4.586 13.084h-2.613l-.924-2.808H11.38l-.924 2.808H7.843L12.43 4.458h2.404zm-1.19 2.923-1.804 5.39h3.608l-1.804-5.39z"/>
-      </svg>
-    ),
-    Gemini: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 24A14.3 14.3 0 0 0 0 12 14.3 14.3 0 0 0 12 0a14.3 14.3 0 0 0 12 12 14.3 14.3 0 0 0-12 12z"/>
-      </svg>
-    ),
-    n8n: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm0 3.6a8.4 8.4 0 1 1 0 16.8A8.4 8.4 0 0 1 12 3.6zm-3.6 5.4v6h1.8V10.8l3 4.2 3-4.2V15h1.8V9H16.2l-2.4 3.36L11.4 9H8.4z"/>
-      </svg>
-    ),
-    Make: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm4.95 7.05A7 7 0 0 1 19 12h-2a5 5 0 0 0-1.464-3.536L16.95 7.05zM5 12a7 7 0 0 1 7-7V3a9 9 0 0 0 0 18v-2a7 7 0 0 1-7-7zm7 7a7 7 0 0 1-4.95-2.05l-1.414 1.414A9 9 0 0 0 21 12h-2a7 7 0 0 1-7 7z"/>
-      </svg>
-    ),
-    Zapier: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M24 10.98h-7.13L21.9 5.94l-2.03-2.85-5.46 4.2V0h-4.82v7.28L4.13 3.09 2.1 5.94l5.03 5.04H0v3.5h7.13L2.1 19.52 4.13 22 9.6 17.8V24h4.82v-6.2l5.46 4.2 2.03-2.85-5.03-4.68H24v-3.5z"/>
-      </svg>
-    ),
-    Supabase: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M11.9 1.036c-.015-.986-1.26-1.41-1.874-.637L.764 12.05C.199 12.78.748 13.822 1.667 13.822h7.517l.045 9.122c.015.986 1.26 1.41 1.874.637l9.262-11.651c.565-.73.016-1.772-.903-1.772h-7.517L11.9 1.036z"/>
-      </svg>
-    ),
-    Airtable: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 0L1.892 4.358v6.75L12 15.48l10.108-4.372V4.358L12 0zM1.892 13.392V19.5L12 24v-6.108L1.892 13.392zm20.216 0L12 17.892V24l10.108-4.5v-6.108z"/>
-      </svg>
-    ),
-    Google: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 12h8.52c.06.42.08.86.08 1.32C20.6 17.9 17.1 21 12 21c-4.97 0-9-4.03-9-9s4.03-9 9-9c2.43 0 4.46.89 6.04 2.35L15.87 7.5A5.97 5.97 0 0 0 12 6a6 6 0 1 0 0 12c2.97 0 5.46-1.82 5.78-4.5H12V12z"/>
-      </svg>
-    ),
-    Meta: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M6.915 4.03c-1.968 0-3.683 1.28-4.871 3.113C.704 9.208 0 11.883 0 14.449c0 .706.07 1.369.21 1.973.14.604.35 1.153.63 1.61.28.457.63.84 1.05 1.107.42.267.91.4 1.46.4.51 0 .97-.086 1.39-.259.42-.173.81-.43 1.19-.77.78-.68 1.51-1.819 2.21-3.42l.56-1.33.51-1.244.35-.87c.19.37.39.77.58 1.19.19.42.39.856.59 1.308.2.453.4.908.6 1.364.2.456.41.897.62 1.32.45.912.88 1.518 1.3 1.817.41.3.95.45 1.59.45.57 0 1.05-.156 1.44-.467.39-.31.68-.77.85-1.376.19-.604.27-1.322.27-2.155 0-1.06-.11-2.095-.34-3.103-.22-1.008-.55-1.93-.99-2.763-.44-.834-.99-1.505-1.66-2.014-.67-.51-1.46-.764-2.37-.764zm0 2.37c.48 0 .9.153 1.27.46.37.306.7.735.99 1.287.3.553.55 1.198.77 1.937.22.738.4 1.528.54 2.37H5.37c-.17-.842-.37-1.63-.6-2.368-.22-.738-.48-1.38-.79-1.926-.3-.545-.65-.97-1.02-1.276-.37-.306-.78-.46-1.22-.46-.73 0-1.4.4-1.99 1.2-.6.8-1.06 1.842-1.38 3.126-.3 1.284-.49 2.7-.56 4.25.03.75.13 1.39.28 1.92.16.53.37.93.63 1.2.26.27.57.41.91.41.46 0 .93-.3 1.41-.89.48-.59 1.01-1.57 1.59-2.94l.42-1 .43-1.07.5-1.27.43 1.04c.2.5.4 1.01.6 1.52.2.51.4 1.01.6 1.48.2.47.41.9.62 1.3.45.86.87 1.43 1.27 1.7.4.27.87.41 1.43.41.5 0 .92-.14 1.26-.42.34-.28.59-.71.73-1.28.14-.57.22-1.27.22-2.1 0-.97-.1-1.9-.3-2.8-.2-.9-.49-1.7-.89-2.4-.4-.7-.89-1.26-1.47-1.68-.58-.42-1.25-.63-2.01-.63z"/>
-      </svg>
-    ),
-    Slack: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M5.042 15.165a2.528 2.528 0 0 1-2.52 2.523A2.528 2.528 0 0 1 0 15.165a2.527 2.527 0 0 1 2.522-2.52h2.52v2.52zm1.271 0a2.527 2.527 0 0 1 2.521-2.52 2.527 2.527 0 0 1 2.521 2.52v6.313A2.528 2.528 0 0 1 8.834 24a2.528 2.528 0 0 1-2.521-2.522v-6.313zM8.834 5.042a2.528 2.528 0 0 1-2.521-2.52A2.528 2.528 0 0 1 8.834 0a2.528 2.528 0 0 1 2.521 2.522v2.52H8.834zm0 1.271a2.528 2.528 0 0 1 2.521 2.521 2.528 2.528 0 0 1-2.521 2.521H2.522A2.528 2.528 0 0 1 0 8.834a2.528 2.528 0 0 1 2.522-2.521h6.312zm10.122 2.521a2.528 2.528 0 0 1 2.522-2.521A2.528 2.528 0 0 1 24 8.834a2.528 2.528 0 0 1-2.522 2.521h-2.522V8.834zm-1.268 0a2.528 2.528 0 0 1-2.523 2.521 2.527 2.527 0 0 1-2.52-2.521V2.522A2.527 2.527 0 0 1 15.165 0a2.528 2.528 0 0 1 2.523 2.522v6.312zm-2.523 10.122a2.528 2.528 0 0 1 2.523 2.522A2.528 2.528 0 0 1 15.165 24a2.527 2.527 0 0 1-2.52-2.522v-2.522h2.52zm0-1.268a2.527 2.527 0 0 1-2.52-2.523 2.526 2.526 0 0 1 2.52-2.52h6.313A2.527 2.527 0 0 1 24 15.165a2.528 2.528 0 0 1-2.522 2.523h-6.313z"/>
-      </svg>
-    ),
-    OpenRouter: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M3 3h4v4H3V3zm14 0h4v4h-4V3zm-7 7h4v4h-4v-4zm-7 7h4v4H3v-4zm14 0h4v4h-4v-4zM3 10.5h4v1H3v-1zm14 0h4v1h-4v-1zM10 3v4h1V3h-1zm0 14v4h1v-4h-1zM6.5 10.5v1h1v4h1v-4h1v-1h-3zm9 0v1h1v4h1v-4h1v-1h-3z"/>
-      </svg>
-    ),
-    GitHub: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/>
-      </svg>
-    ),
-    Notion: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279v-6.44l-1.215-.14c-.093-.514.28-.887.747-.933zM1.936 1.035l13.31-.98c1.634-.14 2.055-.047 3.082.7l4.249 2.986c.7.513.934.653.934 1.213v16.378c0 1.026-.373 1.634-1.68 1.726l-15.458.934c-.98.047-1.448-.093-1.962-.747l-3.129-4.06c-.56-.747-.793-1.306-.793-1.96V2.667c0-.839.374-1.54 1.447-1.632z"/>
-      </svg>
-    ),
-    Xero: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-1.243 15.324L8.59 13.15l-2.166 2.174a.902.902 0 0 1-1.275-1.275l2.174-2.166-2.174-2.166a.902.902 0 0 1 1.275-1.275L8.59 10.61l2.167-2.168a.902.902 0 0 1 1.275 1.275l-2.174 2.166 2.174 2.166a.902.902 0 0 1-1.275 1.275zm7.003.57a3.27 3.27 0 0 1-2.378-1.003l-1.094 1.572a.45.45 0 0 1-.748-.499l1.09-1.568a3.27 3.27 0 1 1 3.13 1.498zm0-5.594a2.32 2.32 0 1 0 0 4.64 2.32 2.32 0 0 0 0-4.64z"/>
-      </svg>
-    ),
-    Vapi: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-      </svg>
-    ),
-    ElevenLabs: (
-      <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-        <path d="M9 3h2v18H9zm4 0h2v18h-2z"/>
-      </svg>
-    ),
-  };
-
-  return icons[name] ?? (
-    <svg viewBox="0 0 24 24" width="14" height="14" fill={color}>
-      <circle cx="12" cy="12" r="9" stroke={color} strokeWidth="2" fill="none"/>
-      <text x="12" y="16" textAnchor="middle" fontSize="9" fontWeight="800" fill={color}>{name[0]}</text>
-    </svg>
-  );
-};
-
-const TECHS = [
-  { name: "OpenAI",     c: "#10a37f" },
-  { name: "Claude",     c: "#cc785c" },
-  { name: "Gemini",     c: "#4285F4" },
-  { name: "n8n",        c: "#ea4b71" },
-  { name: "Make",       c: "#9b59b6" },
-  { name: "Zapier",     c: "#ff4a00" },
-  { name: "GitHub",     c: "#f0f6fc" },
-  { name: "Notion",     c: "#ffffff"  },
-  { name: "Xero",       c: "#13B5EA" },
-  { name: "Vapi",       c: "#7C3AED" },
-  { name: "ElevenLabs", c: "#f97316" },
-  { name: "Airtable",   c: "#fcb400" },
-  { name: "Google",     c: "#4285F4" },
-  { name: "Slack",      c: "#4A154B" },
-  { name: "OpenRouter", c: "#6467f2" },
+/* ── Trust bar (interactive icon cloud) ───────────────────────── */
+const TOOL_SLUGS = [
+  "notion",
+  "elevenlabs",
+  "airtable",
+  "openai",           // ChatGPT
+  "googlegemini",     // Gemini
+  "anthropic",        // Claude
+  "githubcopilot",    // Copilot
+  "zapier",
+  "visualstudiocode", // VS Code
+  "make",
+  "n8n",
+  "github",
+  "xero",
+  "slack",
+  "gmail",
 ];
 
 function TrustBar() {
-  const doubled = [...TECHS, ...TECHS];
   return (
-    <section style={{ padding: "20px 0 40px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)", overflow: "hidden" }}>
+    <section style={{ padding: "20px 0 60px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
       <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
-      <div style={{ position: "relative" }}>
-        <motion.div
-          animate={{ x: ["0%", "-50%"] }}
-          transition={{ duration: 32, repeat: Infinity, ease: "linear" }}
-          style={{ display: "flex", width: "max-content", gap: 10 }}
-        >
-          {doubled.map((b, i) => (
-            <motion.div
-              key={i}
-              whileHover={{ y: -2, borderColor: `${b.c}60`, boxShadow: `0 4px 20px ${b.c}22` }}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 10,
-                padding: "10px 20px 10px 12px",
-                background: "var(--ld-card)",
-                border: "1px solid var(--ld-border)",
-                borderRadius: 100,
-                whiteSpace: "nowrap",
-                transition: "all 0.2s ease",
-                cursor: "default",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.18)",
-              }}
-            >
-              {/* Icon tile */}
-              <div style={{
-                width: 30, height: 30, borderRadius: 8, flexShrink: 0,
-                background: `${b.c}16`,
-                border: `1px solid ${b.c}30`,
-                display: "flex", alignItems: "center", justifyContent: "center",
-              }}>
-                <BrandIcon name={b.name} color={b.c} />
-              </div>
-              {/* Name */}
-              <span style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--ld-text)", letterSpacing: "0.01em" }}>
-                {b.name}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
-        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, width: 80, background: "linear-gradient(to right, var(--ld-card2), transparent)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", top: 0, right: 0, bottom: 0, width: 80, background: "linear-gradient(to left, var(--ld-card2), transparent)", pointerEvents: "none" }} />
+      <div style={{
+        position: "relative", overflow: "hidden",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        width: "100%", maxWidth: 520, margin: "0 auto",
+        minHeight: 340, padding: "0 24px",
+        background: "var(--ld-card)",
+        border: "1px solid var(--ld-border)",
+        borderRadius: 32,
+        boxShadow: "var(--ld-shadow)",
+      }}>
+        <IconCloud iconSlugs={TOOL_SLUGS} />
       </div>
     </section>
   );

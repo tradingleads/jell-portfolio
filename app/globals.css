@@ -300,6 +300,9 @@ body::after {
 /* ─── Lightbox spinner ───────────────────────────────────────── */
 @keyframes lb-spin { to { transform: rotate(360deg); } }
 
+/* ─── Icon cloud loading skeleton ───────────────────────────────── */
+@keyframes ld-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
 /* ─── Calendly mobile stability fix ─────────────────────────────
    Calendly's own script re-posts a new height for its iframe on
    every step change (and again when the on-screen keyboard opens
