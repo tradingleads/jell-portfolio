@@ -1438,22 +1438,22 @@ function ProjectsSection() {
 /* ── How I Work ────────────────────────────────────────────── */
 const STEPS = [
   {
-    n: "01", Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
+    Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
     t: "Discover",
     d: "Understand your business, workflow, and goals.",
   },
   {
-    n: "02", Icon: Settings2, hex: "#2563EB", c: "var(--ld-blue)",
+    Icon: Settings2, hex: "#2563EB", c: "var(--ld-blue)",
     t: "Plan",
     d: "Map the best automation solution for your process.",
   },
   {
-    n: "03", Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
+    Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
     t: "Build",
     d: "Develop, test, and connect everything together.",
   },
   {
-    n: "04", Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
+    Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
     t: "Launch",
     d: "Deploy your system, document it, and make sure it runs smoothly.",
   },
@@ -1514,17 +1514,16 @@ function HowIWorkSection() {
             animate={inView ? "visible" : "hidden"}
             style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, position: "relative", zIndex: 1 }}
           >
-            {STEPS.map(({ n, Icon, t, d, c, hex }, i) => {
+            {STEPS.map(({ Icon, t, d, c, hex }, i) => {
               const isActive = activeIdx >= i;
               const isHovered = hoveredIdx === i;
               return (
                 <motion.div
-                  key={n}
+                  key={t}
                   variants={cardVariants}
                   whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
                   onMouseEnter={() => setHoveredIdx(i)}
                   onMouseLeave={() => setHoveredIdx(null)}
-                  className="text-center sm:text-left"
                   style={{
                     padding: "28px 26px",
                     borderRadius: 22,
@@ -1542,27 +1541,18 @@ function HowIWorkSection() {
                     flexDirection: "column",
                   }}
                 >
-                  {/* Icon + step number */}
-                  <div className="justify-center sm:justify-between" style={{ display: "flex", alignItems: "center", gap: 16, width: "100%", marginBottom: 28 }}>
-                    {/* Icon */}
-                    <div style={{
-                      width: 56, height: 56, borderRadius: 16,
-                      background: `linear-gradient(135deg, ${hex}22, ${hex}0a)`,
-                      border: `1px solid ${hex}35`,
-                      display: "flex", alignItems: "center", justifyContent: "center",
-                      boxShadow: isHovered ? `0 0 20px ${hex}30` : "none",
-                      transition: "box-shadow 0.3s ease",
-                      flexShrink: 0,
-                    }}>
-                      <Icon size={24} strokeWidth={1.5} style={{ color: c }} />
-                    </div>
-                    {/* Step number */}
-                    <span style={{
-                      fontSize: "0.62rem", fontWeight: 800, letterSpacing: "0.12em",
-                      fontFamily: "var(--font-geist-mono)", color: hex,
-                      padding: "4px 10px", borderRadius: 100,
-                      background: hex + "12", border: `1px solid ${hex}28`,
-                    }}>{n}</span>
+                  {/* Icon */}
+                  <div style={{
+                    width: 56, height: 56, borderRadius: 16,
+                    marginBottom: 28,
+                    background: `linear-gradient(135deg, ${hex}22, ${hex}0a)`,
+                    border: `1px solid ${hex}35`,
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: isHovered ? `0 0 20px ${hex}30` : "none",
+                    transition: "box-shadow 0.3s ease",
+                    flexShrink: 0,
+                  }}>
+                    <Icon size={24} strokeWidth={1.5} style={{ color: c }} />
                   </div>
 
                   {/* Title — thin weight, tinted with the step's accent color */}
