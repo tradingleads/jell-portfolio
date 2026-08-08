@@ -735,16 +735,17 @@ function ServicesSection() {
   return (
     <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)", scrollMarginTop: 90 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ marginBottom: 60 }}>
+        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 60 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Deliver</p>
         </motion.div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
           {SERVICES.map(({ Icon, c, t, d }, i) => (
             <motion.div key={t} {...up(i * 0.07)}
               whileHover={{ y: -4, borderColor: c, boxShadow: `0 0 0 1px ${c}25, 0 16px 48px rgba(0,0,0,0.55), 0 0 32px ${c}08` }}
+              className="text-center sm:text-left"
               style={{ padding: "30px 26px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, transition: "all 0.28s ease", boxShadow: "var(--ld-shadow)" }}
             >
-              <div style={{ width: 46, height: 46, borderRadius: 13, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div className="mx-auto sm:mx-0" style={{ width: 46, height: 46, borderRadius: 13, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Icon size={22} strokeWidth={1.5} style={{ color: c }} />
               </div>
               <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 10 }}>{t}</h3>
@@ -1253,7 +1254,7 @@ function ProjectsSection() {
   return (
     <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ marginBottom: 16 }}>
+        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
           <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Automations That Perform
