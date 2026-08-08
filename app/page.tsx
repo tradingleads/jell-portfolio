@@ -692,6 +692,7 @@ const TOOL_SLUGS = [
   "googlegemini",    // Gemini
   "claude",          // Claude
   "github",          // GitHub (not Copilot)
+  "visualstudiocode", // VS Code
   "zapier",
   "make",
   "n8n",

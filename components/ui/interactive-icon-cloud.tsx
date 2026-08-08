@@ -49,6 +49,23 @@ export const cloudProps: Omit<ICloud, "children"> = {
   },
 };
 
+// react-icon-cloud fetches from a pinned simple-icons@14.0.0 CDN snapshot.
+// VS Code was removed from Simple Icons' active distribution at some point
+// (confirmed against both the current and several older published versions,
+// plus Simple Icons' own metadata marking it "hidden") so it 404s there even
+// though the slug itself is real. This is that same official artwork
+// (path + hex sourced from simple-icons@10.0.0's own data, last version that
+// still shipped it) supplied locally instead of fetched, so IconCloud can
+// still render it.
+const EXTRA_ICONS: Record<string, SimpleIcon> = {
+  visualstudiocode: {
+    slug: "visualstudiocode",
+    title: "Visual Studio Code",
+    hex: "007ACC",
+    path: "M23.15 2.587L18.21.21a1.494 1.494 0 0 0-1.705.29l-9.46 8.63-4.12-3.128a.999.999 0 0 0-1.276.057L.327 7.261A1 1 0 0 0 .326 8.74L3.899 12 .326 15.26a1 1 0 0 0 .001 1.479L1.65 17.94a.999.999 0 0 0 1.276.057l4.12-3.128 9.46 8.63a1.492 1.492 0 0 0 1.704.29l4.942-2.377A1.5 1.5 0 0 0 24 20.06V3.939a1.5 1.5 0 0 0-.85-1.352zm-5.146 14.861L10.826 12l7.178-5.448v10.896z",
+  },
+};
+
 // bg/fallback colors mirror this site's --ld-card / --ld-muted / --ld-text
 // tokens (globals.css) so the icon bubbles blend into the panel in both themes.
 export const renderCustomIcon = (
@@ -115,7 +132,8 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   useEffect(() => setMounted(true), []);
 
   useEffect(() => {
-    fetchSimpleIcons({ slugs: iconSlugs })
+    const remoteSlugs = iconSlugs.filter((s) => !EXTRA_ICONS[s]);
+    fetchSimpleIcons({ slugs: remoteSlugs })
       .then(setData)
       .catch(() => setError(true));
   }, [iconSlugs]);
@@ -133,11 +151,14 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
 
   const renderedIcons = useMemo(() => {
     if (!data) return null;
-    return Object.values(data.simpleIcons).map((icon) =>
-      renderCustomIcon(icon, resolvedTheme || "light", handleSelect),
-    );
+    // Render in the order the caller listed them, pulling each from
+    // whichever source actually has it.
+    return iconSlugs
+      .map((slug) => EXTRA_ICONS[slug] ?? data.simpleIcons[slug])
+      .filter((icon): icon is SimpleIcon => Boolean(icon))
+      .map((icon) => renderCustomIcon(icon, resolvedTheme || "light", handleSelect));
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, resolvedTheme]);
+  }, [data, resolvedTheme, iconSlugs]);
 
   if (error) {
     return (
