@@ -515,19 +515,22 @@ function Navbar() {
           </div>
         </motion.a>
 
-        {/* Hamburger */}
-        <motion.button
-          type="button"
-          onClick={() => setMenuOpen(v => !v)}
-          whileTap={{ scale: 0.92 }}
-          style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: 10, background: menuOpen ? "var(--ld-glow)" : "var(--ld-card)", border: `1px solid ${menuOpen ? "var(--ld-borderC)" : "var(--ld-border)"}`, cursor: "pointer", color: "var(--ld-text)", transition: "all 0.2s ease" }}
-        >
-          <AnimatePresence mode="wait" initial={false}>
-            <motion.span key={menuOpen ? "x" : "menu"} initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }} style={{ display: "flex" }}>
-              {menuOpen ? <X size={18} strokeWidth={2} /> : <Menu size={18} strokeWidth={2} />}
-            </motion.span>
-          </AnimatePresence>
-        </motion.button>
+        {/* Theme toggle + hamburger */}
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <ThemeToggle />
+          <motion.button
+            type="button"
+            onClick={() => setMenuOpen(v => !v)}
+            whileTap={{ scale: 0.92 }}
+            style={{ display: "flex", alignItems: "center", justifyContent: "center", width: 40, height: 40, borderRadius: 10, background: menuOpen ? "var(--ld-glow)" : "var(--ld-card)", border: `1px solid ${menuOpen ? "var(--ld-borderC)" : "var(--ld-border)"}`, cursor: "pointer", color: "var(--ld-text)", transition: "all 0.2s ease" }}
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.span key={menuOpen ? "x" : "menu"} initial={{ rotate: -90, opacity: 0 }} animate={{ rotate: 0, opacity: 1 }} exit={{ rotate: 90, opacity: 0 }} transition={{ duration: 0.15 }} style={{ display: "flex" }}>
+                {menuOpen ? <X size={18} strokeWidth={2} /> : <Menu size={18} strokeWidth={2} />}
+              </motion.span>
+            </AnimatePresence>
+          </motion.button>
+        </div>
       </div>
 
     </motion.header>
@@ -594,26 +597,13 @@ function Navbar() {
               </motion.a>
             ))}
 
-            {/* Theme row — same size and padding as nav items */}
-            <motion.div
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (NAV_ITEMS.length + 1) * 0.06, duration: 0.2 }}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "space-between",
-                padding: "14px 0", borderBottom: "1px solid var(--ld-border)",
-              }}
-            >
-              <span style={{ fontSize: "1.125rem", fontWeight: 600, color: "var(--ld-text)" }}>Theme</span>
-              <ThemeToggle />
-            </motion.div>
-
             {/* Book CTA */}
             <motion.a
               href="#contact"
               onClick={() => setMenuOpen(false)}
               whileTap={{ scale: 0.97 }}
               initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (NAV_ITEMS.length + 2) * 0.06, duration: 0.2 }}
+              transition={{ delay: (NAV_ITEMS.length + 1) * 0.06, duration: 0.2 }}
               style={{
                 display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                 marginTop: 20, padding: "13px 0", borderRadius: 100,
