@@ -31,8 +31,8 @@ export const cloudProps: Omit<ICloud, "children"> = {
     clickToFront: 500,
     tooltipDelay: 0,
     outlineColour: "#0000",
-    maxSpeed: 0.04,
-    minSpeed: 0.02,
+    maxSpeed: 0.05,
+    minSpeed: 0.025,
   },
 };
 
@@ -48,7 +48,7 @@ export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
     bgHex,
     fallbackHex,
     minContrastRatio,
-    size: 42,
+    size: 48,
     aProps: {
       href: undefined,
       target: undefined,
@@ -99,10 +99,10 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
         aria-hidden="true"
         style={{
           display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: 20,
+          gridTemplateColumns: "repeat(6, 1fr)",
+          gap: 24,
           width: "100%",
-          maxWidth: 320,
+          maxWidth: 440,
           padding: "48px 20px",
         }}
       >
@@ -110,7 +110,7 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
           <div
             key={slug}
             style={{
-              width: 42, height: 42, borderRadius: "50%",
+              width: 48, height: 48, borderRadius: "50%",
               background: "var(--ld-border)",
               animation: "ld-pulse 1.6s ease-in-out infinite",
             }}

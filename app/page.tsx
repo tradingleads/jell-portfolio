@@ -691,7 +691,7 @@ const TOOL_SLUGS = [
   "openai",           // ChatGPT
   "googlegemini",     // Gemini
   "anthropic",        // Claude
-  "githubcopilot",    // Copilot
+  "githubcopilot",    // GitHub Copilot
   "zapier",
   "visualstudiocode", // VS Code
   "make",
@@ -700,23 +700,28 @@ const TOOL_SLUGS = [
   "xero",
   "slack",
   "gmail",
+  "google",
+  "openrouter",
+  "vapi",             // skipped safely by IconCloud if the slug isn't in Simple Icons
 ];
 
 function TrustBar() {
   return (
     <section style={{ padding: "20px 0 60px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
-      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
-      <div style={{
-        position: "relative", overflow: "hidden",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        width: "100%", maxWidth: 520, margin: "0 auto",
-        minHeight: 340, padding: "0 24px",
-        background: "var(--ld-card)",
-        border: "1px solid var(--ld-border)",
-        borderRadius: 32,
-        boxShadow: "var(--ld-shadow)",
-      }}>
-        <IconCloud iconSlugs={TOOL_SLUGS} />
+      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+        <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
+        <div style={{
+          position: "relative", overflow: "hidden",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          width: "100%",
+          minHeight: 440, padding: "24px",
+          background: "var(--ld-card)",
+          border: "1px solid var(--ld-border)",
+          borderRadius: 32,
+          boxShadow: "var(--ld-shadow)",
+        }}>
+          <IconCloud iconSlugs={TOOL_SLUGS} />
+        </div>
       </div>
     </section>
   );
