@@ -701,27 +701,25 @@ const TOOL_SLUGS = [
   "slack",
   "gmail",
   "google",
-  "openrouter",
-  "vapi",             // skipped safely by IconCloud if the slug isn't in Simple Icons
 ];
 
+// Full-bleed band — spans the viewport edge-to-edge instead of the page's
+// usual 1200px content column, so the cloud reads as its own moment.
 function TrustBar() {
   return (
     <section style={{ padding: "20px 0 60px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
-        <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
-        <div style={{
-          position: "relative", overflow: "hidden",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          width: "100%",
-          minHeight: 440, padding: "24px",
-          background: "var(--ld-card)",
-          border: "1px solid var(--ld-border)",
-          borderRadius: 32,
-          boxShadow: "var(--ld-shadow)",
-        }}>
-          <IconCloud iconSlugs={TOOL_SLUGS} />
-        </div>
+      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
+      <div style={{
+        position: "relative", overflow: "hidden",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        width: "100%",
+        minHeight: 460, padding: "24px",
+        background: "var(--ld-card)",
+        borderTop: "1px solid var(--ld-border)",
+        borderBottom: "1px solid var(--ld-border)",
+        boxShadow: "var(--ld-shadow)",
+      }}>
+        <IconCloud iconSlugs={TOOL_SLUGS} />
       </div>
     </section>
   );

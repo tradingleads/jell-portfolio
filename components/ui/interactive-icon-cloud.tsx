@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Cloud,
   fetchSimpleIcons,
@@ -25,11 +26,11 @@ export const cloudProps: Omit<ICloud, "children"> = {
     depth: 1,
     wheelZoom: false,
     imageScale: 2,
-    activeCursor: "default",
+    activeCursor: "pointer",
     tooltip: "native",
+    tooltipDelay: 0,
     initial: [0.1, -0.1],
     clickToFront: 500,
-    tooltipDelay: 0,
     outlineColour: "#0000",
     maxSpeed: 0.05,
     minSpeed: 0.025,
@@ -38,7 +39,11 @@ export const cloudProps: Omit<ICloud, "children"> = {
 
 // bg/fallback colors mirror this site's --ld-card / --ld-muted / --ld-text
 // tokens (globals.css) so the icon bubbles blend into the panel in both themes.
-export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
+export const renderCustomIcon = (
+  icon: SimpleIcon,
+  theme: string,
+  onSelect?: (title: string) => void,
+) => {
   const bgHex = theme === "light" ? "#f5f5f7" : "#10131a";
   const fallbackHex = theme === "light" ? "#777777" : "#ffffff";
   const minContrastRatio = theme === "dark" ? 2 : 1.2;
@@ -53,7 +58,14 @@ export const renderCustomIcon = (icon: SimpleIcon, theme: string) => {
       href: undefined,
       target: undefined,
       rel: undefined,
-      onClick: (e: any) => e.preventDefault(),
+      // Native browser tooltip on hover (desktop).
+      title: icon.title,
+      onClick: (e: any) => {
+        e.preventDefault();
+        // Touch devices have no hover, so a tap surfaces the same name as a visible label.
+        onSelect?.(icon.title);
+      },
+      style: { cursor: "pointer" },
     },
   });
 };
@@ -68,6 +80,7 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null);
   const [error, setError] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [activeTool, setActiveTool] = useState<string | null>(null);
   const { resolvedTheme } = useTheme();
 
   useEffect(() => setMounted(true), []);
@@ -78,10 +91,16 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
       .catch(() => setError(true));
   }, [iconSlugs]);
 
+  useEffect(() => {
+    if (!activeTool) return;
+    const t = setTimeout(() => setActiveTool(null), 2200);
+    return () => clearTimeout(t);
+  }, [activeTool]);
+
   const renderedIcons = useMemo(() => {
     if (!data) return null;
     return Object.values(data.simpleIcons).map((icon) =>
-      renderCustomIcon(icon, resolvedTheme || "light"),
+      renderCustomIcon(icon, resolvedTheme || "light", setActiveTool),
     );
   }, [data, resolvedTheme]);
 
@@ -121,9 +140,42 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }
 
   return (
-    // @ts-ignore
-    <Cloud {...cloudProps}>
-      <>{renderedIcons}</>
-    </Cloud>
+    <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}>
+      {/* @ts-ignore */}
+      <Cloud {...cloudProps}>
+        <>{renderedIcons}</>
+      </Cloud>
+
+      {/* Tap-triggered name label — covers touch devices, which have no hover state. */}
+      <AnimatePresence>
+        {activeTool && (
+          <motion.div
+            key={activeTool}
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 8 }}
+            transition={{ type: "spring", stiffness: 300, damping: 24 }}
+            style={{
+              position: "absolute",
+              bottom: 12,
+              left: "50%",
+              transform: "translateX(-50%)",
+              padding: "7px 16px",
+              borderRadius: 100,
+              background: "var(--ld-bg)",
+              border: "1px solid var(--ld-borderC)",
+              boxShadow: "var(--ld-shadow)",
+              fontSize: "0.8125rem",
+              fontWeight: 700,
+              color: "var(--ld-accent)",
+              whiteSpace: "nowrap",
+              pointerEvents: "none",
+            }}
+          >
+            {activeTool}
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }
