@@ -30,16 +30,21 @@ export const cloudProps: Omit<ICloud, "children"> = {
     tooltip: "native",
     tooltipDelay: 0,
     initial: [0.05, -0.05],
-    clickToFront: 500,
+    // clickToFront was rotating the whole sphere to bring the clicked icon to
+    // center on every click — that whole-cloud reorientation is what read as
+    // "moves away". Turning it off leaves the cloud exactly where it was.
+    clickToFront: false,
     outlineColour: "#0000",
     // Subtle, slow ambient drift.
     maxSpeed: 0.02,
     minSpeed: 0.01,
-    // A click was being read as a tiny drag, flinging the whole cloud instead
-    // of just selecting the icon. Disabling drag-to-spin means a click can
-    // only ever click, and freezeActive holds the cloud still on the clicked
-    // icon instead of letting it keep drifting away underneath the label.
-    dragControl: false,
+    // dragControl:false previously also removed the library's mousedown
+    // listener, which is what it uses to detect a click on a tag at all —
+    // that's why the name label stopped showing. Keep it on (desktop default)
+    // so clicks are still detected, and freezeActive keeps the cloud still
+    // while a tag is active instead of visibly drifting under the label.
+    dragControl: true,
+    dragThreshold: 12,
     freezeActive: true,
   },
 };
