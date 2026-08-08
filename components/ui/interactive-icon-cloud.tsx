@@ -35,6 +35,12 @@ export const cloudProps: Omit<ICloud, "children"> = {
     // Subtle, slow ambient drift.
     maxSpeed: 0.02,
     minSpeed: 0.01,
+    // A click was being read as a tiny drag, flinging the whole cloud instead
+    // of just selecting the icon. Disabling drag-to-spin means a click can
+    // only ever click, and freezeActive holds the cloud still on the clicked
+    // icon instead of letting it keep drifting away underneath the label.
+    dragControl: false,
+    freezeActive: true,
   },
 };
 
@@ -54,7 +60,7 @@ export const renderCustomIcon = (
     bgHex,
     fallbackHex,
     minContrastRatio,
-    size: 48,
+    size: 40,
     aProps: {
       href: undefined,
       target: undefined,
@@ -130,7 +136,7 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
           <div
             key={slug}
             style={{
-              width: 48, height: 48, borderRadius: "50%",
+              width: 40, height: 40, borderRadius: "50%",
               background: "var(--ld-border)",
               animation: "ld-pulse 1.6s ease-in-out infinite",
             }}
