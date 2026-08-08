@@ -1441,25 +1441,21 @@ const STEPS = [
     n: "01", Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
     t: "Discover",
     d: "Understand your business, workflow, and goals.",
-    tag: "Discover",
   },
   {
     n: "02", Icon: Settings2, hex: "#2563EB", c: "var(--ld-blue)",
     t: "Plan",
     d: "Map the best automation solution for your process.",
-    tag: "Plan",
   },
   {
     n: "03", Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
     t: "Build",
     d: "Develop, test, and connect everything together.",
-    tag: "Build",
   },
   {
     n: "04", Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
     t: "Launch",
     d: "Deploy your system, document it, and make sure it runs smoothly.",
-    tag: "Launch",
   },
 ];
 
@@ -1518,7 +1514,7 @@ function HowIWorkSection() {
             animate={inView ? "visible" : "hidden"}
             style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 24, position: "relative", zIndex: 1 }}
           >
-            {STEPS.map(({ n, Icon, t, d, c, hex, tag }, i) => {
+            {STEPS.map(({ n, Icon, t, d, c, hex }, i) => {
               const isActive = activeIdx >= i;
               const isHovered = hoveredIdx === i;
               return (
@@ -1528,6 +1524,7 @@ function HowIWorkSection() {
                   whileHover={{ y: -10, scale: 1.02, transition: { duration: 0.3, ease: [0.16, 1, 0.3, 1] } }}
                   onMouseEnter={() => setHoveredIdx(i)}
                   onMouseLeave={() => setHoveredIdx(null)}
+                  className="text-center sm:text-left"
                   style={{
                     padding: "28px 26px",
                     borderRadius: 22,
@@ -1545,8 +1542,8 @@ function HowIWorkSection() {
                     flexDirection: "column",
                   }}
                 >
-                  {/* Step tag */}
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 28 }}>
+                  {/* Icon + step number */}
+                  <div className="justify-center sm:justify-between" style={{ display: "flex", alignItems: "center", gap: 16, width: "100%", marginBottom: 28 }}>
                     {/* Icon */}
                     <div style={{
                       width: 56, height: 56, borderRadius: 16,
@@ -1555,6 +1552,7 @@ function HowIWorkSection() {
                       display: "flex", alignItems: "center", justifyContent: "center",
                       boxShadow: isHovered ? `0 0 20px ${hex}30` : "none",
                       transition: "box-shadow 0.3s ease",
+                      flexShrink: 0,
                     }}>
                       <Icon size={24} strokeWidth={1.5} style={{ color: c }} />
                     </div>
@@ -1567,11 +1565,8 @@ function HowIWorkSection() {
                     }}>{n}</span>
                   </div>
 
-                  {/* Tag */}
-                  <p style={{ fontSize: "0.62rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: c, marginBottom: 10, opacity: 0.75 }}>{tag}</p>
-
-                  {/* Title */}
-                  <h3 style={{ fontSize: "1.1875rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 14, lineHeight: 1.25, letterSpacing: "-0.01em" }}>{t}</h3>
+                  {/* Title — thin weight, tinted with the step's accent color */}
+                  <h3 style={{ fontSize: "1.1875rem", fontWeight: 500, color: c, fontFamily: "var(--font-display)", marginBottom: 14, lineHeight: 1.25, letterSpacing: "-0.01em" }}>{t}</h3>
 
                   {/* Description */}
                   <p style={{ fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.75, flex: 1 }}>{d}</p>
