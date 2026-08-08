@@ -703,7 +703,7 @@ const TOOL_SLUGS = [
 function TrustBar() {
   return (
     <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
-      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 28 }}>Powered By Industry-Leading Tools</p>
+      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 28 }}>Tools &amp; Technologies</p>
       <div style={{ position: "relative", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <IconCloud iconSlugs={TOOL_SLUGS} />
       </div>
