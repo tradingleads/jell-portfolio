@@ -13,6 +13,7 @@ const Chat          = dynamic(() => import("@/components/Chat"),          { ssr:
 const FloatingDock  = dynamic(() => import("@/components/FloatingDock"),  { ssr: false });
 const MouseGradient = dynamic(() => import("@/components/MouseGradient"), { ssr: false });
 const IconCloud      = dynamic(() => import("@/components/ui/interactive-icon-cloud").then(m => m.IconCloud), { ssr: false });
+const BookingCalendar = dynamic(() => import("@/components/BookingCalendar"), { ssr: false });
 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
@@ -1719,6 +1720,10 @@ function CTASection() {
           <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
+        </motion.div>
+
+        <motion.div {...up(0.1)} style={{ marginTop: 32 }}>
+          <BookingCalendar />
         </motion.div>
 
       </div>
