@@ -29,23 +29,26 @@ export const cloudProps: Omit<ICloud, "children"> = {
     activeCursor: "pointer",
     tooltip: "native",
     tooltipDelay: 0,
-    initial: [0.05, -0.05],
-    // clickToFront was rotating the whole sphere to bring the clicked icon to
-    // center on every click — that whole-cloud reorientation is what read as
-    // "moves away". Turning it off leaves the cloud exactly where it was.
+    initial: [0.03, -0.03],
+    // clickToFront must be the boolean false, not 0 — the library's own
+    // click handler checks `this.clickToFront === false`, and 0 fails that
+    // strict check, so it would still run the whole-sphere "rotate to front"
+    // animation (just over 0ms, i.e. an instant jump instead of an animated
+    // one). false is the only value that actually skips that reorientation
+    // and stops the "moves away" jump on click.
     clickToFront: false,
     outlineColour: "#0000",
-    // Subtle, slow ambient drift.
-    maxSpeed: 0.02,
-    minSpeed: 0.01,
+    // Slow, steady continuous drift — never fully stops.
+    maxSpeed: 0.015,
+    minSpeed: 0.008,
     // dragControl:false previously also removed the library's mousedown
     // listener, which is what it uses to detect a click on a tag at all —
-    // that's why the name label stopped showing. Keep it on (desktop default)
-    // so clicks are still detected, and freezeActive keeps the cloud still
-    // while a tag is active instead of visibly drifting under the label.
+    // that's why the name label stopped showing at one point. Keep it on
+    // (desktop default) so clicks are still detected.
     dragControl: true,
     dragThreshold: 12,
-    freezeActive: true,
+    // No freezeActive: the cloud keeps drifting continuously even while a
+    // tag is active/clicked, instead of pausing.
   },
 };
 
