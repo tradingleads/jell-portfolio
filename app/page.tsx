@@ -1798,7 +1798,7 @@ function PortfolioSection() {
             Not Sure Where to Start?
           </h2>
           <p style={{ fontSize: "0.9375rem", color: "#94A3B8", lineHeight: 1.6, maxWidth: "44ch", margin: "6px auto 0" }}>
-            Ask the AI — instant answers about pricing, services, and what I can automate for your business.
+            Ask my AI — instant answers about pricing, services, and what I can automate for your business.
           </p>
         </motion.div>
 
@@ -1859,7 +1859,7 @@ function Footer() {
         >
           <span style={{ fontSize: "0.68rem", color: "var(--ld-muted)", letterSpacing: "0.01em", whiteSpace: "nowrap" }}>Not sure where to start?</span>
           <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "var(--ld-accent)", letterSpacing: "0.01em", display: "inline-flex", alignItems: "center", gap: 3, whiteSpace: "nowrap" }}>
-            Ask the AI <ArrowRight size={11} strokeWidth={2.5} />
+            Ask my AI <ArrowRight size={11} strokeWidth={2.5} />
           </span>
         </a>
 
