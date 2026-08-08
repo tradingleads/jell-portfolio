@@ -72,6 +72,7 @@ const LOOP = 10000;
 const ChatPreview = memo(function ChatPreview() {
   const [visible, setVisible] = useState<number[]>([]);
   const [typing, setTyping] = useState(false);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let timers: ReturnType<typeof setTimeout>[] = [];
@@ -95,12 +96,19 @@ const ChatPreview = memo(function ChatPreview() {
     return () => timers.forEach(clearTimeout);
   }, []);
 
+  // Auto-scroll within the fixed-height panel only — never affects page layout.
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+  }, [visible, typing]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: 0.4, ease: E }}
-      style={{ width: "100%", maxWidth: 460, margin: "0 auto" }}
+      style={{ width: "100%", maxWidth: 460, margin: "0 auto", contain: "layout" }}
     >
       {/* Browser chrome */}
       <div style={{
@@ -157,8 +165,17 @@ const ChatPreview = memo(function ChatPreview() {
           </div>
         </div>
 
-        {/* Messages */}
-        <div style={{ padding: "16px", display: "flex", flexDirection: "column", gap: 10, minHeight: 260 }}>
+        {/* Messages — fixed height + internal scroll so accumulating messages
+            can never grow this box or shift anything outside the Hero. */}
+        <div
+          ref={scrollRef}
+          className="hide-scrollbar"
+          style={{
+            padding: "16px", display: "flex", flexDirection: "column", gap: 10,
+            height: 280, overflowY: "auto", overscrollBehavior: "contain",
+            contain: "layout",
+          }}
+        >
           <AnimatePresence initial={false}>
             {DEMO.map(msg => {
               if (!visible.includes(msg.id)) return null;
@@ -617,7 +634,7 @@ function Navbar() {
 /* ── Hero ──────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68 }}>
+    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout" }}>
       {/* Hero dot grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, var(--ld-borderC) 1px, transparent 0)", backgroundSize: "32px 32px", opacity: 0.25, pointerEvents: "none" }} />
       {/* Spotlight — blue top center */}
