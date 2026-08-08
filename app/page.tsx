@@ -688,37 +688,31 @@ const TOOL_SLUGS = [
   "notion",
   "elevenlabs",
   "airtable",
-  "openai",        // ChatGPT
-  "googlegemini",  // Gemini
-  "claude",        // Claude
-  "githubcopilot", // GitHub Copilot
+  "openai",          // ChatGPT
+  "googlegemini",    // Gemini
+  "claude",          // Claude
+  "github",          // GitHub (not Copilot)
   "zapier",
   "make",
   "n8n",
-  "github",
   "xero",
   "slack",
   "gmail",
   "google",
+  "asana",
+  "googlesheets",
+  "javascript",
+  "googleappsscript",
   "supabase",
 ];
 
-// Full-bleed band — spans the viewport edge-to-edge instead of the page's
-// usual 1200px content column, so the cloud reads as its own moment.
+// Full-width, no card/border/background of its own — flows directly into the
+// page's own background so it reads as part of the page, not a boxed panel.
 function TrustBar() {
   return (
-    <section style={{ padding: "20px 0 60px", borderTop: "1px solid var(--ld-border)", background: "var(--ld-card2)" }}>
-      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 20 }}>Powered By Industry-Leading Tools</p>
-      <div style={{
-        position: "relative", overflow: "hidden",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        width: "100%",
-        minHeight: 460, padding: "24px",
-        background: "var(--ld-card)",
-        borderTop: "1px solid var(--ld-border)",
-        borderBottom: "1px solid var(--ld-border)",
-        boxShadow: "var(--ld-shadow)",
-      }}>
+    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
+      <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 28 }}>Powered By Industry-Leading Tools</p>
+      <div style={{ position: "relative", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <IconCloud iconSlugs={TOOL_SLUGS} />
       </div>
     </section>

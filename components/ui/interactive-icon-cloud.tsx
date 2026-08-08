@@ -18,7 +18,7 @@ export const cloudProps: Omit<ICloud, "children"> = {
       justifyContent: "center",
       alignItems: "center",
       width: "100%",
-      paddingTop: 40,
+      paddingTop: 20,
     },
   },
   options: {
@@ -29,14 +29,12 @@ export const cloudProps: Omit<ICloud, "children"> = {
     activeCursor: "pointer",
     tooltip: "native",
     tooltipDelay: 0,
-    initial: [0.1, -0.1],
-    // Slower snap-to-front on click so a click doesn't read as a sudden jolt.
-    clickToFront: 900,
+    initial: [0.05, -0.05],
+    clickToFront: 500,
     outlineColour: "#0000",
-    // Calmer idle drift — the previous 0.05/0.025 made clicking (which briefly
-    // adds velocity) feel like the cloud was spinning out of control.
-    maxSpeed: 0.03,
-    minSpeed: 0.015,
+    // Subtle, slow ambient drift.
+    maxSpeed: 0.02,
+    minSpeed: 0.01,
   },
 };
 
