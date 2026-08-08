@@ -138,7 +138,7 @@ export default function BookingCalendar() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [answers, setAnswers] = useState<string[]>(() => CUSTOM_QUESTIONS.map(() => ""));
-  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
+  const [errors, setErrors] = useState<{ name?: string; email?: string; answers?: (string | undefined)[] }>({});
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
@@ -252,10 +252,14 @@ export default function BookingCalendar() {
 
   function handleConfirm(e: React.FormEvent) {
     e.preventDefault();
-    const next: { name?: string; email?: string } = {};
+    const next: { name?: string; email?: string; answers?: (string | undefined)[] } = {};
     if (!name.trim()) next.name = "Enter your name";
     if (!email.trim()) next.email = "Enter your email";
     else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) next.email = "Enter a valid email";
+
+    const answerErrors = CUSTOM_QUESTIONS.map((_, i) => (answers[i]?.trim() ? undefined : "This field is required"));
+    if (answerErrors.some(Boolean)) next.answers = answerErrors;
+
     setErrors(next);
     if (Object.keys(next).length > 0 || !selectedSlot) return;
 
@@ -616,7 +620,7 @@ export default function BookingCalendar() {
                   {CUSTOM_QUESTIONS.map((question, i) => (
                     <div key={question}>
                       <label className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
-                        {question} <span className="text-neutral-300 dark:text-neutral-700 font-normal">(optional)</span>
+                        {question}
                       </label>
                       <input
                         type="text"
@@ -624,6 +628,7 @@ export default function BookingCalendar() {
                         onChange={e => updateAnswer(i, e.target.value)}
                         className="w-full h-11 px-4 rounded-xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-neutral-900 dark:focus:ring-white"
                       />
+                      {errors.answers?.[i] && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.answers[i]}</p>}
                     </div>
                   ))}
                 </div>
