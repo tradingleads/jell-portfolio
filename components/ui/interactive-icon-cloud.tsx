@@ -158,34 +158,50 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
         <>{renderedIcons}</>
       </Cloud>
 
-      {/* Tap-triggered name label — covers touch devices, which have no hover state. */}
+      {/* Click/tap feedback — a quick soft pulse acknowledges the click, then
+          the name pops in immediately right on top of it. */}
       <AnimatePresence>
         {activeTool && (
-          <motion.div
+          <div
             key={activeTool}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ type: "spring", stiffness: 300, damping: 24 }}
             style={{
-              position: "absolute",
-              bottom: 12,
-              left: "50%",
-              transform: "translateX(-50%)",
-              padding: "7px 16px",
-              borderRadius: 100,
-              background: "var(--ld-bg)",
-              border: "1px solid var(--ld-borderC)",
-              boxShadow: "var(--ld-shadow)",
-              fontSize: "0.8125rem",
-              fontWeight: 700,
-              color: "var(--ld-accent)",
-              whiteSpace: "nowrap",
-              pointerEvents: "none",
+              position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)",
+              display: "flex", pointerEvents: "none",
             }}
           >
-            {activeTool}
-          </motion.div>
+            <div style={{ position: "relative", display: "flex" }}>
+              <motion.span
+                initial={{ opacity: 0.5, scale: 0.4 }}
+                animate={{ opacity: 0, scale: 2.2 }}
+                transition={{ duration: 0.55, ease: "easeOut" }}
+                style={{
+                  position: "absolute", inset: -6,
+                  borderRadius: 100,
+                  background: "var(--ld-accent)",
+                }}
+              />
+              <motion.div
+                initial={{ opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ type: "spring", stiffness: 500, damping: 28 }}
+                style={{
+                  position: "relative",
+                  padding: "7px 16px",
+                  borderRadius: 100,
+                  background: "var(--ld-bg)",
+                  border: "1px solid var(--ld-borderC)",
+                  boxShadow: "var(--ld-shadow)",
+                  fontSize: "0.8125rem",
+                  fontWeight: 700,
+                  color: "var(--ld-accent)",
+                  whiteSpace: "nowrap",
+                }}
+              >
+                {activeTool}
+              </motion.div>
+            </div>
+          </div>
         )}
       </AnimatePresence>
     </div>
