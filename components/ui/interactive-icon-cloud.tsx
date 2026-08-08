@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useTheme } from "next-themes";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -92,8 +92,25 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   const [data, setData] = useState<IconData | null>(null);
   const [error, setError] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [activeTool, setActiveTool] = useState<string | null>(null);
+  const [selection, setSelection] = useState<{ title: string; x: number; y: number } | null>(null);
   const { resolvedTheme } = useTheme();
+
+  const containerRef = useRef<HTMLDivElement>(null);
+  // The click event this library dispatches to fire onClick has its
+  // coordinates zeroed out, so there's no way to read "where was this icon"
+  // from the click itself. mousedown/touchstart fire first, with real
+  // coordinates, right at the icon the user is pressing — capture that
+  // position here and pair it with the title once onClick tells us which
+  // icon it was.
+  const lastPointerPos = useRef<{ x: number; y: number } | null>(null);
+  const capturePointerPos = (clientX: number, clientY: number) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    // Clamp so the label never overflows past the panel edge on outer icons.
+    const x = Math.min(Math.max(clientX - rect.left, 70), rect.width - 70);
+    const y = Math.min(Math.max(clientY - rect.top, 30), rect.height - 20);
+    lastPointerPos.current = { x, y };
+  };
 
   useEffect(() => setMounted(true), []);
 
@@ -104,16 +121,22 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }, [iconSlugs]);
 
   useEffect(() => {
-    if (!activeTool) return;
-    const t = setTimeout(() => setActiveTool(null), 2200);
+    if (!selection) return;
+    const t = setTimeout(() => setSelection(null), 2200);
     return () => clearTimeout(t);
-  }, [activeTool]);
+  }, [selection]);
+
+  const handleSelect = (title: string) => {
+    const pos = lastPointerPos.current;
+    setSelection({ title, x: pos?.x ?? 0, y: pos?.y ?? 0 });
+  };
 
   const renderedIcons = useMemo(() => {
     if (!data) return null;
     return Object.values(data.simpleIcons).map((icon) =>
-      renderCustomIcon(icon, resolvedTheme || "light", setActiveTool),
+      renderCustomIcon(icon, resolvedTheme || "light", handleSelect),
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, resolvedTheme]);
 
   if (error) {
@@ -152,55 +175,68 @@ export function IconCloud({ iconSlugs }: DynamicCloudProps) {
   }
 
   return (
-    <div style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}>
+    <div
+      ref={containerRef}
+      onMouseDownCapture={(e) => capturePointerPos(e.clientX, e.clientY)}
+      onTouchStartCapture={(e) => {
+        const t = e.touches[0];
+        if (t) capturePointerPos(t.clientX, t.clientY);
+      }}
+      style={{ position: "relative", width: "100%", display: "flex", justifyContent: "center" }}
+    >
       {/* @ts-ignore */}
       <Cloud {...cloudProps}>
         <>{renderedIcons}</>
       </Cloud>
 
-      {/* Click/tap feedback — a quick soft pulse acknowledges the click, then
-          the name pops in immediately right on top of it. */}
+      {/* Click/tap feedback, anchored right on the clicked icon: a quick soft
+          pulse acknowledges the click, then the name pops in above it. */}
       <AnimatePresence>
-        {activeTool && (
+        {selection && (
           <div
-            key={activeTool}
+            key={`${selection.title}-${selection.x}-${selection.y}`}
             style={{
-              position: "absolute", bottom: 12, left: "50%", transform: "translateX(-50%)",
-              display: "flex", pointerEvents: "none",
+              position: "absolute", left: selection.x, top: selection.y,
+              pointerEvents: "none",
             }}
           >
-            <div style={{ position: "relative", display: "flex" }}>
-              <motion.span
-                initial={{ opacity: 0.5, scale: 0.4 }}
-                animate={{ opacity: 0, scale: 2.2 }}
-                transition={{ duration: 0.55, ease: "easeOut" }}
-                style={{
-                  position: "absolute", inset: -6,
-                  borderRadius: 100,
-                  background: "var(--ld-accent)",
-                }}
-              />
-              <motion.div
-                initial={{ opacity: 0, scale: 0.85 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ type: "spring", stiffness: 500, damping: 28 }}
-                style={{
-                  position: "relative",
-                  padding: "7px 16px",
-                  borderRadius: 100,
-                  background: "var(--ld-bg)",
-                  border: "1px solid var(--ld-borderC)",
-                  boxShadow: "var(--ld-shadow)",
-                  fontSize: "0.8125rem",
-                  fontWeight: 700,
-                  color: "var(--ld-accent)",
-                  whiteSpace: "nowrap",
-                }}
-              >
-                {activeTool}
-              </motion.div>
-            </div>
+            {/* Pulse ring, centered exactly on the icon */}
+            <motion.span
+              initial={{ opacity: 0.55, scale: 0.3 }}
+              animate={{ opacity: 0, scale: 2.4 }}
+              transition={{ duration: 0.55, ease: "easeOut" }}
+              style={{
+                position: "absolute", top: -20, left: -20,
+                width: 40, height: 40,
+                borderRadius: "50%",
+                background: "var(--ld-accent)",
+              }}
+            />
+            {/* Name label, floating just above the icon. x stays a constant
+                -50% (self-width based, so it centers correctly regardless of
+                text length) while y/scale/opacity animate — framer-motion
+                composes all of these into one transform, so they can't be
+                mixed with a separate static CSS transform on this element. */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.85, x: "-50%", y: 0 }}
+              animate={{ opacity: 1, scale: 1, x: "-50%", y: -34 }}
+              exit={{ opacity: 0, scale: 0.9, x: "-50%" }}
+              transition={{ type: "spring", stiffness: 500, damping: 28 }}
+              style={{
+                position: "absolute", left: 0, top: 0,
+                padding: "7px 16px",
+                borderRadius: 100,
+                background: "var(--ld-bg)",
+                border: "1px solid var(--ld-borderC)",
+                boxShadow: "var(--ld-shadow)",
+                fontSize: "0.8125rem",
+                fontWeight: 700,
+                color: "var(--ld-accent)",
+                whiteSpace: "nowrap",
+              }}
+            >
+              {selection.title}
+            </motion.div>
           </div>
         )}
       </AnimatePresence>
