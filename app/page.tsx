@@ -6,7 +6,6 @@ import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
 import Lightbox from "@/components/Lightbox";
-import CalendlyEmbed from "@/components/CalendlyEmbed";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import type { OrbState } from "@/components/AIOrb";
 
@@ -1720,10 +1719,6 @@ function CTASection() {
           <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
             Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
           </p>
-        </motion.div>
-
-        <motion.div {...up(0.1)} style={{ marginTop: 24 }}>
-          <CalendlyEmbed />
         </motion.div>
 
       </div>
