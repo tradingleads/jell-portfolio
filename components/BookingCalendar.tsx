@@ -20,20 +20,63 @@ const MONTH_LABELS = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-const FALLBACK_TZ_LIST = [
-  "UTC", "America/Los_Angeles", "America/Denver", "America/Chicago", "America/New_York",
-  "America/Sao_Paulo", "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Moscow",
-  "Africa/Cairo", "Asia/Dubai", "Asia/Kolkata", "Asia/Dhaka", "Asia/Bangkok",
-  "Asia/Singapore", "Asia/Manila", "Asia/Shanghai", "Asia/Tokyo", "Australia/Sydney",
-  "Pacific/Auckland",
+const TZ_GROUPS: { region: string; zones: { zone: string; label: string }[] }[] = [
+  { region: "US / Canada", zones: [
+    { zone: "America/Los_Angeles", label: "Pacific Time - US & Canada" },
+    { zone: "America/Denver", label: "Mountain Time - US & Canada" },
+    { zone: "America/Chicago", label: "Central Time - US & Canada" },
+    { zone: "America/New_York", label: "Eastern Time - US & Canada" },
+    { zone: "America/Anchorage", label: "Alaska Time" },
+    { zone: "Pacific/Honolulu", label: "Hawaii Time" },
+  ] },
+  { region: "America", zones: [
+    { zone: "America/Mexico_City", label: "Mexico City" },
+    { zone: "America/Bogota", label: "Bogota / Lima / Quito" },
+    { zone: "America/Sao_Paulo", label: "Sao Paulo" },
+    { zone: "America/Argentina/Buenos_Aires", label: "Buenos Aires" },
+  ] },
+  { region: "Europe", zones: [
+    { zone: "Europe/London", label: "London" },
+    { zone: "Europe/Paris", label: "Paris / Berlin / Rome" },
+    { zone: "Europe/Amsterdam", label: "Amsterdam" },
+    { zone: "Europe/Madrid", label: "Madrid" },
+    { zone: "Europe/Athens", label: "Athens" },
+    { zone: "Europe/Moscow", label: "Moscow" },
+  ] },
+  { region: "Africa", zones: [
+    { zone: "Africa/Cairo", label: "Cairo" },
+    { zone: "Africa/Johannesburg", label: "Johannesburg" },
+    { zone: "Africa/Lagos", label: "Lagos" },
+    { zone: "Africa/Nairobi", label: "Nairobi" },
+  ] },
+  { region: "Asia", zones: [
+    { zone: "Asia/Dubai", label: "Dubai" },
+    { zone: "Asia/Karachi", label: "Karachi" },
+    { zone: "Asia/Kolkata", label: "Delhi / Kolkata" },
+    { zone: "Asia/Dhaka", label: "Dhaka" },
+    { zone: "Asia/Bangkok", label: "Bangkok" },
+    { zone: "Asia/Jakarta", label: "Jakarta" },
+    { zone: "Asia/Singapore", label: "Singapore" },
+    { zone: "Asia/Hong_Kong", label: "Hong Kong" },
+    { zone: "Asia/Shanghai", label: "Shanghai" },
+    { zone: "Asia/Tokyo", label: "Tokyo" },
+    { zone: "Asia/Seoul", label: "Seoul" },
+    { zone: "Asia/Manila", label: "Manila" },
+  ] },
+  { region: "Australia", zones: [
+    { zone: "Australia/Perth", label: "Perth" },
+    { zone: "Australia/Adelaide", label: "Adelaide" },
+    { zone: "Australia/Brisbane", label: "Brisbane" },
+    { zone: "Australia/Sydney", label: "Sydney / Melbourne" },
+  ] },
+  { region: "Pacific", zones: [
+    { zone: "Pacific/Auckland", label: "Auckland" },
+    { zone: "Pacific/Fiji", label: "Fiji" },
+  ] },
+  { region: "UTC", zones: [
+    { zone: "Etc/UTC", label: "UTC" },
+  ] },
 ];
-
-const TZ_LIST: string[] = (() => {
-  try {
-    if (typeof Intl.supportedValuesOf === "function") return Intl.supportedValuesOf("timeZone");
-  } catch { /* fall through */ }
-  return FALLBACK_TZ_LIST;
-})();
 
 const E = [0.16, 1, 0.3, 1] as const;
 
@@ -143,10 +186,11 @@ export default function BookingCalendar() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
 
-  const tzOptions = useMemo(
-    () => TZ_LIST
-      .map(zone => ({ zone, label: `${zone.replace(/_/g, " ")} (${offsetLabel(zone)})` }))
-      .sort((a, b) => a.zone.localeCompare(b.zone)),
+  const tzGroups = useMemo(
+    () => TZ_GROUPS.map(group => ({
+      region: group.region,
+      zones: group.zones.map(({ zone, label }) => ({ zone, label: `${label} (${offsetLabel(zone)})` })),
+    })),
     []
   );
 
@@ -329,10 +373,14 @@ export default function BookingCalendar() {
                   aria-label="Timezone"
                   className="w-full appearance-none bg-transparent text-sm text-neutral-600 dark:text-neutral-400 border-b border-transparent hover:border-neutral-300 dark:hover:border-neutral-700 focus:outline-none focus:border-neutral-900 dark:focus:border-white pr-4 py-0.5 cursor-pointer truncate"
                 >
-                  {tzOptions.map(opt => (
-                    <option key={opt.zone} value={opt.zone} className="text-neutral-900">
-                      {opt.label}
-                    </option>
+                  {tzGroups.map(group => (
+                    <optgroup key={group.region} label={group.region} className="text-neutral-900">
+                      {group.zones.map(opt => (
+                        <option key={opt.zone} value={opt.zone} className="text-neutral-900">
+                          {opt.label}
+                        </option>
+                      ))}
+                    </optgroup>
                   ))}
                 </select>
                 <ChevronDown size={11} strokeWidth={1.5} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-neutral-400" />
