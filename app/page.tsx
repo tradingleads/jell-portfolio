@@ -25,7 +25,6 @@ import {
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
-const CAL_URL        = "https://calendly.com/jellurmeneta64/new-meeting";
 const WHATSAPP       = "https://api.whatsapp.com/send/?phone=639485530304&type=phone_number&app_absent=0";
 
 /* ── Animation helpers ─────────────────────────────────── */
@@ -1054,7 +1053,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
 
             {/* CTA */}
             <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-              <motion.a href={CAL_URL} target="_blank" rel="noopener noreferrer"
+              <motion.a href="#contact" onClick={onClose}
                 whileHover={{ scale: 1.03, boxShadow: "0 0 30px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 24px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none", boxShadow: "0 0 18px var(--ld-glow)" }}>
                 Build Similar System <ArrowRight size={15} strokeWidth={2.5} />
