@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Clock, Globe, Video, MonitorPlay,
-  Check, ArrowLeft, User, Mail, CalendarX, Loader2, AlertCircle, ArrowUpRight,
+  Check, ArrowLeft, User, Mail, CalendarX, Loader2, AlertCircle, ArrowUpRight, Search,
 } from "lucide-react";
 import { BOOKING_CONFIG, CUSTOM_QUESTIONS, LOCATIONS } from "@/lib/bookingConfig";
 
@@ -194,6 +194,79 @@ export default function BookingCalendar() {
     []
   );
 
+  const [tzOpen, setTzOpen] = useState(false);
+  const [tzQuery, setTzQuery] = useState("");
+  const [tzActiveIndex, setTzActiveIndex] = useState(0);
+  const tzContainerRef = useRef<HTMLDivElement>(null);
+  const tzInputRef = useRef<HTMLInputElement>(null);
+  const tzListRef = useRef<HTMLDivElement>(null);
+
+  const filteredTzGroups = useMemo(() => {
+    const q = tzQuery.trim().toLowerCase();
+    if (!q) return tzGroups;
+    return tzGroups
+      .map(group => ({
+        region: group.region,
+        zones: group.zones.filter(z => z.label.toLowerCase().includes(q) || group.region.toLowerCase().includes(q)),
+      }))
+      .filter(group => group.zones.length > 0);
+  }, [tzGroups, tzQuery]);
+
+  const flatFilteredZones = useMemo(() => filteredTzGroups.flatMap(g => g.zones), [filteredTzGroups]);
+  const tzIndexByZone = useMemo(() => new Map(flatFilteredZones.map((z, i) => [z.zone, i])), [flatFilteredZones]);
+
+  const selectedTzLabel = useMemo(() => {
+    for (const group of tzGroups) {
+      const found = group.zones.find(z => z.zone === visitorTz);
+      if (found) return found.label;
+    }
+    return visitorTz;
+  }, [tzGroups, visitorTz]);
+
+  // Reset search state and focus the input whenever the dropdown opens.
+  useEffect(() => {
+    if (!tzOpen) return;
+    setTzQuery("");
+    setTzActiveIndex(0);
+    tzInputRef.current?.focus();
+  }, [tzOpen]);
+
+  useEffect(() => { setTzActiveIndex(0); }, [tzQuery]);
+
+  // Keep the highlighted option scrolled into view during keyboard navigation.
+  useEffect(() => {
+    if (!tzOpen) return;
+    const el = tzListRef.current?.querySelector(`[data-tz-index="${tzActiveIndex}"]`);
+    el?.scrollIntoView({ block: "nearest" });
+  }, [tzActiveIndex, tzOpen]);
+
+  // Close on outside click.
+  useEffect(() => {
+    if (!tzOpen) return;
+    function handleClick(e: MouseEvent) {
+      if (tzContainerRef.current && !tzContainerRef.current.contains(e.target as Node)) setTzOpen(false);
+    }
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [tzOpen]);
+
+  function handleTzKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setTzActiveIndex(i => Math.min(i + 1, flatFilteredZones.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setTzActiveIndex(i => Math.max(i - 1, 0));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      const opt = flatFilteredZones[tzActiveIndex];
+      if (opt) { setVisitorTz(opt.zone); setTzOpen(false); }
+    } else if (e.key === "Escape") {
+      e.preventDefault();
+      setTzOpen(false);
+    }
+  }
+
   // Jump the visible month back to "today" (in the newly chosen zone) and
   // drop any in-progress selection, since its meaning has shifted.
   useEffect(() => {
@@ -366,24 +439,83 @@ export default function BookingCalendar() {
             </div>
             <div className="flex items-center gap-2.5">
               <Globe size={16} strokeWidth={1.5} className="shrink-0" />
-              <div className="relative flex-1 min-w-0">
-                <select
-                  value={visitorTz}
-                  onChange={e => setVisitorTz(e.target.value)}
+              <div ref={tzContainerRef} className="relative flex-1 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => setTzOpen(o => !o)}
+                  aria-haspopup="listbox"
+                  aria-expanded={tzOpen}
                   aria-label="Timezone"
-                  className="w-full appearance-none bg-transparent text-sm text-neutral-600 dark:text-neutral-400 border-b border-transparent hover:border-neutral-300 dark:hover:border-neutral-700 focus:outline-none focus:border-neutral-900 dark:focus:border-white pr-4 py-0.5 cursor-pointer truncate"
+                  className="w-full flex items-center justify-between gap-2 bg-transparent text-sm text-neutral-600 dark:text-neutral-400 border-b border-transparent hover:border-neutral-300 dark:hover:border-neutral-700 focus:outline-none focus:border-neutral-900 dark:focus:border-white pr-4 py-0.5 cursor-pointer active:scale-[0.98] transition-transform"
                 >
-                  {tzGroups.map(group => (
-                    <optgroup key={group.region} label={group.region} className="text-neutral-900">
-                      {group.zones.map(opt => (
-                        <option key={opt.zone} value={opt.zone} className="text-neutral-900">
-                          {opt.label}
-                        </option>
-                      ))}
-                    </optgroup>
-                  ))}
-                </select>
-                <ChevronDown size={11} strokeWidth={1.5} className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-neutral-400" />
+                  <span className="truncate text-left">{selectedTzLabel}</span>
+                  <ChevronDown
+                    size={11}
+                    strokeWidth={1.5}
+                    className={`shrink-0 text-neutral-400 transition-transform duration-200 ${tzOpen ? "rotate-180" : ""}`}
+                  />
+                </button>
+
+                <AnimatePresence>
+                  {tzOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -4, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -4, scale: 0.98 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+                      className="absolute left-0 top-full z-20 mt-2 w-72 max-w-[calc(100vw-3rem)] rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-900 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_16px_32px_-12px_rgba(0,0,0,0.18)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.5),0_16px_32px_-12px_rgba(0,0,0,0.6)] overflow-hidden"
+                    >
+                      <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 px-3 py-2.5">
+                        <Search size={14} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
+                        <input
+                          ref={tzInputRef}
+                          value={tzQuery}
+                          onChange={e => setTzQuery(e.target.value)}
+                          onKeyDown={handleTzKeyDown}
+                          placeholder="Search timezone..."
+                          aria-label="Search timezone"
+                          className="w-full bg-transparent text-sm text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:outline-none"
+                        />
+                      </div>
+
+                      <div ref={tzListRef} role="listbox" className="max-h-64 overflow-y-auto py-1.5">
+                        {flatFilteredZones.length === 0 ? (
+                          <p className="px-3 py-4 text-sm text-neutral-400 text-center">No matching timezone</p>
+                        ) : (
+                          filteredTzGroups.map(group => (
+                            <div key={group.region}>
+                              <p className="px-3 pt-2 pb-1 text-[11px] font-medium uppercase tracking-wide text-neutral-400">
+                                {group.region}
+                              </p>
+                              {group.zones.map(opt => {
+                                const flatIndex = tzIndexByZone.get(opt.zone) ?? -1;
+                                const isActive = flatIndex === tzActiveIndex;
+                                const isSelected = opt.zone === visitorTz;
+                                return (
+                                  <button
+                                    key={opt.zone}
+                                    type="button"
+                                    data-tz-index={flatIndex}
+                                    role="option"
+                                    aria-selected={isSelected}
+                                    onMouseEnter={() => setTzActiveIndex(flatIndex)}
+                                    onClick={() => { setVisitorTz(opt.zone); setTzOpen(false); }}
+                                    className={`w-full flex items-center justify-between gap-2 px-3 py-1.5 text-sm text-left ${
+                                      isActive ? "bg-neutral-100 dark:bg-neutral-800" : ""
+                                    } ${isSelected ? "text-neutral-900 dark:text-white font-medium" : "text-neutral-600 dark:text-neutral-400"}`}
+                                  >
+                                    <span className="truncate">{opt.label}</span>
+                                    {isSelected && <Check size={13} strokeWidth={1.5} className="shrink-0" />}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
             </div>
           </div>
