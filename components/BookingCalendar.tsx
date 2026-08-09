@@ -20,20 +20,63 @@ const MONTH_LABELS = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-const FALLBACK_TZ_LIST = [
-  "UTC", "America/Los_Angeles", "America/Denver", "America/Chicago", "America/New_York",
-  "America/Sao_Paulo", "Europe/London", "Europe/Paris", "Europe/Berlin", "Europe/Moscow",
-  "Africa/Cairo", "Asia/Dubai", "Asia/Kolkata", "Asia/Dhaka", "Asia/Bangkok",
-  "Asia/Singapore", "Asia/Manila", "Asia/Shanghai", "Asia/Tokyo", "Australia/Sydney",
-  "Pacific/Auckland",
+const TZ_GROUPS: { region: string; zones: { zone: string; label: string }[] }[] = [
+  { region: "US/Canada", zones: [
+    { zone: "America/Los_Angeles", label: "Pacific Time - US & Canada" },
+    { zone: "America/Denver", label: "Mountain Time - US & Canada" },
+    { zone: "America/Chicago", label: "Central Time - US & Canada" },
+    { zone: "America/New_York", label: "Eastern Time - US & Canada" },
+    { zone: "America/Anchorage", label: "Alaska Time" },
+    { zone: "Pacific/Honolulu", label: "Hawaii Time" },
+  ] },
+  { region: "America", zones: [
+    { zone: "America/Mexico_City", label: "Mexico City" },
+    { zone: "America/Bogota", label: "Bogota / Lima / Quito" },
+    { zone: "America/Sao_Paulo", label: "Sao Paulo" },
+    { zone: "America/Argentina/Buenos_Aires", label: "Buenos Aires" },
+  ] },
+  { region: "Europe", zones: [
+    { zone: "Europe/London", label: "London" },
+    { zone: "Europe/Paris", label: "Paris / Berlin / Rome" },
+    { zone: "Europe/Amsterdam", label: "Amsterdam" },
+    { zone: "Europe/Madrid", label: "Madrid" },
+    { zone: "Europe/Athens", label: "Athens" },
+    { zone: "Europe/Moscow", label: "Moscow" },
+  ] },
+  { region: "Africa", zones: [
+    { zone: "Africa/Cairo", label: "Cairo" },
+    { zone: "Africa/Johannesburg", label: "Johannesburg" },
+    { zone: "Africa/Lagos", label: "Lagos" },
+    { zone: "Africa/Nairobi", label: "Nairobi" },
+  ] },
+  { region: "Asia", zones: [
+    { zone: "Asia/Dubai", label: "Dubai" },
+    { zone: "Asia/Karachi", label: "Karachi" },
+    { zone: "Asia/Kolkata", label: "Delhi / Kolkata" },
+    { zone: "Asia/Dhaka", label: "Dhaka" },
+    { zone: "Asia/Bangkok", label: "Bangkok" },
+    { zone: "Asia/Jakarta", label: "Jakarta" },
+    { zone: "Asia/Singapore", label: "Singapore" },
+    { zone: "Asia/Hong_Kong", label: "Hong Kong" },
+    { zone: "Asia/Shanghai", label: "Shanghai" },
+    { zone: "Asia/Tokyo", label: "Tokyo" },
+    { zone: "Asia/Seoul", label: "Seoul" },
+    { zone: "Asia/Manila", label: "Manila" },
+  ] },
+  { region: "Australia", zones: [
+    { zone: "Australia/Perth", label: "Perth" },
+    { zone: "Australia/Adelaide", label: "Adelaide" },
+    { zone: "Australia/Brisbane", label: "Brisbane" },
+    { zone: "Australia/Sydney", label: "Sydney / Melbourne" },
+  ] },
+  { region: "Pacific", zones: [
+    { zone: "Pacific/Auckland", label: "Auckland" },
+    { zone: "Pacific/Fiji", label: "Fiji" },
+  ] },
+  { region: "UTC", zones: [
+    { zone: "Etc/UTC", label: "UTC" },
+  ] },
 ];
-
-const TZ_LIST: string[] = (() => {
-  try {
-    if (typeof Intl.supportedValuesOf === "function") return Intl.supportedValuesOf("timeZone");
-  } catch { /* fall through */ }
-  return FALLBACK_TZ_LIST;
-})();
 
 const E = [0.16, 1, 0.3, 1] as const;
 
@@ -76,13 +119,13 @@ function offsetLabel(tz: string) {
   return part?.value ?? "";
 }
 
-const TZ_REGION_ORDER = [
-  "America", "Europe", "Africa", "Asia", "Australia", "Pacific",
-  "Atlantic", "Indian", "Antarctica", "Arctic", "Etc", "Other",
-];
-
-function tzRegionOf(zone: string) {
-  return zone.includes("/") ? zone.split("/")[0].replace(/_/g, " ") : "Other";
+function currentTimeLabel(tz: string) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true })
+    .formatToParts(new Date());
+  const hour = parts.find(p => p.type === "hour")?.value ?? "";
+  const minute = parts.find(p => p.type === "minute")?.value ?? "";
+  const period = (parts.find(p => p.type === "dayPeriod")?.value ?? "").toLowerCase();
+  return `${hour}:${minute}${period}`;
 }
 
 function buildMonthGrid(viewYear: number, viewMonth: number) {
@@ -152,29 +195,22 @@ export default function BookingCalendar() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
 
-  const tzGroups = useMemo(() => {
-    const byRegion = new Map<string, { zone: string; label: string }[]>();
-    for (const zone of TZ_LIST) {
-      const region = tzRegionOf(zone);
-      const label = `${zone.replace(/_/g, " ")} (${offsetLabel(zone)})`;
-      if (!byRegion.has(region)) byRegion.set(region, []);
-      byRegion.get(region)!.push({ zone, label });
-    }
-    return Array.from(byRegion.entries())
-      .sort(([a], [b]) => {
-        const ia = TZ_REGION_ORDER.indexOf(a);
-        const ib = TZ_REGION_ORDER.indexOf(b);
-        return (ia === -1 ? TZ_REGION_ORDER.length : ia) - (ib === -1 ? TZ_REGION_ORDER.length : ib);
-      })
-      .map(([region, zones]) => ({ region, zones: [...zones].sort((a, b) => a.zone.localeCompare(b.zone)) }));
-  }, []);
-
   const [tzOpen, setTzOpen] = useState(false);
   const [tzQuery, setTzQuery] = useState("");
   const [tzActiveIndex, setTzActiveIndex] = useState(0);
   const tzContainerRef = useRef<HTMLDivElement>(null);
   const tzInputRef = useRef<HTMLInputElement>(null);
   const tzListRef = useRef<HTMLDivElement>(null);
+
+  // Recomputed whenever the dropdown opens, so the times on display reflect "now".
+  const tzGroups = useMemo(
+    () => TZ_GROUPS.map(group => ({
+      region: group.region,
+      zones: group.zones.map(({ zone, label }) => ({ zone, label, time: currentTimeLabel(zone) })),
+    })),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [tzOpen]
+  );
 
   const filteredTzGroups = useMemo(() => {
     const q = tzQuery.trim().toLowerCase();
@@ -191,12 +227,12 @@ export default function BookingCalendar() {
   const tzIndexByZone = useMemo(() => new Map(flatFilteredZones.map((z, i) => [z.zone, i])), [flatFilteredZones]);
 
   const selectedTzLabel = useMemo(() => {
-    for (const group of tzGroups) {
+    for (const group of TZ_GROUPS) {
       const found = group.zones.find(z => z.zone === visitorTz);
-      if (found) return found.label;
+      if (found) return `${found.label} (${offsetLabel(visitorTz)})`;
     }
     return visitorTz;
-  }, [tzGroups, visitorTz]);
+  }, [visitorTz]);
 
   // Reset search state and focus the input whenever the dropdown opens.
   useEffect(() => {
@@ -483,7 +519,10 @@ export default function BookingCalendar() {
                                     } ${isSelected ? "text-neutral-900 dark:text-white font-medium" : "text-neutral-600 dark:text-neutral-400"}`}
                                   >
                                     <span className="truncate">{opt.label}</span>
-                                    {isSelected && <Check size={13} strokeWidth={1.5} className="shrink-0" />}
+                                    <span className="flex items-center gap-1.5 shrink-0">
+                                      {isSelected && <Check size={13} strokeWidth={1.5} />}
+                                      <span className="tabular-nums text-neutral-400 dark:text-neutral-500">{opt.time}</span>
+                                    </span>
                                   </button>
                                 );
                               })}
