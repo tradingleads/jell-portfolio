@@ -596,23 +596,6 @@ function Navbar() {
               </motion.a>
             ))}
 
-            {/* Book CTA */}
-            <motion.a
-              href="#contact"
-              onClick={() => setMenuOpen(false)}
-              whileTap={{ scale: 0.97 }}
-              initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: (NAV_ITEMS.length + 1) * 0.06, duration: 0.2 }}
-              style={{
-                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                marginTop: 20, padding: "13px 0", borderRadius: 100,
-                background: "var(--ld-accent)", color: "#fff",
-                fontWeight: 700, fontSize: "1rem", textDecoration: "none",
-              }}
-            >
-              Book Your Consultation <ArrowRight size={15} strokeWidth={2.5} />
-            </motion.a>
-
           </div>{/* end inner content */}
         </motion.div>
       )}
