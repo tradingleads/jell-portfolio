@@ -1717,11 +1717,11 @@ function CTASection() {
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
             Book a Call
           </p>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.2 }}>
+            Let&apos;s Connect The Pieces
+          </h2>
           <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
-            Whether you already have an idea or you&apos;re just exploring what&apos;s possible, let&apos;s make it happen.
-          </p>
-          <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "42ch", margin: "10px auto 0", opacity: 0.8 }}>
-            Pick a time below and it books directly onto my Google Calendar &mdash; you&apos;ll get a calendar invite with a Google Meet link automatically, no back-and-forth emails needed.
+            Got something worth automating? Pick a time and let&apos;s build.
           </p>
         </motion.div>
 
