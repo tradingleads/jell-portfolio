@@ -5,12 +5,10 @@ export const BOOKING_CONFIG = {
   hostName: "Jell Urmeneta",
   avatarInitials: "JU",
   avatarUrl: "", // optional image URL — leave empty to show initials instead
-  eventTitle: "Free 30-min Discovery Call",
+  eventTitle: "Free Discovery Call",
   duration: "30 min",
   durationMinutes: 30,
   locationText: "Zoom or Google Meet",
-  description:
-    "A no-pressure chat about your project — what you need, what's possible, and whether we're a fit to work together.",
 
   // The timezone your working hours below are defined in (yours, not the visitor's).
   hostTimeZone: "Asia/Manila",

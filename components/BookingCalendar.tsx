@@ -117,7 +117,7 @@ function isBusy(slotStart: Date, durationMinutes: number, busy: BusyInterval[]) 
 
 /* ── Root component ────────────────────────────────────────────── */
 export default function BookingCalendar() {
-  const [visitorTz, setVisitorTz] = useState(() => Intl.DateTimeFormat().resolvedOptions().timeZone);
+  const [visitorTz, setVisitorTz] = useState(BOOKING_CONFIG.hostTimeZone);
 
   const nowRef = useMemo(() => new Date(), []);
   const todayKey = useMemo(() => dateKeyInTz(nowRef, visitorTz), [nowRef, visitorTz]);
@@ -339,10 +339,6 @@ export default function BookingCalendar() {
               </div>
             </div>
           </div>
-
-          <p className="mt-6 text-sm leading-relaxed text-neutral-500 dark:text-neutral-400 max-w-[38ch]">
-            {BOOKING_CONFIG.description}
-          </p>
 
           {!availabilityConfigured && (
             <div className="mt-6 flex items-start gap-2 rounded-xl border border-amber-500/25 bg-amber-500/5 px-3 py-2.5 text-xs text-amber-700 dark:text-amber-400 leading-relaxed">
