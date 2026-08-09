@@ -572,7 +572,7 @@ function Navbar() {
           <div style={{ width: "100%", maxWidth: 400, padding: "0 24px", display: "flex", flexDirection: "column" }}>
 
             {/* Nav links */}
-            {[...NAV_ITEMS, { label: "Let's Talk", href: NAV_CTA.href }].map(({ label, href }, i) => (
+            {[...NAV_ITEMS, { label: "Book a Call", href: NAV_CTA.href }].map(({ label, href }, i) => (
               <motion.a
                 key={label}
                 href={href}
@@ -582,7 +582,7 @@ function Navbar() {
                 transition={{ delay: i * 0.06, duration: 0.22, ease: E }}
                 style={{
                   fontSize: "1.125rem", fontWeight: 600,
-                  color: label === "Let's Talk" ? "var(--ld-accent)" : "var(--ld-text)",
+                  color: label === "Book a Call" ? "var(--ld-accent)" : "var(--ld-text)",
                   textDecoration: "none", padding: "14px 0",
                   textAlign: "left", display: "block",
                   borderBottom: "1px solid var(--ld-border)",
