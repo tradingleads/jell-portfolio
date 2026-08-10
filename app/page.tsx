@@ -308,10 +308,10 @@ const NAV_ITEMS = [
   { label: "Services", href: "#services" },
   { label: "Projects", href: "#projects" },
   { label: "Process",  href: "#process"  },
-  { label: "About",    href: "#about"    },
-  { label: "Contact",  href: "#contact"  },
 ];
-const NAV_CTA = { label: "Let's Talk", href: "#book-a-call" };
+const NAV_ABOUT     = { label: "About",   href: "#about"   };
+const NAV_CONTACT   = { label: "Contact", href: "#contact" };
+const NAV_CTA = { label: "Book a Call", href: "#book-a-call" };
 
 /* ── Navbar ────────────────────────────────────────────────── */
 function Navbar() {
@@ -422,7 +422,7 @@ function Navbar() {
             >{label}</a>
           ))}
 
-          {/* Let's Talk — highest-intent nav item */}
+          {/* Book a Call — highest-intent nav item */}
           <motion.a
             href={NAV_CTA.href}
             whileHover="hover"
@@ -458,6 +458,12 @@ function Navbar() {
               <ArrowRight size={13} strokeWidth={2.5} />
             </motion.span>
           </motion.a>
+
+          <a href={NAV_CONTACT.href}
+            style={{ fontSize: "0.8125rem", fontWeight: 500, color: "var(--ld-muted)", textDecoration: "none", padding: "7px 13px", borderRadius: 8, marginLeft: 2, transition: "all 0.18s ease" }}
+            onMouseEnter={e => { const el = e.currentTarget as HTMLElement; el.style.color = "var(--ld-text)"; el.style.background = "var(--ld-glow)"; }}
+            onMouseLeave={e => { const el = e.currentTarget as HTMLElement; el.style.color = "var(--ld-muted)"; el.style.background = "transparent"; }}
+          >{NAV_CONTACT.label}</a>
         </nav>
 
         <div style={{ marginLeft: 24 }}>
@@ -573,7 +579,7 @@ function Navbar() {
           <div style={{ width: "100%", maxWidth: 400, padding: "0 24px", display: "flex", flexDirection: "column" }}>
 
             {/* Nav links */}
-            {[...NAV_ITEMS, { label: "Book a Call", href: NAV_CTA.href }].map(({ label, href }, i) => (
+            {[...NAV_ITEMS, NAV_ABOUT, NAV_CONTACT, { label: "Book a Call", href: NAV_CTA.href }].map(({ label, href }, i) => (
               <motion.a
                 key={label}
                 href={href}
