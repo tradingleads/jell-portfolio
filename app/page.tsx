@@ -1764,10 +1764,10 @@ function ContactSection() {
 
           {/* Left — description + contact list */}
           <div>
-            <p style={{ fontSize: "0.85rem", color: "var(--ld-text)", lineHeight: 1.5, marginBottom: 3 }}>
+            <p style={{ fontSize: "1rem", color: "var(--ld-text)", lineHeight: 1.7, marginBottom: 3 }}>
               Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
             </p>
-            <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, marginBottom: 20 }}>
+            <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.7, marginBottom: 20 }}>
               There probably is. Reach out, and let&apos;s make it happen.
             </p>
 
