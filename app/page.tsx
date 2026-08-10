@@ -1726,9 +1726,9 @@ const CONTACT_OPTIONS = [
 ] as const;
 
 const contactInputStyle: React.CSSProperties = {
-  width: "100%", padding: "12px 16px", borderRadius: 12,
-  background: "var(--ld-card)", border: "1px solid var(--ld-border)",
-  color: "var(--ld-text)", fontSize: "0.9rem", fontFamily: "var(--font-body)",
+  width: "100%", padding: "16px 18px", borderRadius: 14,
+  background: "var(--ld-card2)", border: "1px solid var(--ld-border)",
+  color: "var(--ld-text)", fontSize: "1rem", fontFamily: "var(--font-body)",
   outline: "none", boxShadow: "none", transition: "border-color 0.18s ease, box-shadow 0.18s ease",
 };
 
@@ -1743,100 +1743,84 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" style={{ padding: "clamp(20px, 3vw, 32px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
-      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
+    <section id="contact" style={{ padding: "clamp(56px, 6vw, 88px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 700, height: 380, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1120, margin: "0 auto", position: "relative" }}>
 
-        {/* Header — centered, matches "Book a Call" hierarchy */}
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 28 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", marginBottom: 10 }}>
-            <MessageSquare size={11} strokeWidth={2} />
+        {/* Header — centered, clean eyebrow with no ring/border */}
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
+          <p style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>
             Contact
-          </span>
-          <h2 style={{ fontSize: "clamp(1.3rem, 2.6vw, 1.75rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+          </p>
+          <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.15, marginBottom: 20 }}>
             Get in Touch
           </h2>
+          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", maxWidth: "56ch", margin: "0 auto", lineHeight: 1.7 }}>
+            Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;? There probably is. Reach out, and let&apos;s make it happen.
+          </p>
         </motion.div>
 
         {/* Content — two-column: info + form */}
-        <motion.div {...up(0.1)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 40, alignItems: "start" }}>
+        <motion.div {...up(0.1)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(340px, 1fr))", gap: 72, alignItems: "center" }}>
 
-          {/* Left — description + contact list */}
-          <div>
-            <p style={{ fontSize: "0.85rem", color: "var(--ld-text)", lineHeight: 1.5, marginBottom: 3 }}>
-              Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
-            </p>
-            <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, marginBottom: 20 }}>
-              There probably is. Reach out, and let&apos;s make it happen.
-            </p>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-              {CONTACT_OPTIONS.map(({ Icon, label, value, href, external }) => {
-                const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 14, textDecoration: "none" };
-                const inner = (
-                  <>
-                    <div style={{ width: 38, height: 38, borderRadius: 12, flexShrink: 0, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                      <Icon size={17} strokeWidth={1.5} style={{ color: "var(--ld-accent)" }} />
-                    </div>
-                    <div style={{ minWidth: 0 }}>
-                      <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 1 }}>{label}</p>
-                      <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--ld-text)", wordBreak: "break-word" }}>{value}</p>
-                    </div>
-                  </>
-                );
-                return href ? (
-                  <motion.a
-                    key={label}
-                    href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noopener noreferrer" : undefined}
-                    whileHover={{ x: 3 }}
-                    whileTap={{ scale: 0.98 }}
-                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                    style={rowStyle}
-                  >
-                    {inner}
-                  </motion.a>
-                ) : (
-                  <div key={label} style={rowStyle}>{inner}</div>
-                );
-              })}
-            </div>
+          {/* Left — contact list */}
+          <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            {CONTACT_OPTIONS.map(({ Icon, label, value, href, external }) => {
+              const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 20, textDecoration: "none" };
+              const inner = (
+                <>
+                  <div style={{ width: 56, height: 56, borderRadius: 18, flexShrink: 0, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={24} strokeWidth={1.5} style={{ color: "var(--ld-accent)" }} />
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <p style={{ fontSize: "0.78rem", fontWeight: 600, letterSpacing: "0.05em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 4 }}>{label}</p>
+                    <p style={{ fontSize: "1.125rem", fontWeight: 700, color: "var(--ld-text)", wordBreak: "break-word" }}>{value}</p>
+                  </div>
+                </>
+              );
+              return href ? (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  whileHover={{ x: 4 }}
+                  whileTap={{ scale: 0.98 }}
+                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                  style={rowStyle}
+                >
+                  {inner}
+                </motion.a>
+              ) : (
+                <div key={label} style={rowStyle}>{inner}</div>
+              );
+            })}
           </div>
 
           {/* Right — form */}
           <form
             onSubmit={e => e.preventDefault()}
-            style={{ display: "flex", flexDirection: "column", gap: 12, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, padding: "clamp(16px, 2vw, 22px)", boxShadow: "var(--ld-shadow)" }}
+            style={{ display: "flex", flexDirection: "column", gap: 24, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 28, padding: "clamp(32px, 4vw, 44px)", boxShadow: "var(--ld-shadow)" }}
           >
-            <div>
-              <label htmlFor="contact-name" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Name</label>
-              <input id="contact-name" name="name" type="text" required placeholder="Your name"
-                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
-            </div>
+            <input id="contact-name" name="name" type="text" required aria-label="Name" placeholder="Your name"
+              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
 
-            <div>
-              <label htmlFor="contact-email" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Email</label>
-              <input id="contact-email" name="email" type="email" required placeholder="you@company.com"
-                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
-            </div>
+            <input id="contact-email" name="email" type="email" required aria-label="Email" placeholder="Your email"
+              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
 
-            <div>
-              <label htmlFor="contact-message" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Message</label>
-              <textarea id="contact-message" name="message" required rows={3} placeholder="Tell me about your workflow"
-                style={{ ...contactInputStyle, resize: "vertical", minHeight: 72, fontFamily: "var(--font-body)" }}
-                onFocus={focusField} onBlur={blurField} />
-            </div>
+            <textarea id="contact-message" name="message" required aria-label="Message" rows={5} placeholder="Your message"
+              style={{ ...contactInputStyle, resize: "vertical", minHeight: 150, fontFamily: "var(--font-body)" }}
+              onFocus={focusField} onBlur={blurField} />
 
             <motion.button
               type="submit"
               whileHover={{ y: -1, boxShadow: "0 0 24px var(--ld-glow)" }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
-              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "11px 0", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: "pointer", boxShadow: "0 0 16px var(--ld-glow)", marginTop: 2 }}
+              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 8, padding: "16px 0", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "1.05rem", border: "none", cursor: "pointer", boxShadow: "0 0 16px var(--ld-glow)", marginTop: 4 }}
             >
-              Send Message <ArrowRight size={15} strokeWidth={2.5} />
+              Send Message <ArrowRight size={17} strokeWidth={2.5} />
             </motion.button>
           </form>
 
