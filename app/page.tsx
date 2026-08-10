@@ -1743,26 +1743,33 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 64 }}>
+    <section id="contact" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+      <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-        {/* Left — info */}
-        <motion.div {...up()}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", marginBottom: 20 }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+
+        {/* Header — centered, matches "Book a Call" hierarchy */}
+        <motion.div {...up()} style={{ textAlign: "center" }}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", marginBottom: 14 }}>
             <MessageSquare size={11} strokeWidth={2} />
             Contact
           </span>
-
-          <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", marginBottom: 16, lineHeight: 1.15 }}>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.2 }}>
             Get in Touch
           </h2>
-
-          <p style={{ fontSize: "0.9375rem", color: "var(--ld-text)", lineHeight: 1.6, maxWidth: "42ch", marginBottom: 40 }}>
-            Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?{" "}
-            <span style={{ color: "var(--ld-muted)" }}>There probably is. Reach out, and let&apos;s make it happen.</span>
+          <p style={{ fontSize: "0.85rem", color: "var(--ld-text)", lineHeight: 1.5, maxWidth: "44ch", margin: "0 auto" }}>
+            Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
           </p>
+          <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "44ch", margin: "4px auto 0" }}>
+            There probably is. Reach out, and let&apos;s make it happen.
+          </p>
+        </motion.div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+        {/* Content — two-column: links + form */}
+        <motion.div {...up(0.1)} style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 48, textAlign: "left" }}>
+
+          {/* Left — contact links */}
+          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
             {CONTACT_OPTIONS.map(({ Icon, label, href, external }) => {
               const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 14, padding: "10px 6px", borderRadius: 12, textDecoration: "none", transition: "opacity 0.18s ease" };
               const inner = (
@@ -1790,10 +1797,8 @@ function ContactSection() {
               );
             })}
           </div>
-        </motion.div>
 
-        {/* Right — form */}
-        <motion.div {...up(0.1)}>
+          {/* Right — form */}
           <form
             onSubmit={e => e.preventDefault()}
             style={{ display: "flex", flexDirection: "column", gap: 18, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 24, padding: "clamp(24px, 3vw, 32px)", boxShadow: "var(--ld-shadow)" }}
@@ -1827,6 +1832,7 @@ function ContactSection() {
               Send Message <ArrowRight size={15} strokeWidth={2.5} />
             </motion.button>
           </form>
+
         </motion.div>
 
       </div>
