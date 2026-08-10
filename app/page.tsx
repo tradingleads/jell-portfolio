@@ -1750,10 +1750,9 @@ function ContactSection() {
 
         {/* Header — centered, matches "Book a Call" hierarchy */}
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 28 }}>
-          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", marginBottom: 10 }}>
-            <MessageSquare size={11} strokeWidth={2} />
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
             Contact
-          </span>
+          </p>
           <h2 style={{ fontSize: "clamp(1.3rem, 2.6vw, 1.75rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Get in Touch
           </h2>
