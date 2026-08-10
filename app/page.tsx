@@ -18,7 +18,7 @@ const BookingCalendar = dynamic(() => import("@/components/BookingCalendar"), { 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
   MessageSquare, Mail,
-  ArrowUpRight, Sparkles, Activity, Phone, Linkedin,
+  ArrowUpRight, Sparkles, Activity, Phone, Linkedin, MapPin,
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
@@ -309,8 +309,9 @@ const NAV_ITEMS = [
   { label: "Projects", href: "#projects" },
   { label: "Process",  href: "#process"  },
   { label: "About",    href: "#about"    },
+  { label: "Contact",  href: "#contact"  },
 ];
-const NAV_CTA = { label: "Let's Talk", href: "#contact" };
+const NAV_CTA = { label: "Let's Talk", href: "#book-a-call" };
 
 /* ── Navbar ────────────────────────────────────────────────── */
 function Navbar() {
@@ -632,7 +633,7 @@ function HeroSection() {
           </motion.p>
 
           <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
-            <motion.a href="#contact"
+            <motion.a href="#book-a-call"
               whileHover={{ scale: 1.03, boxShadow: "0 0 32px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto justify-center"
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 28px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9375rem", textDecoration: "none", boxShadow: "0 0 20px var(--ld-glow)" }}>
@@ -1036,7 +1037,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
 
             {/* CTA */}
             <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>
-              <motion.a href="#contact" onClick={onClose}
+              <motion.a href="#book-a-call" onClick={onClose}
                 whileHover={{ scale: 1.03, boxShadow: "0 0 30px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
                 style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "12px 24px", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9rem", textDecoration: "none", boxShadow: "0 0 18px var(--ld-glow)" }}>
                 Build Similar System <ArrowRight size={15} strokeWidth={2.5} />
@@ -1689,7 +1690,7 @@ function TestimonialsSection() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="contact" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+    <section id="book-a-call" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
@@ -1717,46 +1718,117 @@ function CTASection() {
 }
 
 /* ── Contact ───────────────────────────────────────────────── */
-const CONTACTS = [
-  { Icon: Phone,    label: "WhatsApp",  sub: "Quick message support",   href: WHATSAPP,                                   color: "#22c55e" },
-  { Icon: Linkedin, label: "LinkedIn",  sub: "Professional profile",    href: "https://www.linkedin.com/in/jellurmeneta", color: "#0ea5e9" },
-  { Icon: Mail,     label: "Email",     sub: "For detailed inquiries",  href: "mailto:jellurmeneta64@gmail.com",          color: "var(--ld-accent)" },
-];
+const CONTACT_OPTIONS = [
+  { Icon: Mail,     label: "Email",              href: "mailto:jellurmeneta64@gmail.com",          external: false },
+  { Icon: Phone,    label: "WhatsApp",           href: "https://wa.me/639485530304",               external: true  },
+  { Icon: Linkedin, label: "LinkedIn",           href: "https://www.linkedin.com/in/jellurmeneta", external: true  },
+  { Icon: MapPin,   label: "Rizal, Philippines", href: null,                                        external: false },
+] as const;
+
+const contactInputStyle: React.CSSProperties = {
+  width: "100%", padding: "12px 16px", borderRadius: 12,
+  background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+  color: "var(--ld-text)", fontSize: "0.9rem", fontFamily: "var(--font-body)",
+  outline: "none", boxShadow: "none", transition: "border-color 0.18s ease, box-shadow 0.18s ease",
+};
 
 function ContactSection() {
+  const focusField = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = "var(--ld-accent)";
+    e.currentTarget.style.boxShadow = "0 0 0 3px var(--ld-glow)";
+  };
+  const blurField = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    e.currentTarget.style.borderColor = "var(--ld-border)";
+    e.currentTarget.style.boxShadow = "none";
+  };
+
   return (
-    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
-      <div style={{ maxWidth: 1100, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 48 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Contact</p>
-          <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)" }}>
-            Reach Out Directly
+    <section id="contact" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
+      <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 64 }}>
+
+        {/* Left — info */}
+        <motion.div {...up()}>
+          <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.72rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", marginBottom: 20 }}>
+            <MessageSquare size={11} strokeWidth={2} />
+            Contact
+          </span>
+
+          <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.03em", fontFamily: "var(--font-display)", marginBottom: 16, lineHeight: 1.15 }}>
+            Get in Touch
           </h2>
+
+          <p style={{ fontSize: "0.9375rem", color: "var(--ld-text)", lineHeight: 1.6, maxWidth: "42ch", marginBottom: 40 }}>
+            Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?{" "}
+            <span style={{ color: "var(--ld-muted)" }}>There probably is. Reach out, and let&apos;s make it happen.</span>
+          </p>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            {CONTACT_OPTIONS.map(({ Icon, label, href, external }) => {
+              const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 14, padding: "10px 6px", borderRadius: 12, textDecoration: "none", transition: "opacity 0.18s ease" };
+              const inner = (
+                <>
+                  <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <Icon size={17} strokeWidth={1.5} style={{ color: "var(--ld-accent)" }} />
+                  </div>
+                  <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--ld-text)" }}>{label}</span>
+                </>
+              );
+              return href ? (
+                <a
+                  key={label}
+                  href={href}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noopener noreferrer" : undefined}
+                  style={rowStyle}
+                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
+                >
+                  {inner}
+                </a>
+              ) : (
+                <div key={label} style={rowStyle}>{inner}</div>
+              );
+            })}
+          </div>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 18 }}>
-          {CONTACTS.map(({ Icon, label, sub, href, color }, i) => (
-            <motion.a
-              key={label}
-              {...up(i * 0.06)}
-              href={href}
-              target={href.startsWith("mailto") ? undefined : "_blank"}
-              rel="noopener noreferrer"
-              whileHover={{ y: -4, borderColor: `${color}55` }}
+        {/* Right — form */}
+        <motion.div {...up(0.1)}>
+          <form
+            onSubmit={e => e.preventDefault()}
+            style={{ display: "flex", flexDirection: "column", gap: 18, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 24, padding: "clamp(24px, 3vw, 32px)", boxShadow: "var(--ld-shadow)" }}
+          >
+            <div>
+              <label htmlFor="contact-name" style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 8 }}>Name</label>
+              <input id="contact-name" name="name" type="text" required placeholder="Your name"
+                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
+            </div>
+
+            <div>
+              <label htmlFor="contact-email" style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 8 }}>Email</label>
+              <input id="contact-email" name="email" type="email" required placeholder="you@company.com"
+                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
+            </div>
+
+            <div>
+              <label htmlFor="contact-message" style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 8 }}>Message</label>
+              <textarea id="contact-message" name="message" required rows={5} placeholder="Tell me about your workflow"
+                style={{ ...contactInputStyle, resize: "vertical", minHeight: 120, fontFamily: "var(--font-body)" }}
+                onFocus={focusField} onBlur={blurField} />
+            </div>
+
+            <motion.button
+              type="submit"
+              whileHover={{ y: -1, boxShadow: "0 0 24px var(--ld-glow)" }}
               whileTap={{ scale: 0.98 }}
-              style={{ display: "flex", alignItems: "center", gap: 12, padding: "20px 20px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 16, textDecoration: "none", boxShadow: "var(--ld-shadow)", transition: "border-color 0.2s ease" }}
+              transition={{ type: "spring", stiffness: 100, damping: 20 }}
+              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "13px 0", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.9rem", border: "none", cursor: "pointer", boxShadow: "0 0 16px var(--ld-glow)", marginTop: 4 }}
             >
-              <div style={{ width: 40, height: 40, borderRadius: 10, flexShrink: 0, background: `${color}10`, border: `1px solid ${color}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Icon size={18} strokeWidth={1.5} style={{ color }} />
-              </div>
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 2 }}>{label}</p>
-                <p style={{ fontSize: "0.78rem", color: "var(--ld-muted)", opacity: 0.65 }}>{sub}</p>
-              </div>
-              <ArrowRight size={14} strokeWidth={2} style={{ color: "var(--ld-muted)", opacity: 0.35, flexShrink: 0 }} />
-            </motion.a>
-          ))}
-        </div>
+              Send Message <ArrowRight size={15} strokeWidth={2.5} />
+            </motion.button>
+          </form>
+        </motion.div>
+
       </div>
     </section>
   );
