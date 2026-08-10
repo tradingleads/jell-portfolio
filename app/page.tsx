@@ -1719,10 +1719,10 @@ function CTASection() {
 
 /* ── Contact ───────────────────────────────────────────────── */
 const CONTACT_OPTIONS = [
-  { Icon: Mail,     label: "Email",              href: "mailto:jellurmeneta64@gmail.com",          external: false },
-  { Icon: Phone,    label: "WhatsApp",           href: "https://wa.me/639485530304",               external: true  },
-  { Icon: Linkedin, label: "LinkedIn",           href: "https://www.linkedin.com/in/jellurmeneta", external: true  },
-  { Icon: MapPin,   label: "Rizal, Philippines", href: null,                                        external: false },
+  { Icon: Mail,     label: "Email",    value: "jellurmeneta64@gmail.com",     href: "mailto:jellurmeneta64@gmail.com",          external: false },
+  { Icon: Phone,    label: "WhatsApp", value: "+63 948 553 0304",             href: "https://wa.me/639485530304",               external: true  },
+  { Icon: Linkedin, label: "LinkedIn", value: "linkedin.com/in/jellurmeneta", href: "https://www.linkedin.com/in/jellurmeneta", external: true  },
+  { Icon: MapPin,   label: "Location", value: "Rizal, Philippines",           href: null,                                        external: false },
 ] as const;
 
 const contactInputStyle: React.CSSProperties = {
@@ -1746,62 +1746,69 @@ function ContactSection() {
     <section id="contact" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1000, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative" }}>
 
         {/* Header — centered, matches "Book a Call" hierarchy */}
-        <motion.div {...up()} style={{ textAlign: "center" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 48 }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 7, fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", padding: "6px 14px", borderRadius: 100, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", marginBottom: 14 }}>
             <MessageSquare size={11} strokeWidth={2} />
             Contact
           </span>
-          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 12, lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Get in Touch
           </h2>
-          <p style={{ fontSize: "0.85rem", color: "var(--ld-text)", lineHeight: 1.5, maxWidth: "44ch", margin: "0 auto" }}>
-            Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
-          </p>
-          <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "44ch", margin: "4px auto 0" }}>
-            There probably is. Reach out, and let&apos;s make it happen.
-          </p>
         </motion.div>
 
-        {/* Content — two-column: links + form */}
-        <motion.div {...up(0.1)} style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 48, textAlign: "left" }}>
+        {/* Content — two-column: info + form */}
+        <motion.div {...up(0.1)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 56, alignItems: "start" }}>
 
-          {/* Left — contact links */}
-          <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", gap: 2 }}>
-            {CONTACT_OPTIONS.map(({ Icon, label, href, external }) => {
-              const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 14, padding: "10px 6px", borderRadius: 12, textDecoration: "none", transition: "opacity 0.18s ease" };
-              const inner = (
-                <>
-                  <div style={{ width: 40, height: 40, borderRadius: 12, flexShrink: 0, background: "var(--ld-card)", border: "1px solid var(--ld-border)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                    <Icon size={17} strokeWidth={1.5} style={{ color: "var(--ld-accent)" }} />
-                  </div>
-                  <span style={{ fontSize: "0.9rem", fontWeight: 600, color: "var(--ld-text)" }}>{label}</span>
-                </>
-              );
-              return href ? (
-                <a
-                  key={label}
-                  href={href}
-                  target={external ? "_blank" : undefined}
-                  rel={external ? "noopener noreferrer" : undefined}
-                  style={rowStyle}
-                  onMouseEnter={e => { (e.currentTarget as HTMLElement).style.opacity = "0.65"; }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLElement).style.opacity = "1"; }}
-                >
-                  {inner}
-                </a>
-              ) : (
-                <div key={label} style={rowStyle}>{inner}</div>
-              );
-            })}
+          {/* Left — description + contact list */}
+          <div>
+            <p style={{ fontSize: "0.9rem", color: "var(--ld-text)", lineHeight: 1.6, marginBottom: 4 }}>
+              Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
+            </p>
+            <p style={{ fontSize: "0.9rem", color: "var(--ld-muted)", lineHeight: 1.6, marginBottom: 36 }}>
+              There probably is. Reach out, and let&apos;s make it happen.
+            </p>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 22 }}>
+              {CONTACT_OPTIONS.map(({ Icon, label, value, href, external }) => {
+                const rowStyle: React.CSSProperties = { display: "flex", alignItems: "center", gap: 16, textDecoration: "none" };
+                const inner = (
+                  <>
+                    <div style={{ width: 44, height: 44, borderRadius: 14, flexShrink: 0, background: "var(--ld-glow)", border: "1px solid var(--ld-borderC)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                      <Icon size={19} strokeWidth={1.5} style={{ color: "var(--ld-accent)" }} />
+                    </div>
+                    <div style={{ minWidth: 0 }}>
+                      <p style={{ fontSize: "0.72rem", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 2 }}>{label}</p>
+                      <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", wordBreak: "break-word" }}>{value}</p>
+                    </div>
+                  </>
+                );
+                return href ? (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                    whileHover={{ x: 3 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    style={rowStyle}
+                  >
+                    {inner}
+                  </motion.a>
+                ) : (
+                  <div key={label} style={rowStyle}>{inner}</div>
+                );
+              })}
+            </div>
           </div>
 
           {/* Right — form */}
           <form
             onSubmit={e => e.preventDefault()}
-            style={{ display: "flex", flexDirection: "column", gap: 18, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 24, padding: "clamp(24px, 3vw, 32px)", boxShadow: "var(--ld-shadow)" }}
+            style={{ display: "flex", flexDirection: "column", gap: 20, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 24, padding: "clamp(24px, 3vw, 36px)", boxShadow: "var(--ld-shadow)" }}
           >
             <div>
               <label htmlFor="contact-name" style={{ display: "block", fontSize: "0.78rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 8 }}>Name</label>
