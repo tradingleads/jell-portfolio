@@ -1759,14 +1759,14 @@ function ContactSection() {
         </motion.div>
 
         {/* Content — two-column: info + form */}
-        <motion.div {...up(0.1)} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 40, alignItems: "start" }}>
+        <motion.div {...up(0.1)} className="grid grid-cols-1 md:grid-cols-[1.15fr_1fr] items-start" style={{ gap: 40 }}>
 
           {/* Left — description + contact list */}
           <div>
-            <p style={{ fontSize: "1rem", color: "var(--ld-text)", lineHeight: 1.7, marginBottom: 3 }}>
+            <p className="md:whitespace-nowrap" style={{ fontSize: "0.9375rem", color: "var(--ld-text)", lineHeight: 1.6, marginBottom: 3 }}>
               Have a workflow that makes you go, &ldquo;There has to be a better way&rdquo;?
             </p>
-            <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.7, marginBottom: 20 }}>
+            <p className="md:whitespace-nowrap" style={{ fontSize: "0.9375rem", color: "var(--ld-muted)", lineHeight: 1.6, marginBottom: 20 }}>
               There probably is. Reach out, and let&apos;s make it happen.
             </p>
 
@@ -1807,26 +1807,17 @@ function ContactSection() {
           {/* Right — form */}
           <form
             onSubmit={e => e.preventDefault()}
-            style={{ display: "flex", flexDirection: "column", gap: 12, background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, padding: "clamp(16px, 2vw, 22px)", boxShadow: "var(--ld-shadow)" }}
+            style={{ display: "flex", flexDirection: "column", gap: 14 }}
           >
-            <div>
-              <label htmlFor="contact-name" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Name</label>
-              <input id="contact-name" name="name" type="text" required placeholder="Your name"
-                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
-            </div>
+            <input id="contact-name" name="name" type="text" required aria-label="Name" placeholder="Your Name"
+              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
 
-            <div>
-              <label htmlFor="contact-email" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Email</label>
-              <input id="contact-email" name="email" type="email" required placeholder="you@company.com"
-                style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
-            </div>
+            <input id="contact-email" name="email" type="email" required aria-label="Email" placeholder="Your Email"
+              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
 
-            <div>
-              <label htmlFor="contact-message" style={{ display: "block", fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)", marginBottom: 5 }}>Message</label>
-              <textarea id="contact-message" name="message" required rows={3} placeholder="Tell me about your workflow"
-                style={{ ...contactInputStyle, resize: "vertical", minHeight: 72, fontFamily: "var(--font-body)" }}
-                onFocus={focusField} onBlur={blurField} />
-            </div>
+            <textarea id="contact-message" name="message" required aria-label="Message" rows={3} placeholder="Your Message"
+              style={{ ...contactInputStyle, resize: "vertical", minHeight: 72, fontFamily: "var(--font-body)" }}
+              onFocus={focusField} onBlur={blurField} />
 
             <motion.button
               type="submit"
