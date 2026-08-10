@@ -579,7 +579,7 @@ function Navbar() {
           <div style={{ width: "100%", maxWidth: 400, padding: "0 24px", display: "flex", flexDirection: "column" }}>
 
             {/* Nav links */}
-            {[...NAV_ITEMS, { label: "Book a Call", href: NAV_CTA.href }, NAV_CONTACT, NAV_ABOUT].map(({ label, href }, i) => (
+            {[...NAV_ITEMS, NAV_ABOUT, { label: "Book a Call", href: NAV_CTA.href }, NAV_CONTACT].map(({ label, href }, i) => (
               <motion.a
                 key={label}
                 href={href}
