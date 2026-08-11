@@ -712,7 +712,7 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)", scrollMarginTop: 90 }}>
+    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)", scrollMarginTop: 70 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 60 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Deliver</p>
@@ -1231,7 +1231,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
+    <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)", scrollMarginTop: 70 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1462,7 +1462,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+    <section id="process" style={{ padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 70 }}>
       {/* Subtle background glow */}
       <div style={{ position: "absolute", top: "30%", left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -1563,7 +1563,7 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 90 }}>
+    <section id="about" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 70 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 64, alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
@@ -1696,7 +1696,7 @@ function TestimonialsSection() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="book-a-call" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 90 }}>
+    <section id="book-a-call" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 70 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
@@ -1749,7 +1749,7 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="min-h-[min(calc(100dvh-60px),65vw)]" style={{ padding: "clamp(20px, 3vw, 32px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 60, display: "flex", alignItems: "center" }}>
+    <section id="contact" className="min-h-[min(calc(100dvh-60px),65vw)]" style={{ padding: "clamp(20px, 3vw, 32px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 70, display: "flex", alignItems: "center" }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative", width: "100%" }}>
