@@ -848,9 +848,7 @@ export default function BookingCalendar() {
                     />
                     {errors.email && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.email}</p>}
                   </div>
-                </div>
 
-                <div className="mt-4 max-h-[260px] overflow-y-auto pr-2 space-y-4">
                   {CUSTOM_QUESTIONS.map((question, i) => (
                     <div key={question}>
                       <label className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
