@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ChevronLeft, ChevronRight, ChevronDown, Clock, Globe, Video, MonitorPlay,
@@ -197,6 +197,18 @@ export default function BookingCalendar() {
 
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
+
+  // Locks the card to its very first rendered height (calendar visible, nothing
+  // selected/open yet) so opening the timezone dropdown, selecting a date, or
+  // moving to the details form never grows the card — each side scrolls
+  // internally within this fixed height instead.
+  const cardBodyRef = useRef<HTMLDivElement>(null);
+  const [cardHeight, setCardHeight] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const el = cardBodyRef.current;
+    if (!el) return;
+    setCardHeight(el.getBoundingClientRect().height);
+  }, []);
 
   const [busyIntervals, setBusyIntervals] = useState<BusyInterval[]>([]);
   const [monthLoading, setMonthLoading] = useState(true);
@@ -439,10 +451,14 @@ export default function BookingCalendar() {
 
   return (
     <div className="w-full max-w-5xl mx-auto rounded-[2rem] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_48px_-16px_rgba(0,0,0,0.14)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.5),0_20px_48px_-16px_rgba(0,0,0,0.7)] overflow-hidden">
-      <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr]">
+      <div
+        ref={cardBodyRef}
+        className="grid grid-cols-1 lg:grid-cols-[280px_1fr]"
+        style={cardHeight ? { ["--card-h" as string]: `${cardHeight}px` } : undefined}
+      >
 
         {/* ── Event info panel — driven by lib/bookingConfig.ts ──── */}
-        <div className="p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-neutral-200 dark:border-neutral-800">
+        <div className="p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-neutral-200 dark:border-neutral-800 lg:h-[var(--card-h)] lg:overflow-y-auto">
           {BOOKING_CONFIG.avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={BOOKING_CONFIG.avatarUrl} alt={BOOKING_CONFIG.hostName} className="w-10 h-10 rounded-full object-cover" />
@@ -563,7 +579,7 @@ export default function BookingCalendar() {
         </div>
 
         {/* ── Right side ────────────────────────────────────────── */}
-        <div className="p-6 sm:p-8">
+        <div className="p-6 sm:p-8 lg:h-[var(--card-h)] lg:overflow-y-auto">
           <AnimatePresence mode="wait">
             {step === "pick" && (
               <motion.div
