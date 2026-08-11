@@ -646,7 +646,7 @@ export default function BookingCalendar() {
                 </div>
 
                 {/* Time slots */}
-                <div aria-live="polite" className="xl:h-[440px]">
+                <div aria-live="polite">
                   {!selectedDateKey && (
                     <div className="hidden xl:flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
                       <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
@@ -660,13 +660,13 @@ export default function BookingCalendar() {
                     const [yy, mm, dd] = selectedDateKey.split("-").map(Number);
                     const headingDate = new Date(yy, mm - 1, dd);
                     return (
-                      <div className="xl:h-full xl:flex xl:flex-col">
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4 xl:shrink-0">
+                      <div>
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4">
                           {headingDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
                         </p>
 
                         {monthLoading && (
-                          <div className="grid grid-cols-1 gap-2 xl:shrink-0">
+                          <div className="grid grid-cols-1 gap-2">
                             {Array.from({ length: 8 }).map((_, i) => (
                               <div key={i} className="h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
                             ))}
@@ -674,7 +674,7 @@ export default function BookingCalendar() {
                         )}
 
                         {!monthLoading && daySlots.length === 0 && (
-                          <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center xl:shrink-0">
+                          <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center">
                             <CalendarX size={18} strokeWidth={1.5} className="mx-auto text-neutral-300 dark:text-neutral-700 mb-2" />
                             <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
                               No times available on this day
@@ -697,7 +697,7 @@ export default function BookingCalendar() {
                         )}
 
                         {!monthLoading && daySlots.length > 0 && (
-                          <div className="max-h-[380px] overflow-y-auto pr-2 xl:max-h-none xl:flex-1 xl:min-h-0">
+                          <div className="max-h-[420px] overflow-y-auto pr-1 -mr-1">
                             <div className="grid grid-cols-1 gap-2">
                               {daySlots.map(slot => {
                                 const isSelected = selectedSlot?.getTime() === slot.getTime();
