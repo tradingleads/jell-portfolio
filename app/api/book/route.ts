@@ -1,4 +1,5 @@
 import { google } from "googleapis";
+import { BOOKING_CONFIG } from "@/lib/bookingConfig";
 
 export const maxDuration = 30;
 
@@ -13,12 +14,63 @@ type BookingPayload = {
   answers: { question: string; answer: string }[];
 };
 
-function getClient() {
+function getOAuthClient() {
   const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN } = process.env;
   if (!GOOGLE_CLIENT_ID || !GOOGLE_CLIENT_SECRET || !GOOGLE_REFRESH_TOKEN) return null;
   const oauth2Client = new google.auth.OAuth2(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET);
   oauth2Client.setCredentials({ refresh_token: GOOGLE_REFRESH_TOKEN });
-  return google.calendar({ version: "v3", auth: oauth2Client });
+  return oauth2Client;
+}
+
+function encodeMimeSubject(subject: string) {
+  return `=?UTF-8?B?${Buffer.from(subject, "utf-8").toString("base64")}?=`;
+}
+
+/* Notifies the host by email the moment a booking is created — Google never
+   emails the organizer for events they create themselves via the API, so
+   without this the host only hears about a booking once the client responds
+   to the calendar invite. */
+async function sendHostNotification(auth: InstanceType<typeof google.auth.OAuth2>, payload: BookingPayload, start: Date, end: Date) {
+  const hostEmail = process.env.HOST_NOTIFICATION_EMAIL || process.env.GOOGLE_CALENDAR_ID;
+  if (!hostEmail || !hostEmail.includes("@")) {
+    console.error("[book] no valid host notification email configured");
+    return;
+  }
+
+  const dateLabel = start.toLocaleDateString("en-US", { timeZone: BOOKING_CONFIG.hostTimeZone, weekday: "long", month: "long", day: "numeric", year: "numeric" });
+  const timeLabel = `${start.toLocaleTimeString("en-US", { timeZone: BOOKING_CONFIG.hostTimeZone, hour: "numeric", minute: "2-digit", hour12: true })}–${end.toLocaleTimeString("en-US", { timeZone: BOOKING_CONFIG.hostTimeZone, hour: "numeric", minute: "2-digit", hour12: true })} (${BOOKING_CONFIG.hostTimeZone})`;
+
+  const answerLines = payload.answers
+    .filter(a => a.answer.trim())
+    .map(a => `${a.question}\n${a.answer.trim()}`)
+    .join("\n\n");
+
+  const bodyLines = [
+    `New discovery call booked via withjell.vercel.app`,
+    ``,
+    `Client: ${payload.name}`,
+    `Email: ${payload.email}`,
+    `Date: ${dateLabel}`,
+    `Time: ${timeLabel}`,
+    `Client timezone: ${payload.visitorTimeZone}`,
+    `Location: ${payload.location === "zoom" ? "Zoom" : "Google Meet"}`,
+    ``,
+    answerLines || "No additional details provided.",
+  ].join("\n");
+
+  const subject = encodeMimeSubject(`New booking: ${payload.name} — ${dateLabel}`);
+  const mime = [
+    `To: ${hostEmail}`,
+    `Subject: ${subject}`,
+    `Content-Type: text/plain; charset="UTF-8"`,
+    ``,
+    bodyLines,
+  ].join("\r\n");
+
+  const raw = Buffer.from(mime).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+
+  const gmail = google.gmail({ version: "v1", auth });
+  await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
 }
 
 function buildDescription(payload: BookingPayload) {
@@ -42,14 +94,15 @@ export async function POST(req: Request) {
     return Response.json({ error: "Missing required fields." }, { status: 400 });
   }
 
-  const calendar = getClient();
-  if (!calendar) {
+  const auth = getOAuthClient();
+  if (!auth) {
     console.error("[book] Google Calendar credentials not configured");
     return Response.json(
       { error: "Live booking isn't connected yet. Please reach out directly for now." },
       { status: 503 }
     );
   }
+  const calendar = google.calendar({ version: "v3", auth });
 
   const calendarId = process.env.GOOGLE_CALENDAR_ID || "primary";
   const start = new Date(payload.startIso);
@@ -82,6 +135,14 @@ export async function POST(req: Request) {
           : undefined,
       },
     });
+
+    // Best-effort: the booking itself already succeeded, so a notification
+    // failure shouldn't turn into a failed booking for the client.
+    try {
+      await sendHostNotification(auth, payload, start, end);
+    } catch (notifyErr) {
+      console.error("[book] host notification failed:", notifyErr instanceof Error ? notifyErr.message : notifyErr);
+    }
 
     return Response.json({
       ok: true,
