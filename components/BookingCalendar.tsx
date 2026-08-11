@@ -784,7 +784,7 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="max-w-md mx-auto"
+                className="max-w-md"
                 noValidate
               >
                 <button
