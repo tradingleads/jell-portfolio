@@ -204,6 +204,23 @@ export default function BookingCalendar() {
   // internally within this fixed height instead.
   const cardBodyRef = useRef<HTMLDivElement>(null);
   const [cardHeight, setCardHeight] = useState<number | null>(null);
+
+  // Measures the calendar column itself so the time-slots list can be capped
+  // to that exact height and scroll on its own — the calendar must never move
+  // when the slots list scrolls, so it can't share a scroll container with it.
+  const calendarColRef = useRef<HTMLDivElement>(null);
+  const [calendarHeight, setCalendarHeight] = useState<number | null>(null);
+  useLayoutEffect(() => {
+    const el = calendarColRef.current;
+    if (!el) return;
+    const observer = new ResizeObserver(entries => {
+      const h = entries[0]?.contentRect.height;
+      if (h) setCalendarHeight(prev => (prev ? Math.max(prev, h) : h));
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   useLayoutEffect(() => {
     const el = cardBodyRef.current;
     if (!el) return;
@@ -591,7 +608,7 @@ export default function BookingCalendar() {
                 className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-8"
               >
                 {/* Calendar */}
-                <div>
+                <div ref={calendarColRef}>
                   <div className="flex items-center justify-between mb-5">
                     <p className="text-sm font-semibold text-neutral-900 dark:text-white">
                       {MONTH_LABELS[viewMonth]} {viewYear}
@@ -721,7 +738,10 @@ export default function BookingCalendar() {
                         )}
 
                         {!monthLoading && daySlots.length > 0 && (
-                          <div className="max-h-[420px] overflow-y-auto pr-1 -mr-1">
+                          <div
+                            className="max-h-[380px] xl:max-h-[var(--slots-h,420px)] overflow-y-auto pr-1 -mr-1"
+                            style={calendarHeight ? ({ "--slots-h": `${calendarHeight}px` } as React.CSSProperties) : undefined}
+                          >
                             <div className="grid grid-cols-1 gap-2">
                               {daySlots.map(slot => {
                                 const isSelected = selectedSlot?.getTime() === slot.getTime();
