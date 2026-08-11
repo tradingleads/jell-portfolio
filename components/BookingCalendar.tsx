@@ -158,7 +158,14 @@ function buildMonthGrid(viewYear: number, viewMonth: number) {
   return cells;
 }
 
-/* Every working half-hour on one host-local day, as absolute UTC instants. */
+/* 30 min between the start of one appointment slot and the next, so each
+   30-min appointment is followed by a 30-min buffer before the next one. */
+const SLOT_BUFFER_MINUTES = 30;
+
+/* One host-local day's bookable start times, as absolute UTC instants.
+   Slots run every (duration + buffer) minutes from the start of the window;
+   whatever trailing gap is left before the window closes gets one final
+   back-to-back slot so the last bookable slot always ends exactly at close. */
 function hostSlotsForDay(hostDateKey: string, hostTz: string) {
   if (BOOKING_CONFIG.blockedDates.includes(hostDateKey)) return [];
   if (!BOOKING_CONFIG.workingDays.includes(weekdayOfDateKey(hostDateKey))) return [];
@@ -171,9 +178,23 @@ function hostSlotsForDay(hostDateKey: string, hostTz: string) {
     return { start: bsh * 60 + bsm, end: beh * 60 + bem };
   });
 
+  const windowStart = sh * 60 + sm;
+  const windowEnd = eh * 60 + em;
+  const duration = BOOKING_CONFIG.durationMinutes;
+  const cadence = duration + SLOT_BUFFER_MINUTES;
+
+  const starts: number[] = [];
+  for (let t = windowStart; t + duration <= windowEnd; t += cadence) {
+    starts.push(t);
+  }
+  const finalStart = windowEnd - duration;
+  if (starts.length === 0 || finalStart > starts[starts.length - 1]) {
+    starts.push(finalStart);
+  }
+
   const slots: Date[] = [];
-  for (let t = sh * 60 + sm; t < eh * 60 + em; t += 30) {
-    if (breaks.some(b => t >= b.start && t < b.end)) continue;
+  for (const t of starts) {
+    if (breaks.some(b => t < b.end && t + duration > b.start)) continue;
     slots.push(wallTimeToUtc(hostDateKey, Math.floor(t / 60), t % 60, hostTz));
   }
   return slots;
