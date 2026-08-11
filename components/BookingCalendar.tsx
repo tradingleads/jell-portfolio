@@ -128,6 +128,15 @@ function currentTimeLabel(tz: string) {
   return `${hour}:${minute}${period}`;
 }
 
+/* Formats a slot as "start – end" in the given timezone — both endpoints are
+   converted from their own absolute UTC instant, so each resolves correctly
+   even across a DST or day boundary between them. */
+function formatSlotRange(slot: Date, tz: string, durationMinutes: number) {
+  const slotEnd = new Date(slot.getTime() + durationMinutes * 60 * 1000);
+  const fmt = (d: Date) => d.toLocaleTimeString("en-US", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true });
+  return `${fmt(slot)} – ${fmt(slotEnd)}`;
+}
+
 function buildMonthGrid(viewYear: number, viewMonth: number) {
   const firstOfMonth = new Date(viewYear, viewMonth, 1);
   const startOffset = firstOfMonth.getDay();
@@ -707,7 +716,7 @@ export default function BookingCalendar() {
                                       : "border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white",
                                   ].join(" ")}
                                 >
-                                  {slot.toLocaleTimeString("en-US", { timeZone: visitorTz, hour: "numeric", minute: "2-digit", hour12: true })}
+                                  {formatSlotRange(slot, visitorTz, BOOKING_CONFIG.durationMinutes)}
                                 </motion.button>
                               );
                             })}
