@@ -685,7 +685,7 @@ export default function BookingCalendar() {
                     const headingDate = new Date(yy, mm - 1, dd);
                     return (
                       <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4">
+                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4 text-center">
                           {headingDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
                         </p>
 
