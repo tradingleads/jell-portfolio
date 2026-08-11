@@ -767,17 +767,19 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="max-w-md"
+                className="max-w-md xl:h-[var(--times-h,480px)] xl:flex xl:flex-col"
+                style={calendarHeight ? ({ "--times-h": `${calendarHeight}px` } as React.CSSProperties) : undefined}
                 noValidate
               >
                 <button
                   type="button"
                   onClick={() => setStep("pick")}
-                  className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white mb-5"
+                  className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white mb-5 xl:shrink-0"
                 >
                   <ArrowLeft size={14} strokeWidth={1.5} /> Back
                 </button>
 
+                <div className="xl:flex-1 xl:min-h-0 xl:overflow-y-auto xl:pr-2">
                 <div className="rounded-2xl bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 p-4 mb-6 space-y-2.5">
                   <div className="flex items-center gap-2.5 text-sm text-neutral-800 dark:text-neutral-200">
                     <Clock size={15} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
@@ -848,9 +850,7 @@ export default function BookingCalendar() {
                     />
                     {errors.email && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.email}</p>}
                   </div>
-                </div>
 
-                <div className="mt-4 max-h-[260px] overflow-y-auto pr-2 space-y-4">
                   {CUSTOM_QUESTIONS.map((question, i) => (
                     <div key={question}>
                       <label className="block text-xs font-medium text-neutral-500 dark:text-neutral-400 mb-1.5">
@@ -865,6 +865,7 @@ export default function BookingCalendar() {
                       {errors.answers?.[i] && <p className="mt-1.5 text-xs text-red-600 dark:text-red-400">{errors.answers[i]}</p>}
                     </div>
                   ))}
+                </div>
                 </div>
 
                 {submitError && (
