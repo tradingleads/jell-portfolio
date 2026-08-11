@@ -600,7 +600,7 @@ export default function BookingCalendar() {
         </div>
 
         {/* ── Right side ────────────────────────────────────────── */}
-        <div className="p-6 sm:p-8 lg:h-[var(--card-h)] lg:overflow-y-auto">
+        <div className="p-6 sm:p-8 lg:h-[var(--card-h)]">
           <AnimatePresence mode="wait">
             {step === "pick" && (
               <motion.div
@@ -609,9 +609,9 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-8"
+                className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-8 lg:h-full"
               >
-                {/* Calendar */}
+                {/* Calendar — never scrolls; no overflow on this column or its ancestors up to the fixed-height row */}
                 <div>
                   <div className="flex items-center justify-between mb-5">
                     <p className="text-sm font-semibold text-neutral-900 dark:text-white">
@@ -690,8 +690,8 @@ export default function BookingCalendar() {
                   </div>
                 </div>
 
-                {/* Time slots */}
-                <div aria-live="polite">
+                {/* Time slots — scrolls independently of the calendar */}
+                <div aria-live="polite" className="lg:h-full lg:overflow-y-auto lg:pr-1">
                   {!selectedDateKey && (
                     <div className="hidden xl:flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
                       <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
@@ -784,7 +784,7 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="max-w-md"
+                className="max-w-md lg:h-full lg:overflow-y-auto lg:pr-1"
                 noValidate
               >
                 <button
