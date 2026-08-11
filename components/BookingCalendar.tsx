@@ -128,13 +128,21 @@ function currentTimeLabel(tz: string) {
   return `${hour}:${minute}${period}`;
 }
 
-/* Formats a slot as "start – end" in the given timezone — both endpoints are
+/* "1pm" / "1:30pm" — no leading zero on the hour, no ":00" on the hour, lowercase period. */
+function formatSlotTime(d: Date, tz: string) {
+  const parts = new Intl.DateTimeFormat("en-US", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true }).formatToParts(d);
+  const hour = parts.find(p => p.type === "hour")?.value ?? "";
+  const minute = parts.find(p => p.type === "minute")?.value ?? "00";
+  const period = (parts.find(p => p.type === "dayPeriod")?.value ?? "").toLowerCase();
+  return minute === "00" ? `${hour}${period}` : `${hour}:${minute}${period}`;
+}
+
+/* Formats a slot as "start - end" in the given timezone — both endpoints are
    converted from their own absolute UTC instant, so each resolves correctly
    even across a DST or day boundary between them. */
 function formatSlotRange(slot: Date, tz: string, durationMinutes: number) {
   const slotEnd = new Date(slot.getTime() + durationMinutes * 60 * 1000);
-  const fmt = (d: Date) => d.toLocaleTimeString("en-US", { timeZone: tz, hour: "numeric", minute: "2-digit", hour12: true });
-  return `${fmt(slot)} – ${fmt(slotEnd)}`;
+  return `${formatSlotTime(slot, tz)} - ${formatSlotTime(slotEnd, tz)}`;
 }
 
 function buildMonthGrid(viewYear: number, viewMonth: number) {
