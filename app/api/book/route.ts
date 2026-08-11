@@ -125,7 +125,7 @@ export async function POST(req: Request) {
       sendUpdates: "all",
       conferenceDataVersion: wantsMeet ? 1 : 0,
       requestBody: {
-        summary: `${payload.eventTitle} — ${payload.name}`,
+        summary: `Discovery Call — ${payload.name}`,
         description: buildDescription(payload),
         start: { dateTime: start.toISOString() },
         end: { dateTime: end.toISOString() },
