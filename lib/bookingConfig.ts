@@ -15,7 +15,7 @@ export const BOOKING_CONFIG = {
   // 0 = Sunday … 6 = Saturday
   workingDays: [1, 2, 3, 4, 5],
   workingHours: { start: "09:00", end: "17:00" },
-  breaks: [{ start: "12:00", end: "13:00" }],
+  breaks: [] as { start: string; end: string }[],
   // Specific dates to block off (holidays, days off), "YYYY-MM-DD".
   blockedDates: [] as string[],
 };
