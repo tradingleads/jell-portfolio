@@ -73,7 +73,25 @@ export async function POST(req: Request) {
 
   try {
     const gmail = google.gmail({ version: "v1", auth });
-    await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
+    const sent = await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
+
+    // Sending a message to the same account that authenticated the request
+    // (self-notification, which is what this is) files it under Sent/All
+    // Mail — Gmail doesn't apply the INBOX/UNREAD labels the way it would
+    // for a message actually received from someone else, so without this
+    // it silently never shows up anywhere the host would look.
+    if (sent.data.id) {
+      try {
+        await gmail.users.messages.modify({
+          userId: "me",
+          id: sent.data.id,
+          requestBody: { addLabelIds: ["INBOX", "UNREAD"] },
+        });
+      } catch (labelErr) {
+        console.error("[contact] failed to label message as inbox/unread:", labelErr instanceof Error ? labelErr.message : labelErr);
+      }
+    }
+
     return Response.json({ ok: true });
   } catch (err) {
     console.error("[contact] error:", err instanceof Error ? err.message : err);

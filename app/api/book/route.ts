@@ -70,7 +70,24 @@ async function sendHostNotification(auth: InstanceType<typeof google.auth.OAuth2
   const raw = Buffer.from(mime).toString("base64").replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 
   const gmail = google.gmail({ version: "v1", auth });
-  await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
+  const sent = await gmail.users.messages.send({ userId: "me", requestBody: { raw } });
+
+  // Sending a message to the same account that authenticated the request
+  // (self-notification, which is what this is) files it under Sent/All
+  // Mail — Gmail doesn't apply the INBOX/UNREAD labels the way it would
+  // for a message actually received from someone else, so without this
+  // it silently never shows up anywhere the host would look.
+  if (sent.data.id) {
+    try {
+      await gmail.users.messages.modify({
+        userId: "me",
+        id: sent.data.id,
+        requestBody: { addLabelIds: ["INBOX", "UNREAD"] },
+      });
+    } catch (labelErr) {
+      console.error("[book] failed to label host notification as inbox/unread:", labelErr instanceof Error ? labelErr.message : labelErr);
+    }
+  }
 }
 
 function buildDescription(payload: BookingPayload) {
