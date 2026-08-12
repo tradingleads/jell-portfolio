@@ -225,10 +225,27 @@ export default function BookingCalendar() {
   // internally within this fixed height instead.
   const cardBodyRef = useRef<HTMLDivElement>(null);
   const [cardHeight, setCardHeight] = useState<number | null>(null);
+
+  // Below lg the two panels stack instead of sitting side by side, so the
+  // shared cardHeight above (which lg relies on, and which equals the taller
+  // of the two panels) can't be reused per-panel there — applying it to both
+  // stacked panels would roughly double the card's height instead of
+  // capping it. Each panel's own first-rendered height is measured
+  // separately instead, so each can be pinned and scrolled independently,
+  // the same way the two columns are on desktop.
+  const leftPanelRef = useRef<HTMLDivElement>(null);
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const [leftPanelHeight, setLeftPanelHeight] = useState<number | null>(null);
+  const [rightPanelHeight, setRightPanelHeight] = useState<number | null>(null);
+
   useLayoutEffect(() => {
     const el = cardBodyRef.current;
-    if (!el) return;
-    setCardHeight(el.getBoundingClientRect().height);
+    if (el) setCardHeight(el.getBoundingClientRect().height);
+    const left = leftPanelRef.current;
+    if (left) setLeftPanelHeight(left.getBoundingClientRect().height);
+    const right = rightPanelRef.current;
+    if (right) setRightPanelHeight(right.getBoundingClientRect().height);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const [busyIntervals, setBusyIntervals] = useState<BusyInterval[]>([]);
@@ -245,12 +262,10 @@ export default function BookingCalendar() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
 
-  // The confirmation screen is much shorter than the details form. Below the
-  // lg breakpoint the card isn't height-locked, so swapping to it would
-  // collapse the section's height — which can shrink the page enough for the
-  // browser to clamp scroll position down into the next section. Pinning the
-  // confirmation screen to the form's last measured height prevents that jump.
-  const rightPanelRef = useRef<HTMLDivElement>(null);
+  // The confirmation screen is much shorter than the details form. Pinning it
+  // to the form's last measured height keeps it from collapsing the panel
+  // below its locked height, which would otherwise let the page's scroll
+  // position get clamped down into the next section.
   const [doneMinHeight, setDoneMinHeight] = useState<number | null>(null);
 
   const [tzOpen, setTzOpen] = useState(false);
@@ -484,11 +499,15 @@ export default function BookingCalendar() {
       <div
         ref={cardBodyRef}
         className="grid grid-cols-1 lg:grid-cols-[280px_1fr]"
-        style={cardHeight ? { ["--card-h" as string]: `${cardHeight}px` } : undefined}
+        style={{
+          ["--card-h" as string]: cardHeight ? `${cardHeight}px` : undefined,
+          ["--left-h" as string]: leftPanelHeight ? `${leftPanelHeight}px` : undefined,
+          ["--right-h" as string]: rightPanelHeight ? `${rightPanelHeight}px` : undefined,
+        } as React.CSSProperties}
       >
 
         {/* ── Event info panel — driven by lib/bookingConfig.ts ──── */}
-        <div className="p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-neutral-200 dark:border-neutral-800 lg:h-[var(--card-h)] lg:overflow-y-auto">
+        <div ref={leftPanelRef} className="p-6 sm:p-8 border-b lg:border-b-0 lg:border-r border-neutral-200 dark:border-neutral-800 lg:h-[var(--card-h)] lg:overflow-y-auto max-lg:h-[var(--left-h)] max-lg:overflow-y-auto">
           {BOOKING_CONFIG.avatarUrl ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={BOOKING_CONFIG.avatarUrl} alt={BOOKING_CONFIG.hostName} className="w-10 h-10 rounded-full object-cover" />
@@ -609,7 +628,7 @@ export default function BookingCalendar() {
         </div>
 
         {/* ── Right side ────────────────────────────────────────── */}
-        <div ref={rightPanelRef} className="p-6 sm:p-8 lg:h-[var(--card-h)]">
+        <div ref={rightPanelRef} className="p-6 sm:p-8 lg:h-[var(--card-h)] max-lg:h-[var(--right-h)]">
           <AnimatePresence mode="wait">
             {step === "pick" && (
               <motion.div
@@ -618,7 +637,7 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-8 lg:h-full"
+                className="grid grid-cols-1 max-lg:grid-rows-[auto_1fr] xl:grid-cols-[1fr_240px] gap-8 h-full"
               >
                 {/* Calendar — never scrolls; no overflow on this column or its ancestors up to the fixed-height row */}
                 <div>
@@ -700,9 +719,9 @@ export default function BookingCalendar() {
                 </div>
 
                 {/* Time slots — scrolls independently of the calendar */}
-                <div aria-live="polite" className="lg:h-full lg:overflow-y-auto lg:pr-1">
+                <div aria-live="polite" className="h-full min-h-0 overflow-y-auto pr-1">
                   {!selectedDateKey && (
-                    <div className="hidden xl:flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
+                    <div className="flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
                       <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
                       <p className="text-xs text-neutral-400 dark:text-neutral-600 leading-relaxed">
                         Pick a date to see available times
@@ -793,7 +812,7 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="max-w-md lg:h-full lg:overflow-y-auto lg:pr-1"
+                className="max-w-md h-full overflow-y-auto pr-1"
                 noValidate
               >
                 <button
