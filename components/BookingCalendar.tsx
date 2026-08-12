@@ -245,6 +245,14 @@ export default function BookingCalendar() {
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [bookingResult, setBookingResult] = useState<{ meetLink: string | null; htmlLink: string | null } | null>(null);
 
+  // The confirmation screen is much shorter than the details form. Below the
+  // lg breakpoint the card isn't height-locked, so swapping to it would
+  // collapse the section's height — which can shrink the page enough for the
+  // browser to clamp scroll position down into the next section. Pinning the
+  // confirmation screen to the form's last measured height prevents that jump.
+  const rightPanelRef = useRef<HTMLDivElement>(null);
+  const [doneMinHeight, setDoneMinHeight] = useState<number | null>(null);
+
   const [tzOpen, setTzOpen] = useState(false);
   const [tzQuery, setTzQuery] = useState("");
   const [tzActiveIndex, setTzActiveIndex] = useState(0);
@@ -462,6 +470,7 @@ export default function BookingCalendar() {
         const data = await r.json();
         if (!r.ok) throw new Error(data.error || "Something went wrong. Please try again.");
         setBookingResult({ meetLink: data.meetLink ?? null, htmlLink: data.htmlLink ?? null });
+        setDoneMinHeight(rightPanelRef.current?.getBoundingClientRect().height ?? null);
         setStep("done");
       })
       .catch(err => setSubmitError(err instanceof Error ? err.message : "Something went wrong. Please try again."))
@@ -600,7 +609,7 @@ export default function BookingCalendar() {
         </div>
 
         {/* ── Right side ────────────────────────────────────────── */}
-        <div className="p-6 sm:p-8 lg:h-[var(--card-h)]">
+        <div ref={rightPanelRef} className="p-6 sm:p-8 lg:h-[var(--card-h)]">
           <AnimatePresence mode="wait">
             {step === "pick" && (
               <motion.div
@@ -913,7 +922,8 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -8 }}
                 transition={{ duration: 0.3, ease: E }}
-                className="max-w-md text-center mx-auto py-4"
+                className="max-w-md text-center mx-auto py-4 flex flex-col justify-center"
+                style={doneMinHeight ? { minHeight: doneMinHeight } : undefined}
               >
                 <motion.div
                   initial={{ scale: 0.5, opacity: 0 }}
