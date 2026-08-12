@@ -1752,7 +1752,7 @@ function ContactSection() {
   };
 
   return (
-    <section id="contact" className="min-h-[min(calc(100dvh-60px),65vw)]" style={{ padding: "clamp(20px, 3vw, 32px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50, display: "flex", alignItems: "center" }}>
+    <section id="contact" className="min-h-[100dvh]" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative", width: "100%" }}>
