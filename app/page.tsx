@@ -1462,9 +1462,9 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ minHeight: "100dvh", padding: "72px 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+    <section id="process" className="min-h-[100dvh]" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       {/* Subtle background glow */}
-      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <div style={{ position: "absolute", top: 220, left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
