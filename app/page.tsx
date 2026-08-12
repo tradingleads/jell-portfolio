@@ -1466,7 +1466,7 @@ function HowIWorkSection() {
       {/* Subtle background glow */}
       <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", position: "relative" }}>
+      <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 8 }}>
             How We&apos;ll Work Together
