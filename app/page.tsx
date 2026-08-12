@@ -1468,6 +1468,9 @@ function HowIWorkSection() {
 
       <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
+            Process
+          </p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 8 }}>
             How We&apos;ll Work Together
           </h2>
