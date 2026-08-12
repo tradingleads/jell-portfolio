@@ -22,6 +22,7 @@ import {
   Star, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
+  Loader2, Check, AlertCircle,
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
@@ -1742,6 +1743,10 @@ const contactInputStyle: React.CSSProperties = {
 };
 
 function ContactSection() {
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const focusField = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     e.currentTarget.style.borderColor = "var(--ld-accent)";
     e.currentTarget.style.boxShadow = "0 0 0 3px var(--ld-glow)";
@@ -1750,6 +1755,35 @@ function ContactSection() {
     e.currentTarget.style.borderColor = "var(--ld-border)";
     e.currentTarget.style.boxShadow = "none";
   };
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const payload = {
+      name: String(data.get("name") ?? "").trim(),
+      email: String(data.get("email") ?? "").trim(),
+      message: String(data.get("message") ?? "").trim(),
+    };
+
+    setError(null);
+    setSubmitting(true);
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Something went wrong. Please try again.");
+      form.reset();
+      setSubmitted(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   return (
     <section id="contact" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
@@ -1814,30 +1848,77 @@ function ContactSection() {
           </div>
 
           {/* Right — form */}
-          <form
-            onSubmit={e => e.preventDefault()}
-            style={{ display: "flex", flexDirection: "column", gap: 14 }}
-          >
-            <input id="contact-name" name="name" type="text" required aria-label="Name" placeholder="Your Name"
-              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
+          <AnimatePresence mode="wait">
+            {submitted ? (
+              <motion.div
+                key="sent"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: E }}
+                style={{ borderRadius: 16, border: "1px solid var(--ld-border)", background: "var(--ld-card)", padding: "28px 24px", textAlign: "center" }}
+              >
+                <div style={{ width: 42, height: 42, borderRadius: "50%", background: "var(--ld-accent)", display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}>
+                  <Check size={19} strokeWidth={2.5} color="#fff" />
+                </div>
+                <p style={{ fontSize: "0.9375rem", fontWeight: 700, color: "var(--ld-text)", marginBottom: 4 }}>
+                  Message sent
+                </p>
+                <p style={{ fontSize: "0.8125rem", color: "var(--ld-muted)", lineHeight: 1.5, marginBottom: 14 }}>
+                  Thanks for reaching out — I&apos;ll get back to you soon.
+                </p>
+                <button
+                  type="button"
+                  onClick={() => setSubmitted(false)}
+                  style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--ld-accent)", background: "none", border: "none", padding: 0, cursor: "pointer" }}
+                >
+                  Send another message
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form
+                key="form"
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.3, ease: E }}
+                onSubmit={handleSubmit}
+                style={{ display: "flex", flexDirection: "column", gap: 14 }}
+              >
+                <input id="contact-name" name="name" type="text" required disabled={submitting} aria-label="Name" placeholder="Your Name"
+                  style={{ ...contactInputStyle, opacity: submitting ? 0.6 : 1 }} onFocus={focusField} onBlur={blurField} />
 
-            <input id="contact-email" name="email" type="email" required aria-label="Email" placeholder="Your Email"
-              style={contactInputStyle} onFocus={focusField} onBlur={blurField} />
+                <input id="contact-email" name="email" type="email" required disabled={submitting} aria-label="Email" placeholder="Your Email"
+                  style={{ ...contactInputStyle, opacity: submitting ? 0.6 : 1 }} onFocus={focusField} onBlur={blurField} />
 
-            <textarea id="contact-message" name="message" required aria-label="Message" rows={3} placeholder="Your Message"
-              style={{ ...contactInputStyle, resize: "vertical", minHeight: 72, fontFamily: "var(--font-body)" }}
-              onFocus={focusField} onBlur={blurField} />
+                <textarea id="contact-message" name="message" required disabled={submitting} aria-label="Message" rows={3} placeholder="Your Message"
+                  style={{ ...contactInputStyle, resize: "vertical", minHeight: 72, fontFamily: "var(--font-body)", opacity: submitting ? 0.6 : 1 }}
+                  onFocus={focusField} onBlur={blurField} />
 
-            <motion.button
-              type="submit"
-              whileHover={{ y: -1, boxShadow: "0 0 24px var(--ld-glow)" }}
-              whileTap={{ scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 100, damping: 20 }}
-              style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "11px 0", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: "pointer", boxShadow: "0 0 16px var(--ld-glow)", marginTop: 2 }}
-            >
-              Send Message <ArrowRight size={15} strokeWidth={2.5} />
-            </motion.button>
-          </form>
+                {error && (
+                  <div style={{ display: "flex", alignItems: "flex-start", gap: 8, fontSize: "0.8rem", color: "#EF4444", lineHeight: 1.5 }}>
+                    <AlertCircle size={14} strokeWidth={1.5} style={{ flexShrink: 0, marginTop: 2 }} />
+                    <span>{error}</span>
+                  </div>
+                )}
+
+                <motion.button
+                  type="submit"
+                  disabled={submitting}
+                  whileHover={!submitting ? { y: -1, boxShadow: "0 0 24px var(--ld-glow)" } : undefined}
+                  whileTap={!submitting ? { scale: 0.98 } : undefined}
+                  transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                  style={{ display: "inline-flex", alignItems: "center", justifyContent: "center", gap: 7, padding: "11px 0", borderRadius: 100, background: "var(--ld-accent)", color: "#fff", fontWeight: 700, fontSize: "0.875rem", border: "none", cursor: submitting ? "default" : "pointer", boxShadow: "0 0 16px var(--ld-glow)", marginTop: 2, opacity: submitting ? 0.7 : 1 }}
+                >
+                  {submitting ? (
+                    <><Loader2 size={15} strokeWidth={2.5} className="animate-spin" /> Sending…</>
+                  ) : (
+                    <>Send Message <ArrowRight size={15} strokeWidth={2.5} /></>
+                  )}
+                </motion.button>
+              </motion.form>
+            )}
+          </AnimatePresence>
 
         </motion.div>
 
