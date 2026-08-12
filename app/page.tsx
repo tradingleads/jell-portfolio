@@ -1796,7 +1796,7 @@ function ContactSection() {
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
             Contact
           </p>
-          <h2 style={{ fontSize: "clamp(1.3rem, 2.6vw, 1.75rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
+          <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", lineHeight: 1.2 }}>
             Get in Touch
           </h2>
         </motion.div>
