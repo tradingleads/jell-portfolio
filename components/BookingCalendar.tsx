@@ -12,7 +12,7 @@ type LocationId = (typeof LOCATIONS)[number]["id"];
 type Step = "pick" | "details" | "done";
 type BusyInterval = { start: string; end: string };
 
-const LOCATION_ICONS: Record<LocationId, typeof Video> = { zoom: Video, meet: MonitorPlay };
+const LOCATION_ICONS: Record<LocationId, typeof Video> = { meet: MonitorPlay };
 
 const DAY_LABELS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 const MONTH_LABELS = [
@@ -956,11 +956,6 @@ export default function BookingCalendar() {
                   >
                     Join with Google Meet <ArrowUpRight size={13} strokeWidth={1.5} />
                   </a>
-                )}
-                {location === "zoom" && (
-                  <p className="mt-5 text-xs text-neutral-400 dark:text-neutral-600">
-                    Your Zoom link will be sent by email shortly.
-                  </p>
                 )}
               </motion.div>
             )}

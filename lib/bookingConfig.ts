@@ -8,7 +8,7 @@ export const BOOKING_CONFIG = {
   eventTitle: "Free Discovery Call",
   duration: "30 min",
   durationMinutes: 30,
-  locationText: "Zoom or Google Meet",
+  locationText: "Google Meet",
 
   // The timezone your working hours below are defined in (yours, not the visitor's).
   hostTimeZone: "Asia/Manila",
@@ -29,6 +29,5 @@ export const CUSTOM_QUESTIONS = [
 ];
 
 export const LOCATIONS = [
-  { id: "zoom", label: "Zoom" },
   { id: "meet", label: "Google Meet" },
 ] as const;

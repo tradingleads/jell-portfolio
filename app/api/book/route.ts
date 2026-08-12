@@ -9,7 +9,7 @@ type BookingPayload = {
   startIso: string;
   durationMinutes: number;
   eventTitle: string;
-  location: "zoom" | "meet";
+  location: "meet";
   visitorTimeZone: string;
   answers: { question: string; answer: string }[];
 };
@@ -53,7 +53,7 @@ async function sendHostNotification(auth: InstanceType<typeof google.auth.OAuth2
     `Date: ${dateLabel}`,
     `Time: ${timeLabel}`,
     `Client timezone: ${payload.visitorTimeZone}`,
-    `Location: ${payload.location === "zoom" ? "Zoom" : "Google Meet"}`,
+    `Location: Google Meet`,
     ``,
     answerLines || "No additional details provided.",
   ].join("\n");
@@ -78,8 +78,7 @@ function buildDescription(payload: BookingPayload) {
     .filter(a => a.answer.trim())
     .map(a => `${a.question}\n${a.answer.trim()}`);
   const base = lines.length ? lines.join("\n\n") : "No additional details provided.";
-  const zoomNote = payload.location === "zoom" ? "\n\nZoom was requested — a Zoom link will be sent by email shortly." : "";
-  return `Booked via withjell.vercel.app (visitor timezone: ${payload.visitorTimeZone})\n\n${base}${zoomNote}`;
+  return `Booked via withjell.vercel.app (visitor timezone: ${payload.visitorTimeZone})\n\n${base}`;
 }
 
 export async function POST(req: Request) {
