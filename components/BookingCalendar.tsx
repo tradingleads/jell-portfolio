@@ -219,6 +219,21 @@ export default function BookingCalendar() {
   const [selectedDateKey, setSelectedDateKey] = useState<string | null>(null);
   const [selectedSlot, setSelectedSlot] = useState<Date | null>(null);
 
+  // Below lg the calendar and timeslot list swap in place (crossfading)
+  // instead of stacking, so the card doesn't need to reserve room for both
+  // at once. Read synchronously on first render (this component only ever
+  // renders client-side, via `dynamic(..., { ssr: false })`) so the very
+  // first paint already has the right structure — deciding this later, from
+  // an effect, would mean the initial height measurement below captures the
+  // wrong (desktop-shaped) layout before this could correct it.
+  const [isCompact, setIsCompact] = useState(() => window.matchMedia("(max-width: 1023px)").matches);
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 1023px)");
+    const update = () => setIsCompact(mq.matches);
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
+
   // Locks the card to its very first rendered height (calendar visible, nothing
   // selected/open yet) so opening the timezone dropdown, selecting a date, or
   // moving to the details form never grows the card — each side scrolls
@@ -494,6 +509,160 @@ export default function BookingCalendar() {
 
   const locationLabel = LOCATIONS.find(l => l.id === location)?.label ?? LOCATIONS[0].label;
 
+  // Shared between the desktop (calendar + slots side by side) and compact
+  // (calendar, then slots, crossfading in the same spot) layouts below.
+  const calendarBlock = (
+    <>
+      <div className="flex items-center justify-between mb-5">
+        <p className="text-sm font-semibold text-neutral-900 dark:text-white">
+          {MONTH_LABELS[viewMonth]} {viewYear}
+        </p>
+        <div className="flex items-center gap-1">
+          <motion.button
+            type="button"
+            aria-label="Previous month"
+            disabled={!canGoPrev}
+            onClick={() => goToMonth(-1)}
+            whileHover={canGoPrev ? { scale: 1.06 } : undefined}
+            whileTap={canGoPrev ? { scale: 0.94 } : undefined}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:bg-neutral-100 dark:enabled:hover:bg-neutral-900"
+          >
+            <ChevronLeft size={15} strokeWidth={1.5} />
+          </motion.button>
+          <motion.button
+            type="button"
+            aria-label="Next month"
+            onClick={() => goToMonth(1)}
+            whileHover={{ scale: 1.06 }}
+            whileTap={{ scale: 0.94 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+          >
+            <ChevronRight size={15} strokeWidth={1.5} />
+          </motion.button>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-7 gap-y-1 mb-1">
+        {DAY_LABELS.map(d => (
+          <div key={d} className="text-center text-[0.68rem] font-medium uppercase tracking-wide text-neutral-400 dark:text-neutral-600 py-1">
+            {d}
+          </div>
+        ))}
+      </div>
+
+      <div className="grid grid-cols-7 gap-y-1">
+        {buildMonthGrid(viewYear, viewMonth).map(({ date, inMonth }, i) => {
+          if (!inMonth) return <div key={i} className="h-10" />;
+          const key = cellKey(date);
+          const available = !monthLoading && (monthAvailability.get(key)?.length ?? 0) > 0;
+          const selected = selectedDateKey === key;
+          const isToday = key === todayKey;
+          return (
+            <div key={i} className="flex items-center justify-center">
+              <motion.button
+                type="button"
+                disabled={!available}
+                aria-pressed={selected}
+                aria-label={date.toDateString()}
+                onClick={() => available && selectDate(key)}
+                whileHover={available && !selected ? { scale: 1.08 } : undefined}
+                whileTap={available ? { scale: 0.92 } : undefined}
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                className={[
+                  "relative w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
+                  selected
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
+                    : available
+                      ? "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-900 cursor-pointer"
+                      : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed",
+                ].join(" ")}
+              >
+                {date.getDate()}
+                {isToday && !selected && (
+                  <span className="absolute bottom-1 w-1 h-1 rounded-full bg-neutral-900 dark:bg-white" />
+                )}
+              </motion.button>
+            </div>
+          );
+        })}
+      </div>
+    </>
+  );
+
+  const slotsResultBlock = selectedDateKey && (() => {
+    const [yy, mm, dd] = selectedDateKey.split("-").map(Number);
+    const headingDate = new Date(yy, mm - 1, dd);
+    return (
+      <div>
+        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4 text-center">
+          {headingDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+        </p>
+
+        {monthLoading && (
+          <div className="grid grid-cols-1 gap-2">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <div key={i} className="h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
+            ))}
+          </div>
+        )}
+
+        {!monthLoading && daySlots.length === 0 && (
+          <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center">
+            <CalendarX size={18} strokeWidth={1.5} className="mx-auto text-neutral-300 dark:text-neutral-700 mb-2" />
+            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
+              No times available on this day
+            </p>
+            {(() => {
+              const next = findNextAvailableKey(selectedDateKey);
+              if (!next) return null;
+              const [ny, nm, nd] = next.split("-").map(Number);
+              return (
+                <button
+                  type="button"
+                  onClick={() => jumpToDate(next)}
+                  className="text-xs font-medium text-neutral-900 dark:text-white underline underline-offset-2 hover:opacity-70"
+                >
+                  Try {new Date(ny, nm - 1, nd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
+                </button>
+              );
+            })()}
+          </div>
+        )}
+
+        {!monthLoading && daySlots.length > 0 && (
+          <div className="max-h-[420px] overflow-y-auto pr-1 -mr-1">
+            <div className="grid grid-cols-1 gap-2">
+              {daySlots.map(slot => {
+                const isSelected = selectedSlot?.getTime() === slot.getTime();
+                return (
+                  <motion.button
+                    key={slot.toISOString()}
+                    type="button"
+                    onClick={() => pickSlot(slot)}
+                    aria-pressed={isSelected}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.96 }}
+                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                    className={[
+                      "w-full min-h-[2.25rem] py-2.5 rounded-full border text-xs font-medium transition-colors",
+                      isSelected
+                        ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
+                        : "border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white",
+                    ].join(" ")}
+                  >
+                    {formatSlotRange(slot, visitorTz, BOOKING_CONFIG.durationMinutes)}
+                  </motion.button>
+                );
+              })}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  })();
+
   return (
     <div className="w-full max-w-5xl mx-auto rounded-[2rem] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_48px_-16px_rgba(0,0,0,0.14)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.5),0_20px_48px_-16px_rgba(0,0,0,0.7)] overflow-hidden">
       <div
@@ -637,170 +806,63 @@ export default function BookingCalendar() {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -12 }}
                 transition={{ duration: 0.26, ease: E }}
-                className="grid grid-cols-1 max-lg:grid-rows-[auto_1fr] xl:grid-cols-[1fr_240px] gap-8 h-full"
+                className={isCompact ? "h-full" : "grid grid-cols-1 xl:grid-cols-[1fr_240px] gap-8 h-full"}
               >
-                {/* Calendar — never scrolls; no overflow on this column or its ancestors up to the fixed-height row */}
-                <div>
-                  <div className="flex items-center justify-between mb-5">
-                    <p className="text-sm font-semibold text-neutral-900 dark:text-white">
-                      {MONTH_LABELS[viewMonth]} {viewYear}
-                    </p>
-                    <div className="flex items-center gap-1">
-                      <motion.button
-                        type="button"
-                        aria-label="Previous month"
-                        disabled={!canGoPrev}
-                        onClick={() => goToMonth(-1)}
-                        whileHover={canGoPrev ? { scale: 1.06 } : undefined}
-                        whileTap={canGoPrev ? { scale: 0.94 } : undefined}
-                        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 disabled:opacity-30 disabled:cursor-not-allowed enabled:hover:bg-neutral-100 dark:enabled:hover:bg-neutral-900"
+                {isCompact ? (
+                  // Below lg, showing the calendar and the timeslot list at once has no
+                  // room to breathe within the fixed card height — so only one is ever
+                  // mounted, crossfading into the other's spot when a date is picked.
+                  <AnimatePresence mode="wait">
+                    {!selectedDateKey ? (
+                      <motion.div
+                        key="calendar"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22, ease: E }}
                       >
-                        <ChevronLeft size={15} strokeWidth={1.5} />
-                      </motion.button>
-                      <motion.button
-                        type="button"
-                        aria-label="Next month"
-                        onClick={() => goToMonth(1)}
-                        whileHover={{ scale: 1.06 }}
-                        whileTap={{ scale: 0.94 }}
-                        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="w-8 h-8 rounded-full flex items-center justify-center border border-neutral-200 dark:border-neutral-800 text-neutral-500 dark:text-neutral-400 hover:bg-neutral-100 dark:hover:bg-neutral-900"
+                        {calendarBlock}
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="slots"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.22, ease: E }}
+                        aria-live="polite"
+                        className="h-full min-h-0 overflow-y-auto pr-1"
                       >
-                        <ChevronRight size={15} strokeWidth={1.5} />
-                      </motion.button>
-                    </div>
-                  </div>
+                        <button
+                          type="button"
+                          onClick={() => setSelectedDateKey(null)}
+                          className="flex items-center gap-1.5 text-xs font-medium text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-white mb-4"
+                        >
+                          <ArrowLeft size={13} strokeWidth={1.5} /> Change date
+                        </button>
+                        {slotsResultBlock}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                ) : (
+                  <>
+                    {/* Calendar — never scrolls; no overflow on this column or its ancestors up to the fixed-height row */}
+                    <div>{calendarBlock}</div>
 
-                  <div className="grid grid-cols-7 gap-y-1 mb-1">
-                    {DAY_LABELS.map(d => (
-                      <div key={d} className="text-center text-[0.68rem] font-medium uppercase tracking-wide text-neutral-400 dark:text-neutral-600 py-1">
-                        {d}
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className="grid grid-cols-7 gap-y-1">
-                    {buildMonthGrid(viewYear, viewMonth).map(({ date, inMonth }, i) => {
-                      if (!inMonth) return <div key={i} className="h-10" />;
-                      const key = cellKey(date);
-                      const available = !monthLoading && (monthAvailability.get(key)?.length ?? 0) > 0;
-                      const selected = selectedDateKey === key;
-                      const isToday = key === todayKey;
-                      return (
-                        <div key={i} className="flex items-center justify-center">
-                          <motion.button
-                            type="button"
-                            disabled={!available}
-                            aria-pressed={selected}
-                            aria-label={date.toDateString()}
-                            onClick={() => available && selectDate(key)}
-                            whileHover={available && !selected ? { scale: 1.08 } : undefined}
-                            whileTap={available ? { scale: 0.92 } : undefined}
-                            transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                            className={[
-                              "relative w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium transition-colors",
-                              selected
-                                ? "bg-neutral-900 text-white dark:bg-white dark:text-neutral-900"
-                                : available
-                                  ? "text-neutral-800 dark:text-neutral-200 hover:bg-neutral-100 dark:hover:bg-neutral-900 cursor-pointer"
-                                  : "text-neutral-300 dark:text-neutral-700 cursor-not-allowed",
-                            ].join(" ")}
-                          >
-                            {date.getDate()}
-                            {isToday && !selected && (
-                              <span className="absolute bottom-1 w-1 h-1 rounded-full bg-neutral-900 dark:bg-white" />
-                            )}
-                          </motion.button>
+                    {/* Time slots — scrolls independently of the calendar */}
+                    <div aria-live="polite" className="h-full min-h-0 overflow-y-auto pr-1">
+                      {!selectedDateKey && (
+                        <div className="flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
+                          <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
+                          <p className="text-xs text-neutral-400 dark:text-neutral-600 leading-relaxed">
+                            Pick a date to see available times
+                          </p>
                         </div>
-                      );
-                    })}
-                  </div>
-                </div>
-
-                {/* Time slots — scrolls independently of the calendar */}
-                <div aria-live="polite" className="h-full min-h-0 overflow-y-auto pr-1">
-                  {!selectedDateKey && (
-                    <div className="flex h-full min-h-[220px] flex-col items-center justify-center text-center rounded-2xl border border-dashed border-neutral-200 dark:border-neutral-800 px-4">
-                      <Clock size={18} strokeWidth={1.5} className="text-neutral-300 dark:text-neutral-700 mb-2" />
-                      <p className="text-xs text-neutral-400 dark:text-neutral-600 leading-relaxed">
-                        Pick a date to see available times
-                      </p>
+                      )}
+                      {slotsResultBlock}
                     </div>
-                  )}
-
-                  {selectedDateKey && (() => {
-                    const [yy, mm, dd] = selectedDateKey.split("-").map(Number);
-                    const headingDate = new Date(yy, mm - 1, dd);
-                    return (
-                      <div>
-                        <p className="text-sm font-semibold text-neutral-900 dark:text-white mb-4 text-center">
-                          {headingDate.toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-                        </p>
-
-                        {monthLoading && (
-                          <div className="grid grid-cols-1 gap-2">
-                            {Array.from({ length: 8 }).map((_, i) => (
-                              <div key={i} className="h-9 rounded-full bg-neutral-100 dark:bg-neutral-900 animate-pulse" />
-                            ))}
-                          </div>
-                        )}
-
-                        {!monthLoading && daySlots.length === 0 && (
-                          <div className="rounded-2xl border border-neutral-200 dark:border-neutral-800 px-4 py-6 text-center">
-                            <CalendarX size={18} strokeWidth={1.5} className="mx-auto text-neutral-300 dark:text-neutral-700 mb-2" />
-                            <p className="text-xs text-neutral-500 dark:text-neutral-400 mb-3">
-                              No times available on this day
-                            </p>
-                            {(() => {
-                              const next = findNextAvailableKey(selectedDateKey);
-                              if (!next) return null;
-                              const [ny, nm, nd] = next.split("-").map(Number);
-                              return (
-                                <button
-                                  type="button"
-                                  onClick={() => jumpToDate(next)}
-                                  className="text-xs font-medium text-neutral-900 dark:text-white underline underline-offset-2 hover:opacity-70"
-                                >
-                                  Try {new Date(ny, nm - 1, nd).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                                </button>
-                              );
-                            })()}
-                          </div>
-                        )}
-
-                        {!monthLoading && daySlots.length > 0 && (
-                          <div className="max-h-[420px] overflow-y-auto pr-1 -mr-1">
-                            <div className="grid grid-cols-1 gap-2">
-                              {daySlots.map(slot => {
-                                const isSelected = selectedSlot?.getTime() === slot.getTime();
-                                return (
-                                  <motion.button
-                                    key={slot.toISOString()}
-                                    type="button"
-                                    onClick={() => pickSlot(slot)}
-                                    aria-pressed={isSelected}
-                                    whileHover={{ scale: 1.03 }}
-                                    whileTap={{ scale: 0.96 }}
-                                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                                    className={[
-                                      "w-full min-h-[2.25rem] py-2.5 rounded-full border text-xs font-medium transition-colors",
-                                      isSelected
-                                        ? "bg-neutral-900 text-white border-neutral-900 dark:bg-white dark:text-neutral-900 dark:border-white"
-                                        : "border-neutral-200 dark:border-neutral-800 text-neutral-800 dark:text-neutral-200 hover:bg-neutral-900 hover:text-white hover:border-neutral-900 dark:hover:bg-white dark:hover:text-neutral-900 dark:hover:border-white",
-                                    ].join(" ")}
-                                  >
-                                    {formatSlotRange(slot, visitorTz, BOOKING_CONFIG.durationMinutes)}
-                                  </motion.button>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })()}
-                </div>
+                  </>
+                )}
               </motion.div>
             )}
 
