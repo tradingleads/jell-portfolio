@@ -340,7 +340,7 @@ function Navbar() {
       }}
     >
       {/* Desktop / Tablet */}
-      <div className="hidden sm:flex" style={{
+      <div className="hidden lg:flex" style={{
         maxWidth: 1200, margin: "0 auto", padding: scrolled ? "10px 28px" : "14px 28px",
         alignItems: "center", justifyContent: "space-between",
         transition: "padding 0.3s ease",
@@ -472,7 +472,7 @@ function Navbar() {
       </div>
 
       {/* Mobile top bar */}
-      <div className="flex sm:hidden" style={{ padding: "10px 16px", justifyContent: "space-between", alignItems: "center" }}>
+      <div className="flex lg:hidden" style={{ padding: "10px 16px", justifyContent: "space-between", alignItems: "center" }}>
         {/* Logo */}
         <motion.a
           href="#"
@@ -550,7 +550,7 @@ function Navbar() {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.22, ease: E }}
-          className="sm:hidden"
+          className="lg:hidden"
           style={{
             position: "fixed", inset: 0, zIndex: 999,
             background: "var(--ld-bg)",
