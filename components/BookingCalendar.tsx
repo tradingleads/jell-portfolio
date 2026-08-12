@@ -483,7 +483,7 @@ export default function BookingCalendar() {
     <div className="w-full max-w-5xl mx-auto rounded-[2rem] border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-neutral-950 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_48px_-16px_rgba(0,0,0,0.14)] dark:shadow-[0_1px_2px_rgba(0,0,0,0.5),0_20px_48px_-16px_rgba(0,0,0,0.7)] overflow-hidden">
       <div
         ref={cardBodyRef}
-        className="grid grid-cols-1 lg:grid-cols-[280px_1fr]"
+        className="grid grid-cols-1 lg:grid-cols-[280px_1fr] max-lg:h-[var(--card-h)] max-lg:overflow-y-auto"
         style={cardHeight ? { ["--card-h" as string]: `${cardHeight}px` } : undefined}
       >
 
