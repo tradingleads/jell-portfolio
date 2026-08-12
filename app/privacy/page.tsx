@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
           <ul className="list-disc pl-5 space-y-1.5">
             <li>Your name and email address</li>
             <li>The date, time, and timezone you select</li>
-            <li>Your chosen meeting location (Zoom or Google Meet)</li>
+            <li>Your meeting location (Google Meet)</li>
             <li>Your answers to the optional context questions shown before confirming (e.g. project details, budget range, timeline)</li>
           </ul>
           <p>No payment information, passwords, or government ID information is ever collected by this site.</p>
@@ -65,9 +65,8 @@ export default function PrivacyPolicyPage() {
         <Section title="Who it's shared with">
           <p>
             Booking details are sent to <strong className="text-[var(--text-primary)] font-medium">Google</strong> (via
-            the Google Calendar API) to create the event, generate a Google Meet link where applicable, and deliver your
-            calendar invitation. If you choose Zoom as your meeting location, the same booking details may in the future
-            be sent to Zoom to generate a meeting link.
+            the Google Calendar API) to create the event, generate a Google Meet link, and deliver your calendar
+            invitation.
           </p>
           <p>No booking information is shared with any other third party.</p>
         </Section>
