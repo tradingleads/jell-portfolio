@@ -757,7 +757,7 @@ function SocialProofSection() {
               <Quote size={18} strokeWidth={1.5} style={{ color: "var(--ld-muted)", opacity: 0.6 }} />
               <p style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--ld-muted)" }}>Client testimonials coming soon</p>
               <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", maxWidth: "46ch" }}>
-                In the meantime, the results above are pulled straight from live projects — see the full breakdown in each project below.
+                In the meantime, the results above are pulled straight from live projects — see the full breakdown in each project above.
               </p>
             </div>
           )}
