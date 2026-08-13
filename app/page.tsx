@@ -1768,7 +1768,7 @@ function ContactSection() {
                     </div>
                     <div style={{ minWidth: 0 }}>
                       <p style={{ fontSize: "0.68rem", fontWeight: 600, letterSpacing: "0.04em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 1 }}>{label}</p>
-                      <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--ld-text)", wordBreak: "break-word" }}>{value}</p>
+                      <p style={{ fontSize: "0.875rem", fontWeight: 500, fontFamily: "var(--font-body)", color: "var(--ld-text)", wordBreak: "break-word" }}>{value}</p>
                     </div>
                   </>
                 );
