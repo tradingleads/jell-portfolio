@@ -19,7 +19,7 @@ import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
   MessageSquare, Mail,
   ArrowUpRight, Sparkles, Activity, Phone, Linkedin, MapPin,
-  Star, Search, Wrench, Rocket, Maximize2, Menu, X,
+  Quote, Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
   Loader2, Check, AlertCircle,
@@ -1642,55 +1642,150 @@ function AboutSection() {
   );
 }
 
-/* ── Testimonials placeholder ──────────────────────────────── */
-// Replace TESTIMONIALS with real client feedback when available
+/* ── Testimonials ──────────────────────────────────────────── */
 const TESTIMONIALS = [
-  { name: "Daniel R.",  role: "Real Estate Agency Owner",  quote: "We were missing leads because follow-ups were too slow. After the system went live, replies started going out instantly and our booked calls increased within the first week. It made a noticeable difference right away.", stars: 5 },
-  { name: "Hannah L.",  role: "Online Coach",               quote: "I used to spend hours every week turning one piece of content into posts for different platforms. Now the workflow handles most of it automatically, which gave me back time to focus on clients and growth.", stars: 5 },
-  { name: "Michael T.", role: "Dental Clinic Manager",      quote: "Our team was constantly dealing with missed calls, scheduling issues, and no-shows. Once the booking system was set up, appointments became smoother and the front desk had far less manual work.", stars: 5 },
-];
+  { quote: "Jell was great to work with—reliable, easy to communicate with, and delivered exactly what we needed. The automation made our workflow much more efficient.", author: "Client" },
+  { quote: "Working with Jell was a great experience. She understood what we needed, built the automation smoothly, and made the whole process easy.", author: "Client" },
+] as const;
+
+const slideVariants = {
+  enter: (dir: number) => ({ opacity: 0, x: dir > 0 ? 40 : -40 }),
+  center: { opacity: 1, x: 0 },
+  exit: (dir: number) => ({ opacity: 0, x: dir > 0 ? -40 : 40 }),
+};
 
 function TestimonialsSection() {
+  const [index, setIndex] = useState(0);
+  const [direction, setDirection] = useState(1);
+  const [isPaused, setIsPaused] = useState(false);
+  const count = TESTIMONIALS.length;
+
+  const nextSlide = useCallback(() => {
+    setDirection(1);
+    setIndex((i) => (i + 1) % count);
+  }, [count]);
+
+  const prevSlide = useCallback(() => {
+    setDirection(-1);
+    setIndex((i) => (i - 1 + count) % count);
+  }, [count]);
+
+  const goToSlide = useCallback((i: number) => {
+    setDirection(i > index ? 1 : -1);
+    setIndex(i);
+  }, [index]);
+
+  // Autoplay — restarts on every index change so manual nav resets the timer
+  useEffect(() => {
+    if (isPaused) return;
+    const id = setInterval(nextSlide, 5500);
+    return () => clearInterval(id);
+  }, [index, isPaused, nextSlide]);
+
+  const current = TESTIMONIALS[index];
+
   return (
     <section style={{ padding: "80px 28px 64px", background: "var(--ld-card2)" }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What Changed</p>
+      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Testimonials</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
-            What Changes After Automation
+            What Clients Say
           </h2>
-          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "52ch", margin: "0 auto" }}>
-            Faster replies. Better workflows. Less manual work.
+          <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.65, maxWidth: "48ch", margin: "0 auto" }}>
+            Real feedback from people I&apos;ve worked with.
           </p>
         </motion.div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))", gap: 20 }}>
-          {TESTIMONIALS.map(({ name, role, quote, stars }, i) => (
-            <motion.div key={name} {...up(i * 0.09)}
-              whileHover={{ y: -4, boxShadow: "0 0 0 1px rgba(59,130,246,0.16), 0 20px 56px rgba(0,0,0,0.55)" }}
-              style={{ padding: "32px 28px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, boxShadow: "var(--ld-shadow)", transition: "all 0.28s ease" }}
-            >
-              <div style={{ display: "flex", gap: 3, marginBottom: 18 }}>
-                {Array.from({ length: stars }).map((_, si) => (
-                  <Star key={si} size={14} strokeWidth={0} style={{ fill: "#fbbf24", color: "#fbbf24" }} />
-                ))}
-              </div>
-              <p style={{ fontSize: "0.9375rem", color: "var(--ld-text)", lineHeight: 1.72, marginBottom: 24, fontStyle: "italic" }}>
-                &ldquo;{quote}&rdquo;
-              </p>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <div style={{ width: 38, height: 38, borderRadius: "50%", background: "linear-gradient(135deg, var(--ld-accent), var(--ld-blue))", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.875rem", fontWeight: 700, color: "#fff" }}>
-                  {name[0]}
-                </div>
-                <div>
-                  <p style={{ fontSize: "0.875rem", fontWeight: 700, color: "var(--ld-text)", marginBottom: 2 }}>{name}</p>
-                  <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)" }}>{role}</p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        <motion.div {...up(0.1)}
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          style={{ position: "relative" }}
+        >
+          <div style={{
+            position: "relative", overflow: "hidden",
+            padding: "56px 40px 44px", borderRadius: "2.5rem",
+            background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+            boxShadow: "var(--ld-shadowLg)", minHeight: 240,
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <Quote
+              size={96} strokeWidth={0} aria-hidden="true"
+              style={{ position: "absolute", top: 8, left: 24, fill: "var(--ld-accent)", opacity: 0.14, pointerEvents: "none" }}
+            />
 
+            <AnimatePresence mode="wait" custom={direction} initial={false}>
+              <motion.div
+                key={index}
+                custom={direction}
+                variants={slideVariants}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                style={{ position: "relative", textAlign: "center", width: "100%" }}
+              >
+                <p style={{ fontSize: "clamp(1.05rem, 2vw, 1.375rem)", color: "var(--ld-text)", lineHeight: 1.6, fontWeight: 500, letterSpacing: "-0.01em", maxWidth: "58ch", margin: "0 auto 24px" }}>
+                  {current.quote}
+                </p>
+                <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--ld-accent)", letterSpacing: "0.02em" }}>
+                  {current.author}
+                </p>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 20, marginTop: 32 }}>
+            <motion.button
+              type="button"
+              aria-label="Previous testimonial"
+              onClick={prevSlide}
+              whileHover={{ y: -1, borderColor: "var(--ld-borderC)" }}
+              whileTap={{ scale: 0.94 }}
+              style={{
+                width: 44, height: 44, borderRadius: "50%",
+                background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+                color: "var(--ld-text)", display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", boxShadow: "var(--ld-shadow)",
+              }}
+            >
+              <ChevronLeft size={18} strokeWidth={1.5} />
+            </motion.button>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              {TESTIMONIALS.map((_, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Go to testimonial ${i + 1}`}
+                  onClick={() => goToSlide(i)}
+                  style={{
+                    width: i === index ? 22 : 8, height: 8, borderRadius: 999,
+                    background: i === index ? "var(--ld-accent)" : "var(--ld-border)",
+                    border: "none", cursor: "pointer", padding: 0,
+                    transition: "all 0.28s ease",
+                  }}
+                />
+              ))}
+            </div>
+
+            <motion.button
+              type="button"
+              aria-label="Next testimonial"
+              onClick={nextSlide}
+              whileHover={{ y: -1, borderColor: "var(--ld-borderC)" }}
+              whileTap={{ scale: 0.94 }}
+              style={{
+                width: 44, height: 44, borderRadius: "50%",
+                background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+                color: "var(--ld-text)", display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", boxShadow: "var(--ld-shadow)",
+              }}
+            >
+              <ChevronRight size={18} strokeWidth={1.5} />
+            </motion.button>
+          </div>
+        </motion.div>
       </div>
     </section>
   );
