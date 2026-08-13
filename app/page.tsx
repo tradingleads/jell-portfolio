@@ -19,7 +19,7 @@ import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
   MessageSquare, Mail,
   ArrowUpRight, Sparkles, Activity, Phone, Linkedin, MapPin,
-  Quote, Search, Wrench, Rocket, Maximize2, Menu, X,
+  Search, Wrench, Rocket, Maximize2, Menu, X,
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
   Loader2, Check, AlertCircle,
@@ -1709,11 +1709,6 @@ function TestimonialsSection() {
             boxShadow: "var(--ld-shadowLg)", minHeight: 240,
             display: "flex", alignItems: "center", justifyContent: "center",
           }}>
-            <Quote
-              size={96} strokeWidth={0} aria-hidden="true"
-              style={{ position: "absolute", top: 8, left: 24, fill: "var(--ld-accent)", opacity: 0.14, pointerEvents: "none" }}
-            />
-
             <AnimatePresence mode="wait" custom={direction} initial={false}>
               <motion.div
                 key={index}
@@ -1725,8 +1720,8 @@ function TestimonialsSection() {
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 style={{ position: "relative", textAlign: "center", width: "100%" }}
               >
-                <p style={{ fontSize: "clamp(1.05rem, 2vw, 1.375rem)", color: "var(--ld-text)", lineHeight: 1.6, fontWeight: 500, letterSpacing: "-0.01em", maxWidth: "58ch", margin: "0 auto 24px" }}>
-                  {current.quote}
+                <p style={{ fontSize: "clamp(1.2rem, 2.6vw, 1.625rem)", color: "var(--ld-text)", lineHeight: 1.55, fontWeight: 500, fontStyle: "italic", letterSpacing: "-0.01em", maxWidth: "58ch", margin: "0 auto 24px" }}>
+                  &quot;{current.quote}&quot;
                 </p>
                 <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--ld-accent)", letterSpacing: "0.02em" }}>
                   {current.author}
