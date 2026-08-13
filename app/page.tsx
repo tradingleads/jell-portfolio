@@ -140,7 +140,7 @@ const ChatPreview = memo(function ChatPreview() {
       <div style={{
         borderRadius: 16,
         overflow: "hidden",
-        boxShadow: "0 32px 80px rgba(0,0,0,0.35), 0 0 0 1px var(--ld-border)",
+        boxShadow: "0 0 0 1px var(--ld-border)",
         background: "var(--ld-card)",
       }}>
         {/* Title bar */}
