@@ -322,12 +322,18 @@ export default function BookingCalendar() {
     return visitorTz;
   }, [visitorTz]);
 
-  // Reset search state and focus the input whenever the dropdown opens.
+  // Reset search state whenever the dropdown opens. Only auto-focus the
+  // search input on non-touch devices — on mobile, focusing it here would
+  // pop the virtual keyboard the instant the dropdown opens (before the
+  // user has chosen to search), covering half the list. Touch users still
+  // get the keyboard the moment they tap the field themselves.
   useEffect(() => {
     if (!tzOpen) return;
     setTzQuery("");
     setTzActiveIndex(0);
-    tzInputRef.current?.focus();
+    if (!window.matchMedia("(pointer: coarse)").matches) {
+      tzInputRef.current?.focus();
+    }
   }, [tzOpen]);
 
   useEffect(() => { setTzActiveIndex(0); }, [tzQuery]);
@@ -728,7 +734,7 @@ export default function BookingCalendar() {
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     className="overflow-hidden"
                   >
-                    <div className="mt-2 rounded-2xl border border-neutral-200 dark:border-neutral-800 bg-neutral-50 dark:bg-neutral-900 shadow-[inset_0_1px_2px_rgba(0,0,0,0.03)] dark:shadow-[inset_0_1px_2px_rgba(0,0,0,0.4)] overflow-hidden">
+                    <div className="mt-2">
                       <div className="flex items-center gap-2 border-b border-neutral-200 dark:border-neutral-800 px-3 py-2.5">
                         <Search size={14} strokeWidth={1.5} className="shrink-0 text-neutral-400" />
                         <input
