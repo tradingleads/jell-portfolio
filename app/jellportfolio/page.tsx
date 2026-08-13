@@ -4,16 +4,16 @@ import { useEffect, useState, memo, useRef, useCallback } from "react";
 import { motion, useInView, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
-import ThemeToggle from "@/components/ThemeToggle";
-import Lightbox from "@/components/Lightbox";
-import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
-import type { OrbState } from "@/components/AIOrb";
+import ThemeToggle from "@/components/jellportfolio/ThemeToggle";
+import Lightbox from "@/components/jellportfolio/Lightbox";
+import { useBodyScrollLock } from "@/hooks/jellportfolio/useBodyScrollLock";
+import type { OrbState } from "@/components/jellportfolio/AIOrb";
 
-const Chat          = dynamic(() => import("@/components/Chat"),          { ssr: false });
-const FloatingDock  = dynamic(() => import("@/components/FloatingDock"),  { ssr: false });
-const MouseGradient = dynamic(() => import("@/components/MouseGradient"), { ssr: false });
-const IconCloud      = dynamic(() => import("@/components/ui/interactive-icon-cloud").then(m => m.IconCloud), { ssr: false });
-const BookingCalendar = dynamic(() => import("@/components/BookingCalendar"), { ssr: false });
+const Chat          = dynamic(() => import("@/components/jellportfolio/Chat"),          { ssr: false });
+const FloatingDock  = dynamic(() => import("@/components/jellportfolio/FloatingDock"),  { ssr: false });
+const MouseGradient = dynamic(() => import("@/components/jellportfolio/MouseGradient"), { ssr: false });
+const IconCloud      = dynamic(() => import("@/components/jellportfolio/ui/interactive-icon-cloud").then(m => m.IconCloud), { ssr: false });
+const BookingCalendar = dynamic(() => import("@/components/jellportfolio/BookingCalendar"), { ssr: false });
 
 import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
@@ -1714,7 +1714,7 @@ function ContactSection() {
     setError(null);
     setSubmitting(true);
     try {
-      const res = await fetch("/api/contact", {
+      const res = await fetch("/api/jellportfolio/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
