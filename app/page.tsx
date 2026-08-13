@@ -1590,8 +1590,8 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px clamp(64px, 10vw, 100px)", background: "var(--ld-process-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
-      {/* Background glow — layered on top of --ld-process-bg, a token that's visibly lighter than the page's near-black base in dark mode (and falls back to the normal card2 tone in light mode) */}
+    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px clamp(64px, 10vw, 100px)", background: "var(--ld-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+      {/* Background glow */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
