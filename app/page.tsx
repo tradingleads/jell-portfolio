@@ -1355,7 +1355,7 @@ function ProjectsSection() {
   return (
     <section id="projects" style={{ padding: "clamp(28px, 6vw, 36px) 20px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
-        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 16 }}>
+        <motion.div {...up()} className="text-center" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
           <h2 style={{ fontSize: "clamp(1.75rem, 3.5vw, 2.5rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Automations That Perform
