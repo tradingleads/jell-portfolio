@@ -195,7 +195,7 @@ const ChatPreview = memo(function ChatPreview() {
             can never grow this box or shift anything outside the Hero. */}
         <div
           ref={scrollRef}
-          className="hide-scrollbar h-[200px] sm:h-[280px]"
+          className="hide-scrollbar h-[260px] sm:h-[280px]"
           style={{
             padding: "16px", display: "flex", flexDirection: "column", gap: 10,
             overflowY: "auto", overscrollBehavior: "contain",
