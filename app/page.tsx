@@ -640,7 +640,7 @@ function Navbar() {
 /* ── Hero ──────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section style={{ minHeight: "100vh", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout" }}>
+    <section style={{ minHeight: "clamp(600px, 100dvh, 900px)", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout" }}>
       {/* Hero dot grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, var(--ld-borderC) 1px, transparent 0)", backgroundSize: "32px 32px", opacity: 0.25, pointerEvents: "none" }} />
       {/* Spotlight — blue top center */}
@@ -1584,7 +1584,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" className="min-h-[100dvh]" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       {/* Subtle background glow */}
       <div style={{ position: "absolute", top: 220, left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -2107,7 +2107,7 @@ export default function LandingPage() {
       <style>{`
         @keyframes nodePulse { 0%,100%{opacity:.55;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
       `}</style>
-      <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100vh", fontFamily: "var(--font-geist-sans),system-ui,sans-serif" }}>
+      <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100dvh", fontFamily: "var(--font-geist-sans),system-ui,sans-serif" }}>
         <Navbar />
         <HeroSection />
         <SocialProofSection />
