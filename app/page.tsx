@@ -926,6 +926,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"rag-agents", cat:"ai", Icon:Database, color:"#a78bfa", platform:"n8n", status:"Deployed",
+    role:"Solo build — architected the retrieval pipeline in n8n, set up the Supabase vector store and embedding sync from Google Drive, and tuned the agent's grounding logic to eliminate hallucinations.",
     title:"RAG Knowledge Agent", outcome:"AI assistant answers questions grounded 100% in your own documents — zero hallucinations.",
     roi:"Zero hallucinations", roiColor:"#a78bfa", img:"/projects/rag-agents.png",
     tools:["n8n","Supabase Vector Store","Google Gemini Chat","Google Drive","Vertex Embeddings"],
@@ -937,6 +938,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"ai-jobs-scraper", cat:"ai", Icon:FileText, color:"#fb923c", platform:"n8n", status:"Deployed",
+    role:"Built solo — designed the scraping and scoring logic in n8n, integrated OpenAI for candidate-fit scoring, and automated resume generation and delivery end to end.",
     title:"AI Jobs Scraper + Resume Optimizer", outcome:"Daily automated job hunting — scrapes, scores, and sends tailored resumes without manual effort.",
     roi:"–95% time saved", roiColor:"#fb923c", img:"/projects/ai-jobs-scraper.png",
     tools:["n8n","OpenAI","Google Sheets","Gmail","HTTP Request","Loop Over Items","PDF Generation"],
@@ -948,6 +950,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"youtube-shorts", cat:"content", Icon:Zap, color:"#fb923c", platform:"n8n", status:"Deployed",
+    role:"Solo automation engineer — built the scripting-to-publishing pipeline in n8n, integrated Gemini AI for script generation, and wired up the YouTube API for fully automated daily uploads.",
     title:"YouTube Shorts Creator", outcome:"Automated video production and publishing without any manual editing.",
     roi:"0 manual effort", roiColor:"#fb923c", img:"/projects/youtube-shorts-creator.png",
     tools:["n8n","Gemini AI","YouTube API","Google Drive"],
@@ -959,6 +962,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"asana-crm", cat:"crm", Icon:Users, color:"#60a5fa", platform:"Zapier", status:"Running",
+    role:"Built solo — mapped the deal-stage logic, configured the Zapier automation across Asana and Gmail, and set up the email sequencing for every pipeline stage.",
     title:"Asana CRM Lead Engagement", outcome:"Deal-stage changes triggered automated email sequences instantly.",
     roi:"Full CRM flow", roiColor:"#60a5fa", img:"/projects/asana-crm-lead.png",
     tools:["Zapier","Asana","Gmail","Google Drive"],
@@ -970,6 +974,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"gmail-sort", cat:"crm", Icon:FileText, color:"#e879f9", platform:"Make", status:"Deployed",
+    role:"Sole developer — designed the Make workflow, integrated Gemini AI for smart file naming, and set up the Drive filing and Sheets audit logging end to end.",
     title:"Gmail Auto-Sort to Drive", outcome:"Every email attachment automatically named, filed, and logged.",
     roi:"0 manual filing", roiColor:"#e879f9", img:"/projects/auto-sort-gmail.png",
     tools:["Make","Gmail","Gemini AI","Google Drive","Google Sheets"],
@@ -981,6 +986,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"xero-asana-export", cat:"crm", Icon:Activity, color:"#fb923c", platform:"Make", status:"Deployed",
+    role:"Solo build — architected the Make workflow, integrated the Xero API for transaction exports, and configured the iterator/aggregator logic to generate and attach the CSV automatically.",
     title:"Xero → Asana Finance Sync", outcome:"Asana task completions auto-export Xero transactions and attach the CSV instantly.",
     roi:"Fully automated", roiColor:"#fb923c", img:"/projects/xero-asana-export.png",
     tools:["Make","Asana","Xero API","Google Sheets","Iterator","Router"],
