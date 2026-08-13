@@ -820,7 +820,7 @@ function ServicesSection() {
   return (
     <section id="services" style={{ padding: "clamp(36px, 8vw, 60px) 28px", background: "var(--ld-card2)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: "clamp(24px, 6vw, 40px)" }}>
+        <motion.div {...up()} className="text-center" style={{ marginBottom: "clamp(24px, 6vw, 40px)" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>What I Deliver</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Where Automation Removes the Busywork
