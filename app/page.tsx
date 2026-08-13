@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useEffect, useState, memo, useRef, useCallback } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
+import { motion, useInView, AnimatePresence, useMotionValue, useTransform, animate } from "framer-motion";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import ThemeToggle from "@/components/ThemeToggle";
@@ -23,6 +23,7 @@ import {
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
   Loader2, Check, AlertCircle,
+  Quote, TrendingDown, Clock, Repeat,
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
@@ -38,6 +39,30 @@ const up = (delay = 0) => ({
 });
 
 /* ── Animated counter ──────────────────────────────────── */
+// Re-counts every time it scrolls into view (not just once) — resets to 0
+// the moment it scrolls off-screen so it's ready to count up again on the
+// way back. Uses a motion value + imperative `animate()` (not useState) so
+// the ~60fps tick never triggers a React re-render — only the text node
+// updates, per the perf rule for continuous animation values.
+const AnimatedCounter = memo(function AnimatedCounter({
+  to, prefix = "", suffix = "", duration = 1.4, style,
+}: { to: number; prefix?: string; suffix?: string; duration?: number; style?: React.CSSProperties }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  const inView = useInView(ref, { margin: "-40px" });
+  const count = useMotionValue(0);
+  const display = useTransform(count, v => `${prefix}${Math.round(v)}${suffix}`);
+
+  useEffect(() => {
+    if (inView) {
+      const controls = animate(count, to, { duration, ease: [0.16, 1, 0.3, 1] });
+      return controls.stop;
+    }
+    count.set(0);
+  }, [inView, to, duration, count]);
+
+  return <motion.p ref={ref} style={style}>{display}</motion.p>;
+});
+
 /* ── Floating particles ─────────────────────────────────── */
 const Particles = memo(function Particles() {
   const [pts, setPts] = useState<{ id: number; x: number; y: number; s: number; d: number; dl: number }[]>([]);
@@ -170,10 +195,10 @@ const ChatPreview = memo(function ChatPreview() {
             can never grow this box or shift anything outside the Hero. */}
         <div
           ref={scrollRef}
-          className="hide-scrollbar"
+          className="hide-scrollbar h-[200px] sm:h-[280px]"
           style={{
             padding: "16px", display: "flex", flexDirection: "column", gap: 10,
-            height: 280, overflowY: "auto", overscrollBehavior: "contain",
+            overflowY: "auto", overscrollBehavior: "contain",
             contain: "layout",
           }}
         >
@@ -626,20 +651,20 @@ function HeroSection() {
       <div className="ld-ambient-glow" style={{ position: "absolute", bottom: "10%", left: "0%", width: 320, height: 320, background: "radial-gradient(circle, rgba(59,130,246,0.05) 0%, transparent 65%)", pointerEvents: "none" }} />
       <Particles />
 
-      <div style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(28px, 6vw, 60px) clamp(24px, 5vw, 28px)", width: "100%", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 48, alignItems: "center" }}>
+      <div className="grid grid-cols-1 md:grid-cols-2" style={{ maxWidth: 1200, margin: "0 auto", padding: "clamp(28px, 6vw, 60px) clamp(24px, 5vw, 28px)", width: "100%", gap: 48, alignItems: "center" }}>
 
         {/* Left */}
-        <div className="text-center sm:text-left">
+        <div className="text-center sm:text-left order-1">
 
-          <motion.h1 {...up(0.06)} style={{ fontSize: "clamp(2.2rem, 6vw, 4.2rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+          <h1 className="hero-fade-item" style={{ animationDelay: "0.05s", fontSize: "clamp(2.2rem, 6vw, 4.2rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
             <span className="ld-gradient">Build Better Business Systems.</span>
-          </motion.h1>
+          </h1>
 
-          <motion.p {...up(0.12)} className="mx-auto sm:mx-0" style={{ fontSize: "1rem", lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.78, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
+          <p className="hero-fade-item mx-auto sm:mx-0" style={{ animationDelay: "0.15s", fontSize: "1.0625rem", fontWeight: 500, lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.88, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
             I build zero-touch workflows, AI automations, and system integrations that remove bottlenecks, reduce manual work, and keep your business moving.
-          </motion.p>
+          </p>
 
-          <motion.div {...up(0.18)} className="flex-col sm:flex-row justify-center sm:justify-start" style={{ display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
+          <div className="hero-fade-item flex-col sm:flex-row justify-center sm:justify-start" style={{ animationDelay: "0.25s", display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
             <motion.a href="#book-a-call"
               whileHover={{ scale: 1.03, boxShadow: "0 0 32px var(--ld-glow)" }} whileTap={{ scale: 0.97 }}
               className="w-full sm:w-auto justify-center"
@@ -652,12 +677,92 @@ function HeroSection() {
               style={{ display: "inline-flex", alignItems: "center", gap: 7, padding: "13px 26px", borderRadius: 100, border: "1px solid var(--ld-borderC)", color: "var(--ld-muted)", fontWeight: 600, fontSize: "0.9375rem", textDecoration: "none", transition: "all 0.2s ease" }}>
               View My Work <ArrowUpRight size={15} strokeWidth={2} />
             </motion.a>
-          </motion.div>
+          </div>
 
         </div>
 
-        {/* Right — animated chat preview */}
-        <ChatPreview />
+        {/* Right — animated chat preview (secondary, follows headline on mobile) */}
+        <div className="order-2">
+          <ChatPreview />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ── Social proof (results bar + testimonials) ────────────────
+   Numbers mirror real figures already shown in the Projects section
+   (facebook-ai, content-machine, appointment-setter, asana-crm) —
+   no invented stats. Testimonials array is empty-friendly: fill it in
+   with real { quote, name, title } objects when available and the
+   composed empty state below is replaced automatically. */
+const RESULT_STATS = [
+  { Icon: TrendingDown, to: 70,  prefix: "–", suffix: "%", label: "Support cost cut" },
+  { Icon: Clock,        to: 3,   prefix: "<", suffix: "s", label: "AI response time" },
+  { Icon: Repeat,       to: 10,  prefix: "",  suffix: "×", label: "Content output" },
+  { Icon: Check,        to: 100, prefix: "",  suffix: "%", label: "Lead follow-up rate" },
+];
+
+interface Testimonial { quote: string; name: string; title: string }
+const TESTIMONIALS: Testimonial[] = [];
+
+function SocialProofSection() {
+  return (
+    <section style={{ padding: "40px 28px 8px", background: "var(--ld-bg)" }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+
+        {/* Live indicator */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 14 }}>
+          <motion.span animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }}
+            style={{ width: 6, height: 6, borderRadius: "50%", background: "#22c55e", flexShrink: 0 }} />
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)" }}>
+            Live Results
+          </p>
+        </div>
+
+        {/* Results strip */}
+        <motion.div {...up()} style={{
+          display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))", gap: 1,
+          border: "1px solid var(--ld-border)", borderRadius: 18, overflow: "hidden",
+          background: "var(--ld-border)", boxShadow: "var(--ld-shadow)",
+        }}>
+          {RESULT_STATS.map(({ Icon, to, prefix, suffix, label }) => (
+            <div key={label} style={{ background: "var(--ld-card)", padding: "20px 18px", display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 6 }}>
+              <Icon size={16} strokeWidth={1.5} style={{ color: "var(--ld-accent)", marginBottom: 2 }} />
+              <AnimatedCounter to={to} prefix={prefix} suffix={suffix}
+                style={{ fontSize: "1.75rem", fontWeight: 900, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", lineHeight: 1 }} />
+              <p style={{ fontSize: "0.75rem", fontWeight: 600, color: "var(--ld-muted)" }}>{label}</p>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Testimonials — composed empty state until real quotes are added */}
+        <motion.div {...up(0.1)} style={{ marginTop: 24 }}>
+          {TESTIMONIALS.length > 0 ? (
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
+              {TESTIMONIALS.map(t => (
+                <div key={t.name} style={{ padding: "22px 22px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 16, boxShadow: "var(--ld-shadow)" }}>
+                  <Quote size={18} strokeWidth={1.5} style={{ color: "var(--ld-accent)", opacity: 0.6, marginBottom: 10 }} />
+                  <p style={{ fontSize: "0.9rem", color: "var(--ld-text)", lineHeight: 1.65, marginBottom: 14 }}>&ldquo;{t.quote}&rdquo;</p>
+                  <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--ld-text)" }}>{t.name}</p>
+                  <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)" }}>{t.title}</p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={{
+              display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8,
+              padding: "26px 24px", borderRadius: 16, border: "1px dashed var(--ld-borderC)", background: "var(--ld-card2)",
+            }}>
+              <Quote size={18} strokeWidth={1.5} style={{ color: "var(--ld-muted)", opacity: 0.6 }} />
+              <p style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--ld-muted)" }}>Client testimonials coming soon</p>
+              <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", maxWidth: "46ch" }}>
+                In the meantime, the results above are pulled straight from live projects — see the full breakdown in each case study below.
+              </p>
+            </div>
+          )}
+        </motion.div>
+
       </div>
     </section>
   );
@@ -692,7 +797,7 @@ const TOOL_SLUGS = [
 // page's own background so it reads as part of the page, not a boxed panel.
 function TrustBar() {
   return (
-    <section style={{ padding: "80px 28px", background: "var(--ld-bg)" }}>
+    <section style={{ padding: "56px 28px", background: "var(--ld-bg)" }}>
       <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 28 }}>Tools &amp; Technologies</p>
       <div style={{ position: "relative", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <IconCloud iconSlugs={TOOL_SLUGS} />
@@ -713,17 +818,20 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "80px 28px", background: "var(--ld-card2)", scrollMarginTop: 50 }}>
+    <section id="services" style={{ padding: "60px 28px", background: "var(--ld-card2)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 60 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>What I Deliver</p>
+        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 40 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>What I Deliver</p>
+          <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
+            Where Automation Removes the Busywork
+          </h2>
         </motion.div>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: 18 }}>
           {SERVICES.map(({ Icon, c, t, d }, i) => (
             <motion.div key={t} {...up(i * 0.07)}
               whileHover={{ y: -4, borderColor: c, boxShadow: `0 0 0 1px ${c}25, 0 16px 48px rgba(0,0,0,0.55), 0 0 32px ${c}08` }}
               className="text-center sm:text-left"
-              style={{ padding: "30px 26px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, transition: "all 0.28s ease", boxShadow: "var(--ld-shadow)" }}
+              style={{ padding: "26px 22px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, transition: "all 0.28s ease", boxShadow: "var(--ld-shadow)" }}
             >
               <div className="mx-auto sm:mx-0" style={{ width: 46, height: 46, borderRadius: 13, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Icon size={22} strokeWidth={1.5} style={{ color: c }} />
@@ -763,11 +871,14 @@ interface ProjItem {
   beforeAfter: { before: string; after: string };
   metrics: { label: string; val: string; color: string }[];
   extraImages?: { src: string; label: string }[];
+  featured?: boolean;
+  role?: string;
 }
 
 const PROJ_DATA: ProjItem[] = [
   {
     id:"facebook-ai", cat:"support", Icon:MessageSquare, color:"#22d3ee", platform:"n8n", status:"Live",
+    featured:true, role:"Solo automation engineer — scoped the flow, built the n8n pipeline, integrated Gemini AI and the Facebook API, and handled deployment and handoff.",
     title:"Facebook AI Sales Assistant", outcome:"Replied to 100% of leads instantly — 24/7, no staff needed.",
     roi:"–70% support cost", roiColor:"#34d399", img:"/projects/ai-agent-facebook.png",
     tools:["n8n","Gemini AI","Facebook API","Webhooks"],
@@ -779,6 +890,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"lead-enrichment", cat:"lead", Icon:Database, color:"#34d399", platform:"Zapier", status:"Deployed",
+    featured:true, role:"End-to-end build — designed the enrichment and scoring logic, configured the Zapier pipeline across Apollo, Sheets, Gmail and Slack, and trained the team on the new flow.",
     title:"Lead Enrichment Engine", outcome:"New leads qualified and enriched automatically in under 60 seconds.",
     roi:"<60s per lead", roiColor:"#22d3ee", img:"/projects/leads-enrichment.png",
     tools:["Zapier","Apollo","Google Sheets","Gmail","Slack"],
@@ -790,6 +902,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"appointment-setter", cat:"lead", Icon:Bot, color:"#a78bfa", platform:"Zapier", status:"Live",
+    featured:true, role:"Sole developer — mapped the multi-channel intake logic, built the Zapier automation, and set up calendar, reminder, and reschedule handling end to end.",
     title:"AI Appointment Setter", outcome:"Booked calls and appointments automatically across every channel, 24/7.",
     roi:"24/7 active", roiColor:"#a78bfa", img:"/projects/ai-appointment-setter.png",
     tools:["Zapier","Google Calendar","Gmail","SMS"],
@@ -801,6 +914,7 @@ const PROJ_DATA: ProjItem[] = [
   },
   {
     id:"content-machine", cat:"content", Icon:Film, color:"#fbbf24", platform:"Zapier", status:"Running",
+    featured:true, role:"Built solo — designed the trigger/transcription/caption pipeline in Zapier and wired up distribution to every platform, then documented it as a self-serve SOP.",
     title:"AI Content Machine", outcome:"One upload generates and publishes content across all platforms automatically.",
     roi:"10× output", roiColor:"#fbbf24", img:"/projects/ai-content-repurposing.png",
     tools:["Zapier","Google Drive","AI by Zapier","LinkedIn","Facebook","Instagram"],
@@ -982,16 +1096,16 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             {/* Title + ROI */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, marginBottom: 16 }}>
               <h2 style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{p.title}</h2>
-              <span style={{ flexShrink: 0, fontSize: "0.9rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: p.roiColor, padding: "6px 14px", borderRadius: 10, background: `${p.roiColor}12`, border: `1px solid ${p.roiColor}30`, marginTop: 3 }}>{p.roi}</span>
+              <span style={{ flexShrink: 0, fontSize: "1rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: p.roiColor, padding: "7px 16px", borderRadius: 10, background: `${p.roiColor}12`, border: `1px solid ${p.roiColor}30`, marginTop: 3 }}>{p.roi}</span>
             </div>
             <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--ld-text)", lineHeight: 1.55, marginBottom: 26 }}>{p.outcome}</p>
 
-            {/* ROI metrics */}
+            {/* ROI metrics — the most visually prominent element on the card */}
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(110px, 1fr))", gap: 12, marginBottom: 30 }}>
               {p.metrics.map(m => (
-                <div key={m.label} style={{ padding: "16px 14px", background: "var(--ld-card2)", border: "1px solid var(--ld-border)", borderRadius: 14, textAlign: "center" }}>
-                  <p style={{ fontSize: "1.5rem", fontWeight: 900, color: m.color, fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 5 }}>{m.val}</p>
-                  <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", fontWeight: 500 }}>{m.label}</p>
+                <div key={m.label} style={{ padding: "18px 14px", background: "var(--ld-card2)", border: `1px solid ${m.color}30`, borderRadius: 14, textAlign: "center" }}>
+                  <p style={{ fontSize: "1.75rem", fontWeight: 900, color: m.color, fontFamily: "var(--font-display)", letterSpacing: "-0.02em", marginBottom: 5 }}>{m.val}</p>
+                  <p style={{ fontSize: "0.72rem", color: "var(--ld-muted)", fontWeight: 600 }}>{m.label}</p>
                 </div>
               ))}
             </div>
@@ -1003,6 +1117,13 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             <Section label="Business Problem" color={p.color}>
               <p style={{ fontSize: "0.9375rem", lineHeight: 1.78, color: "var(--ld-muted)" }}>{p.problem}</p>
             </Section>
+
+            {/* My role — only shown for projects with a role written up */}
+            {p.role && (
+              <Section label="My Role" color={p.color}>
+                <p style={{ fontSize: "0.9375rem", lineHeight: 1.78, color: "var(--ld-muted)" }}>{p.role}</p>
+              </Section>
+            )}
 
             {/* Automation workflow */}
             <Section label="How the Automation Works" color={p.color}>
@@ -1317,9 +1438,9 @@ function ProjectsSection() {
                       <p.Icon size={13} strokeWidth={1.5} style={{ color: p.color }} />
                     </div>
                     <div style={{ flex: 1, minWidth: 0 }}>
-                      <p style={{ fontSize: "0.8rem", fontWeight: 600, color: selectedId === p.id ? "var(--ld-text)" : "var(--ld-muted)", marginBottom: 3, lineHeight: 1.3 }}>{p.title}</p>
-                      <div style={{ display: "flex", alignItems: "center", gap: 5 }}>
-                        <span style={{ fontSize: "0.62rem", fontWeight: 700, fontFamily: "var(--font-geist-mono)", color: p.roiColor }}>{p.roi}</span>
+                      <p style={{ fontSize: "0.8rem", fontWeight: 600, color: selectedId === p.id ? "var(--ld-text)" : "var(--ld-muted)", marginBottom: 4, lineHeight: 1.3 }}>{p.title}</p>
+                      <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: p.roiColor }}>{p.roi}</span>
                         <span style={{ width: 2, height: 2, borderRadius: "50%", background: "var(--ld-border)", flexShrink: 0 }} />
                         <span style={{ fontSize: "0.6rem", fontWeight: 600, color: "var(--ld-muted)", letterSpacing: "0.04em" }}>{p.platform}</span>
                       </div>
@@ -1508,7 +1629,7 @@ function HowIWorkSection() {
                   onMouseEnter={() => setHoveredIdx(i)}
                   onMouseLeave={() => setHoveredIdx(null)}
                   style={{
-                    padding: "28px 26px",
+                    padding: "24px 22px",
                     borderRadius: 22,
                     border: `1px solid ${isHovered ? hex + "aa" : isActive ? hex + "50" : "var(--ld-border)"}`,
                     background: isHovered ? `linear-gradient(160deg, var(--ld-card), ${hex}08)` : "var(--ld-card)",
@@ -1567,7 +1688,7 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" style={{ padding: "80px 28px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="about" style={{ padding: "60px 28px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 64, alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
@@ -1989,6 +2110,7 @@ export default function LandingPage() {
       <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100vh", fontFamily: "var(--font-geist-sans),system-ui,sans-serif" }}>
         <Navbar />
         <HeroSection />
+        <SocialProofSection />
         <TrustBar />
         <ServicesSection />
         <ProjectsSection />

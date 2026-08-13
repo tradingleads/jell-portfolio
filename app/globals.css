@@ -49,7 +49,7 @@
   --ld-card:      #f5f5f7;
   --ld-card2:     #ebebed;
   --ld-text:      #111111;
-  --ld-muted:     #777777;
+  --ld-muted:     #5B5B5B;
   --ld-accent:    #2563eb;
   --ld-blue:      #1d4ed8;
   --ld-purple:    #7c3aed;
@@ -68,7 +68,7 @@
   --ld-card:      #10131A;
   --ld-card2:     #0B1020;
   --ld-text:      #FFFFFF;
-  --ld-muted:     rgba(255,255,255,0.48);
+  --ld-muted:     rgba(255,255,255,0.64);
   --ld-accent:    #3B82F6;
   --ld-blue:      #2563EB;
   --ld-purple:    #8B5CF6;
@@ -82,12 +82,37 @@
   --ld-glass-border: rgba(255,255,255,0.08);
 }
 
-/* Gradient text — blue to violet */
+/* Gradient text — blue to violet. Solid color first as a fallback so the
+   headline is never literally transparent if background-clip:text fails
+   to paint (forced-colors mode, some compositor edge cases). */
 .ld-gradient {
+  color: var(--ld-text);
   background: linear-gradient(135deg, #3B82F6, #8B5CF6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+@media (forced-colors: active) {
+  .ld-gradient, .ld-text-shimmer {
+    background: none;
+    -webkit-text-fill-color: unset;
+    color: CanvasText;
+  }
+}
+
+/* Hero fade-in — pure CSS, no JS/IntersectionObserver dependency, so the
+   headline/subtext/CTAs are guaranteed to appear on first paint regardless
+   of hydration timing, connection speed, or scroll position. */
+@keyframes heroFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+.hero-fade-item {
+  opacity: 0;
+  animation: heroFadeIn 0.7s ease-out forwards;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-fade-item { animation: none; opacity: 1; }
 }
 
 /* Smooth theme transition */
@@ -289,6 +314,7 @@ body::after {
   50%       { background-position: 100% center; }
 }
 .ld-text-shimmer {
+  color: var(--ld-accent);
   background: linear-gradient(90deg, #3B82F6, #8B5CF6, #93C5FD, #8B5CF6, #3B82F6);
   background-size: 300% auto;
   -webkit-background-clip: text;
