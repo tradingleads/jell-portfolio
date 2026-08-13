@@ -708,7 +708,7 @@ const TESTIMONIALS: Testimonial[] = [];
 
 function SocialProofSection() {
   return (
-    <section style={{ padding: "40px 28px 8px", background: "var(--ld-bg)" }}>
+    <section style={{ padding: "20px 28px 8px", background: "var(--ld-bg)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         {/* Live indicator */}
@@ -1353,7 +1353,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" style={{ padding: "clamp(28px, 6vw, 36px) 20px clamp(40px, 8vw, 72px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="projects" style={{ padding: "clamp(28px, 6vw, 36px) 20px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
