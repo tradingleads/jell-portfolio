@@ -332,8 +332,8 @@ const ChatPreview = memo(function ChatPreview() {
 /* ── Nav items ─────────────────────────────────────────────── */
 const NAV_ITEMS = [
   { label: "Services", href: "#services" },
-  { label: "Projects", href: "#projects" },
   { label: "Process",  href: "#process"  },
+  { label: "Projects", href: "#projects" },
 ];
 const NAV_ABOUT     = { label: "About",   href: "#about"   };
 const NAV_CONTACT   = { label: "Contact", href: "#contact" };
@@ -2110,11 +2110,11 @@ export default function LandingPage() {
       <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100dvh", fontFamily: "var(--font-geist-sans),system-ui,sans-serif" }}>
         <Navbar />
         <HeroSection />
-        <SocialProofSection />
         <TrustBar />
         <ServicesSection />
-        <ProjectsSection />
         <HowIWorkSection />
+        <ProjectsSection />
+        <SocialProofSection />
         <AboutSection />
         <CTASection />
         <ContactSection />
