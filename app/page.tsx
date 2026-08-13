@@ -1359,7 +1359,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" style={{ padding: "clamp(48px, 9vw, 80px) 20px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="projects" style={{ padding: "clamp(28px, 6vw, 36px) 20px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1590,7 +1590,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px clamp(64px, 10vw, 100px)", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       {/* Subtle background glow — spans the full section, not a fixed box */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 45%, rgba(59,130,246,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
