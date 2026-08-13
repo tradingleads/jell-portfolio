@@ -1686,7 +1686,7 @@ function TestimonialsSection() {
 
   return (
     <section style={{ padding: "80px 28px 64px", background: "var(--ld-card2)" }}>
-      <div style={{ maxWidth: 760, margin: "0 auto" }}>
+      <div style={{ maxWidth: 900, margin: "0 auto" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: 56 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 14 }}>Testimonials</p>
           <h2 style={{ fontSize: "clamp(2rem, 4vw, 3rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", marginBottom: 16 }}>
@@ -1720,10 +1720,10 @@ function TestimonialsSection() {
                 transition={{ type: "spring", stiffness: 100, damping: 20 }}
                 style={{ position: "relative", textAlign: "center", width: "100%" }}
               >
-                <p style={{ fontSize: "clamp(1.2rem, 2.6vw, 1.625rem)", color: "var(--ld-text)", lineHeight: 1.55, fontWeight: 500, fontStyle: "italic", letterSpacing: "-0.01em", maxWidth: "58ch", margin: "0 auto 24px" }}>
+                <p style={{ fontSize: "clamp(1.0625rem, 1.6vw, 1.25rem)", color: "var(--ld-text)", lineHeight: 1.65, fontWeight: 400, fontStyle: "italic", maxWidth: "62ch", margin: "0 auto 24px" }}>
                   &quot;{current.quote}&quot;
                 </p>
-                <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--ld-accent)", letterSpacing: "0.02em" }}>
+                <p style={{ fontSize: "1.0625rem", fontWeight: 700, color: "var(--ld-accent)" }}>
                   {current.author}
                 </p>
               </motion.div>
