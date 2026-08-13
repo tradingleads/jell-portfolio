@@ -797,7 +797,7 @@ const TOOL_SLUGS = [
 // page's own background so it reads as part of the page, not a boxed panel.
 function TrustBar() {
   return (
-    <section style={{ padding: "56px 28px", background: "var(--ld-bg)" }}>
+    <section style={{ padding: "clamp(32px, 8vw, 56px) 28px", background: "var(--ld-bg)" }}>
       <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 28 }}>Tools &amp; Technologies</p>
       <div style={{ position: "relative", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <IconCloud iconSlugs={TOOL_SLUGS} />
@@ -818,9 +818,9 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" style={{ padding: "60px 28px", background: "var(--ld-card2)", scrollMarginTop: 50 }}>
+    <section id="services" style={{ padding: "clamp(36px, 8vw, 60px) 28px", background: "var(--ld-card2)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 40 }}>
+        <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: "clamp(24px, 6vw, 40px)" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>What I Deliver</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Where Automation Removes the Busywork
@@ -833,7 +833,7 @@ function ServicesSection() {
               className="text-center sm:text-left"
               style={{ padding: "26px 22px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, transition: "all 0.28s ease", boxShadow: "var(--ld-shadow)" }}
             >
-              <div className="mx-auto sm:mx-0" style={{ width: 46, height: 46, borderRadius: 13, marginBottom: 20, background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <div className="mx-auto sm:mx-0" style={{ width: "clamp(38px, 9vw, 46px)", height: "clamp(38px, 9vw, 46px)", borderRadius: 13, marginBottom: "clamp(14px, 4vw, 20px)", background: `${c}12`, border: `1px solid ${c}28`, display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Icon size={22} strokeWidth={1.5} style={{ color: c }} />
               </div>
               <h3 style={{ fontSize: "1rem", fontWeight: 700, color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 10 }}>{t}</h3>
@@ -1353,7 +1353,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" style={{ padding: "36px 20px 72px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="projects" style={{ padding: "clamp(28px, 6vw, 36px) 20px clamp(40px, 8vw, 72px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center sm:text-left" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1589,7 +1589,7 @@ function HowIWorkSection() {
       <div style={{ position: "absolute", top: 220, left: "50%", transform: "translateX(-50%)", width: 800, height: 400, background: "radial-gradient(ellipse, rgba(59,130,246,0.04) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
-        <motion.div {...up()} style={{ textAlign: "center", marginBottom: 40 }}>
+        <motion.div {...up()} style={{ textAlign: "center", marginBottom: "clamp(24px, 6vw, 40px)" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>
             Process
           </p>
@@ -1647,8 +1647,8 @@ function HowIWorkSection() {
                 >
                   {/* Icon */}
                   <div style={{
-                    width: 56, height: 56, borderRadius: 16,
-                    marginBottom: 28,
+                    width: "clamp(42px, 10vw, 56px)", height: "clamp(42px, 10vw, 56px)", borderRadius: 16,
+                    marginBottom: "clamp(16px, 5vw, 28px)",
                     background: `linear-gradient(135deg, ${hex}22, ${hex}0a)`,
                     border: `1px solid ${hex}35`,
                     display: "flex", alignItems: "center", justifyContent: "center",
@@ -1688,8 +1688,8 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" style={{ padding: "60px 28px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
-      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: 64, alignItems: "center" }}>
+    <section id="about" style={{ padding: "clamp(36px, 8vw, 60px) 28px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
           <motion.div
@@ -1702,7 +1702,7 @@ function AboutSection() {
               pulse: { scale: [1, 1.05, 1.01, 1], transition: { duration: 0.5, ease: "easeOut" } },
             }}
             transition={{ type: "spring", stiffness: 280, damping: 22 }}
-            style={{ position: "relative", width: 240, height: 240, cursor: "pointer", flexShrink: 0 }}
+            style={{ position: "relative", width: "clamp(160px, 40vw, 240px)", height: "clamp(160px, 40vw, 240px)", cursor: "pointer", flexShrink: 0 }}
           >
             {/* Ambient glow */}
             <motion.div
@@ -1999,7 +1999,7 @@ function PortfolioSection() {
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
 
   return (
-    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: 80, paddingBottom: 80 }}>
+    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: "clamp(40px, 8vw, 80px)", paddingBottom: "clamp(40px, 8vw, 80px)" }}>
       <MouseGradient />
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(59,130,246,0.04) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none", zIndex: 0 }} />
 
