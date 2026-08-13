@@ -1590,9 +1590,9 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px clamp(64px, 10vw, 100px)", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
-      {/* Subtle background glow — spans the full section; never fades to fully transparent so the tint stays visible all the way to the bottom edge instead of reading as flat black */}
-      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.13) 0%, rgba(59,130,246,0.05) 70%, rgba(59,130,246,0.04) 100%)", pointerEvents: "none" }} />
+    <section id="process" style={{ padding: "clamp(28px, 4vw, 48px) 28px clamp(64px, 10vw, 100px)", background: "var(--ld-process-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+      {/* Background glow — layered on top of --ld-process-bg, a token that's visibly lighter than the page's near-black base in dark mode (and falls back to the normal card2 tone in light mode) */}
+      <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1200, width: "100%", margin: "0 auto", position: "relative" }}>
         <motion.div {...up()} style={{ textAlign: "center", marginBottom: "clamp(24px, 6vw, 40px)" }}>
