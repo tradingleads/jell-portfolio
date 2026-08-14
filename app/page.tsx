@@ -1049,17 +1049,16 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             whileHover="hover"
             initial="rest"
             onClick={() => setLbIdx(0)}
-            style={{ position: "relative", height: 220, overflow: "hidden", borderRadius: "22px 22px 0 0", background: `linear-gradient(160deg, #05070B, ${p.color}25)`, cursor: "zoom-in" }}
+            style={{ position: "relative", height: 220, overflow: "hidden", borderRadius: "22px 22px 0 0", cursor: "zoom-in" }}
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <motion.img
               src={p.img} alt={p.title}
-              variants={{ rest: { opacity: 0.72, scale: 1 }, hover: { opacity: 0.88, scale: 1.03 } }}
+              variants={{ rest: { scale: 1 }, hover: { scale: 1.03 } }}
               transition={{ duration: 0.35 }}
               style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }}
             />
             <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.055) 1px, transparent 0)", backgroundSize: "22px 22px", pointerEvents: "none" }} />
-            <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 48, background: `linear-gradient(to bottom, transparent, var(--ld-card))`, pointerEvents: "none" }} />
 
             {/* Expand hint overlay */}
             <motion.div
