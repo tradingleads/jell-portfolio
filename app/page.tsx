@@ -405,9 +405,8 @@ function Navbar() {
               Jell
             </motion.span>
             <motion.span
-              animate={{ filter: logoHovered ? "brightness(1.2) drop-shadow(0 0 8px rgba(139,92,246,0.55))" : "brightness(1)" }}
+              animate={{ color: logoHovered ? "#FFFFFF" : "var(--ld-text)", textShadow: logoHovered ? "0 0 24px rgba(255,255,255,0.25)" : "none" }}
               transition={{ duration: 0.25 }}
-              className="ld-text-shimmer"
               style={{ fontSize: "1.5rem", fontWeight: 700, letterSpacing: "0.04em", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >
               Urmeneta
@@ -509,10 +508,9 @@ function Navbar() {
               style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >Jell</motion.span>
             <motion.span
-              variants={{ hovered: { color: "var(--ld-blue)", textShadow: "0 0 18px rgba(59,130,246,0.55)" } }}
+              variants={{ hovered: { color: "#FFFFFF", textShadow: "0 0 22px rgba(255,255,255,0.25)" } }}
               transition={{ duration: 0.22 }}
-              className="ld-text-shimmer"
-              style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >Urmeneta</motion.span>
             {/* Sweep */}
             <motion.span
@@ -2059,7 +2057,7 @@ function Footer() {
             <span style={{ fontSize: "0.875rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", textTransform: "uppercase", lineHeight: 1 }}>
               Jell
             </span>
-            <span className="ld-text-shimmer" style={{ fontSize: "0.875rem", fontWeight: 700, letterSpacing: "0.03em", fontFamily: "var(--font-body)", textTransform: "uppercase", lineHeight: 1 }}>
+            <span style={{ fontSize: "0.875rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", textTransform: "uppercase", lineHeight: 1 }}>
               Urmeneta
             </span>
           </motion.a>
