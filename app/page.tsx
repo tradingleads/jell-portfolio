@@ -400,7 +400,7 @@ function Navbar() {
             <motion.span
               animate={{ color: logoHovered ? "#FFFFFF" : "var(--ld-text)", textShadow: logoHovered ? "0 0 24px rgba(255,255,255,0.25)" : "none" }}
               transition={{ duration: 0.25 }}
-              style={{ fontSize: "1.5rem", fontWeight: 400, letterSpacing: "0.04em", fontFamily: "var(--font-display)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.5rem", fontWeight: 400, letterSpacing: "0.04em", fontFamily: "var(--font-brand)", lineHeight: 1, textTransform: "uppercase" }}
             >
               Jell
             </motion.span>
@@ -408,7 +408,7 @@ function Navbar() {
               animate={{ filter: logoHovered ? "brightness(1.2) drop-shadow(0 0 8px rgba(139,92,246,0.55))" : "brightness(1)" }}
               transition={{ duration: 0.25 }}
               className="ld-text-shimmer"
-              style={{ fontSize: "1.5rem", fontWeight: 400, letterSpacing: "0.04em", fontFamily: "var(--font-display)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.5rem", fontWeight: 400, letterSpacing: "0.04em", fontFamily: "var(--font-brand)", lineHeight: 1, textTransform: "uppercase" }}
             >
               Urmeneta
             </motion.span>
@@ -506,13 +506,13 @@ function Navbar() {
             <motion.span
               variants={{ hovered: { color: "#FFFFFF", textShadow: "0 0 22px rgba(255,255,255,0.25)" } }}
               transition={{ duration: 0.22 }}
-              style={{ fontSize: "1.125rem", fontWeight: 400, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.125rem", fontWeight: 400, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-brand)", lineHeight: 1, textTransform: "uppercase" }}
             >Jell</motion.span>
             <motion.span
               variants={{ hovered: { color: "var(--ld-blue)", textShadow: "0 0 18px rgba(59,130,246,0.55)" } }}
               transition={{ duration: 0.22 }}
               className="ld-text-shimmer"
-              style={{ fontSize: "1.125rem", fontWeight: 400, letterSpacing: "0.03em", fontFamily: "var(--font-display)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.125rem", fontWeight: 400, letterSpacing: "0.03em", fontFamily: "var(--font-brand)", lineHeight: 1, textTransform: "uppercase" }}
             >Urmeneta</motion.span>
             {/* Sweep */}
             <motion.span
@@ -1097,7 +1097,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             {/* Title + ROI */}
             <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 14, marginBottom: 16 }}>
               <h2 style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.02em", lineHeight: 1.2 }}>{p.title}</h2>
-              <span style={{ flexShrink: 0, fontSize: "1rem", fontWeight: 800, fontFamily: "var(--font-jetbrains-mono)", color: p.roiColor, padding: "7px 16px", borderRadius: 10, background: `${p.roiColor}12`, border: `1px solid ${p.roiColor}30`, marginTop: 3 }}>{p.roi}</span>
+              <span style={{ flexShrink: 0, fontSize: "1rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: p.roiColor, padding: "7px 16px", borderRadius: 10, background: `${p.roiColor}12`, border: `1px solid ${p.roiColor}30`, marginTop: 3 }}>{p.roi}</span>
             </div>
             <p style={{ fontSize: "1rem", fontWeight: 600, color: "var(--ld-text)", lineHeight: 1.55, marginBottom: 26 }}>{p.outcome}</p>
 
@@ -1134,7 +1134,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
                     initial={{ opacity: 0, x: -8 }} animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: i * 0.06, duration: 0.25, ease: E }}
                     style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <span style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 7, background: `${p.color}14`, border: `1px solid ${p.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 800, color: p.color, fontFamily: "var(--font-jetbrains-mono)", marginTop: 1 }}>{i + 1}</span>
+                    <span style={{ flexShrink: 0, width: 24, height: 24, borderRadius: 7, background: `${p.color}14`, border: `1px solid ${p.color}30`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: "0.65rem", fontWeight: 800, color: p.color, fontFamily: "var(--font-geist-mono)", marginTop: 1 }}>{i + 1}</span>
                     <span style={{ fontSize: "0.9rem", color: "var(--ld-text)", lineHeight: 1.55 }}>{step}</span>
                   </motion.li>
                 ))}
@@ -1159,7 +1159,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             <Section label="Tools Used" color={p.color}>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
                 {p.tools.map(t => (
-                  <span key={t} style={{ fontSize: "0.8rem", fontWeight: 500, padding: "6px 14px", borderRadius: 100, background: `${p.color}0e`, border: `1px solid ${p.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-jetbrains-mono)" }}>{t}</span>
+                  <span key={t} style={{ fontSize: "0.8rem", fontWeight: 500, padding: "6px 14px", borderRadius: 100, background: `${p.color}0e`, border: `1px solid ${p.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-geist-mono)" }}>{t}</span>
                 ))}
               </div>
             </Section>
@@ -1269,7 +1269,7 @@ function MobileProjectSlider({ projects, onOpenModal }: { projects: ProjItem[]; 
                   <span style={{ fontSize: "0.62rem", fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.12)", color: cur.status === "Live" ? "#22c55e" : cur.status === "Running" ? "#fbbf24" : "#94a3b8", backdropFilter: "blur(8px)" }}>● {cur.status}</span>
                 </div>
                 <div style={{ position: "absolute", top: 12, right: 14 }}>
-                  <span style={{ fontSize: "0.72rem", fontWeight: 800, fontFamily: "var(--font-jetbrains-mono)", color: cur.roiColor, padding: "4px 10px", borderRadius: 8, background: `${cur.roiColor}18`, border: `1px solid ${cur.roiColor}38`, backdropFilter: "blur(8px)" }}>{cur.roi}</span>
+                  <span style={{ fontSize: "0.72rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: cur.roiColor, padding: "4px 10px", borderRadius: 8, background: `${cur.roiColor}18`, border: `1px solid ${cur.roiColor}38`, backdropFilter: "blur(8px)" }}>{cur.roi}</span>
                 </div>
               </div>
 
@@ -1284,10 +1284,10 @@ function MobileProjectSlider({ projects, onOpenModal }: { projects: ProjItem[]; 
                 <p style={{ fontSize: "0.84rem", color: "var(--ld-muted)", lineHeight: 1.6, marginBottom: 14 }}>{cur.outcome}</p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 5, marginBottom: 16 }}>
                   {cur.tools.slice(0, 3).map(t => (
-                    <span key={t} style={{ fontSize: "0.67rem", fontWeight: 500, padding: "3px 10px", borderRadius: 100, background: `${cur.color}0d`, border: `1px solid ${cur.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-jetbrains-mono)" }}>{t}</span>
+                    <span key={t} style={{ fontSize: "0.67rem", fontWeight: 500, padding: "3px 10px", borderRadius: 100, background: `${cur.color}0d`, border: `1px solid ${cur.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-geist-mono)" }}>{t}</span>
                   ))}
                   {cur.tools.length > 3 && (
-                    <span style={{ fontSize: "0.67rem", fontWeight: 500, padding: "3px 10px", borderRadius: 100, background: "var(--ld-card2)", border: "1px solid var(--ld-border)", color: "var(--ld-muted)", fontFamily: "var(--font-jetbrains-mono)" }}>+{cur.tools.length - 3}</span>
+                    <span style={{ fontSize: "0.67rem", fontWeight: 500, padding: "3px 10px", borderRadius: 100, background: "var(--ld-card2)", border: "1px solid var(--ld-border)", color: "var(--ld-muted)", fontFamily: "var(--font-geist-mono)" }}>+{cur.tools.length - 3}</span>
                   )}
                 </div>
                 <motion.button type="button" onClick={() => onOpenModal(cur)} whileTap={{ scale: 0.97 }}
@@ -1441,7 +1441,7 @@ function ProjectsSection() {
                     <div style={{ flex: 1, minWidth: 0 }}>
                       <p style={{ fontSize: "0.8rem", fontWeight: 600, color: selectedId === p.id ? "var(--ld-text)" : "var(--ld-muted)", marginBottom: 4, lineHeight: 1.3 }}>{p.title}</p>
                       <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-                        <span style={{ fontSize: "0.75rem", fontWeight: 800, fontFamily: "var(--font-jetbrains-mono)", color: p.roiColor }}>{p.roi}</span>
+                        <span style={{ fontSize: "0.75rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: p.roiColor }}>{p.roi}</span>
                         <span style={{ width: 2, height: 2, borderRadius: "50%", background: "var(--ld-border)", flexShrink: 0 }} />
                         <span style={{ fontSize: "0.6rem", fontWeight: 600, color: "var(--ld-muted)", letterSpacing: "0.04em" }}>{p.platform}</span>
                       </div>
@@ -1498,7 +1498,7 @@ function ProjectsSection() {
                   <div style={{ padding: "14px 18px 18px" }}>
                     <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 8, marginBottom: 14, flexWrap: "wrap" }}>
                       <h3 style={{ fontSize: "1.0625rem", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", lineHeight: 1.2, letterSpacing: "-0.01em", minWidth: 0 }}>{sel.title}</h3>
-                      <span style={{ fontSize: "0.8rem", fontWeight: 800, fontFamily: "var(--font-jetbrains-mono)", color: sel.roiColor, padding: "4px 10px", borderRadius: 8, background: `${sel.roiColor}12`, border: `1px solid ${sel.roiColor}28` }}>{sel.roi}</span>
+                      <span style={{ fontSize: "0.8rem", fontWeight: 800, fontFamily: "var(--font-geist-mono)", color: sel.roiColor, padding: "4px 10px", borderRadius: 8, background: `${sel.roiColor}12`, border: `1px solid ${sel.roiColor}28` }}>{sel.roi}</span>
                     </div>
 
                     <p style={{ fontSize: "0.875rem", fontWeight: 600, color: "var(--ld-text)", lineHeight: 1.45, marginBottom: 8 }}>{sel.outcome}</p>
@@ -1509,7 +1509,7 @@ function ProjectsSection() {
                       <p style={{ fontSize: "0.6rem", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--ld-muted)", marginBottom: 6 }}>Tools Used</p>
                       <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                         {sel.tools.map(t => (
-                          <span key={t} style={{ fontSize: "0.72rem", fontWeight: 500, padding: "4px 11px", borderRadius: 100, background: `${sel.color}0d`, border: `1px solid ${sel.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-jetbrains-mono)" }}>{t}</span>
+                          <span key={t} style={{ fontSize: "0.72rem", fontWeight: 500, padding: "4px 11px", borderRadius: 100, background: `${sel.color}0d`, border: `1px solid ${sel.color}28`, color: "var(--ld-muted)", fontFamily: "var(--font-geist-mono)" }}>{t}</span>
                         ))}
                       </div>
                     </div>
@@ -2056,10 +2056,10 @@ function Footer() {
             transition={{ duration: 4.5, repeat: Infinity, ease: "easeInOut", repeatDelay: 3 }}
             style={{ textDecoration: "none", display: "inline-flex", alignItems: "baseline", gap: 5, cursor: "pointer" }}
           >
-            <span style={{ fontSize: "0.875rem", fontWeight: 400, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
+            <span style={{ fontSize: "0.875rem", fontWeight: 400, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-brand)", textTransform: "uppercase", lineHeight: 1 }}>
               Jell
             </span>
-            <span className="ld-text-shimmer" style={{ fontSize: "0.875rem", fontWeight: 400, letterSpacing: "0.03em", fontFamily: "var(--font-display)", textTransform: "uppercase", lineHeight: 1 }}>
+            <span className="ld-text-shimmer" style={{ fontSize: "0.875rem", fontWeight: 400, letterSpacing: "0.03em", fontFamily: "var(--font-brand)", textTransform: "uppercase", lineHeight: 1 }}>
               Urmeneta
             </span>
           </motion.a>
@@ -2108,7 +2108,7 @@ export default function LandingPage() {
       <style>{`
         @keyframes nodePulse { 0%,100%{opacity:.55;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
       `}</style>
-      <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100dvh", fontFamily: "var(--font-inter),system-ui,sans-serif" }}>
+      <div style={{ background: "var(--ld-bg)", color: "var(--ld-text)", minHeight: "100dvh", fontFamily: "var(--font-geist-sans),system-ui,sans-serif" }}>
         <Navbar />
         <HeroSection />
         <TrustBar />

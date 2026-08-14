@@ -357,7 +357,7 @@ const Lightbox = memo(function Lightbox({
             {images.length > 1 && (
               <span style={{
                 flexShrink: 0, fontSize: "0.7rem", fontWeight: 700,
-                fontFamily: "var(--font-jetbrains-mono)",
+                fontFamily: "var(--font-geist-mono)",
                 color: "#22d3ee",
                 padding: "3px 10px", borderRadius: 100,
                 background: "rgba(34,211,238,0.1)",
@@ -372,7 +372,7 @@ const Lightbox = memo(function Lightbox({
           <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
             {isZoomed && (
               <span style={{
-                fontSize: "0.7rem", fontFamily: "var(--font-jetbrains-mono)",
+                fontSize: "0.7rem", fontFamily: "var(--font-geist-mono)",
                 color: "#22d3ee", padding: "3px 8px", borderRadius: 6,
                 background: "rgba(34,211,238,0.1)",
                 border: "1px solid rgba(34,211,238,0.25)",

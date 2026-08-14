@@ -255,7 +255,7 @@ const ProjectModal = memo(function ProjectModal({ project, onClose }: ProjectMod
                         background: `${project.accentColor}15`,
                         border: `1px solid ${project.accentColor}35`,
                         fontSize: "0.8rem", fontWeight: 700,
-                        fontFamily: "var(--font-jetbrains-mono)",
+                        fontFamily: "var(--font-geist-mono)",
                         color: project.metricColor,
                         whiteSpace: "nowrap",
                         marginTop: 3,
