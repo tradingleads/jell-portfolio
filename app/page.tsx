@@ -398,16 +398,16 @@ function Navbar() {
             style={{ cursor: "pointer", display: "flex", alignItems: "baseline", gap: 6, position: "relative", overflow: "hidden" }}
           >
             <motion.span
-              animate={{ color: logoHovered ? "#FFFFFF" : "var(--ld-text)", textShadow: logoHovered ? "0 0 24px rgba(255,255,255,0.25)" : "none" }}
+              animate={{ textShadow: logoHovered ? "0 0 24px rgba(59,130,246,0.35)" : "none" }}
               transition={{ duration: 0.25 }}
-              style={{ fontSize: "1.5rem", fontWeight: 700, letterSpacing: "0.04em", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.5rem", fontWeight: 700, letterSpacing: "0.04em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >
               Jell
             </motion.span>
             <motion.span
-              animate={{ color: logoHovered ? "#FFFFFF" : "var(--ld-text)", textShadow: logoHovered ? "0 0 24px rgba(255,255,255,0.25)" : "none" }}
+              animate={{ textShadow: logoHovered ? "0 0 24px rgba(59,130,246,0.35)" : "none" }}
               transition={{ duration: 0.25 }}
-              style={{ fontSize: "1.5rem", fontWeight: 700, letterSpacing: "0.04em", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
+              style={{ fontSize: "1.5rem", fontWeight: 700, letterSpacing: "0.04em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >
               Urmeneta
             </motion.span>
@@ -503,12 +503,12 @@ function Navbar() {
           {/* Name */}
           <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, position: "relative", overflow: "hidden" }}>
             <motion.span
-              variants={{ hovered: { color: "#FFFFFF", textShadow: "0 0 22px rgba(255,255,255,0.25)" } }}
+              variants={{ hovered: { textShadow: "0 0 22px rgba(59,130,246,0.35)" } }}
               transition={{ duration: 0.22 }}
               style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >Jell</motion.span>
             <motion.span
-              variants={{ hovered: { color: "#FFFFFF", textShadow: "0 0 22px rgba(255,255,255,0.25)" } }}
+              variants={{ hovered: { textShadow: "0 0 22px rgba(59,130,246,0.35)" } }}
               transition={{ duration: 0.22 }}
               style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", lineHeight: 1, textTransform: "uppercase" }}
             >Urmeneta</motion.span>
