@@ -388,7 +388,7 @@ function Navbar() {
             alt="Jell Urmeneta logo"
             animate={{ scale: logoHovered ? 1.08 : 1 }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            style={{ width: 40, height: 40, objectFit: "contain", display: "block", flexShrink: 0, cursor: "pointer" }}
+            style={{ width: 50, height: 50, objectFit: "contain", display: "block", flexShrink: 0, cursor: "pointer" }}
           />
 
           {/* Name */}
@@ -498,7 +498,7 @@ function Navbar() {
             alt="Jell Urmeneta logo"
             variants={{ hovered: { scale: 1.1 } }}
             transition={{ type: "spring", stiffness: 320, damping: 22 }}
-            style={{ width: 32, height: 32, objectFit: "contain", display: "block", flexShrink: 0 }}
+            style={{ width: 40, height: 40, objectFit: "contain", display: "block", flexShrink: 0 }}
           />
 
           {/* Name */}
