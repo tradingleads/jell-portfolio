@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
-import { Inter } from "next/font/google";
+import { Inter, Aldrich } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const aldrich = Aldrich({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-brand",
   display: "swap",
 });
 
@@ -38,7 +45,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistMono.variable} ${inter.variable}`}
+      className={`${GeistMono.variable} ${inter.variable} ${aldrich.variable}`}
       suppressHydrationWarning
     >
       <head>
