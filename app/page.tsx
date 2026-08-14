@@ -401,11 +401,13 @@ function Navbar() {
               cursor: "pointer",
             }}
           >
-            <motion.span
+            <motion.img
+              src="/logo-icon.png"
+              alt="Jell Urmeneta logo"
               animate={{ scale: logoHovered ? 1.08 : 1 }}
               transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              style={{ fontSize: "0.78rem", fontWeight: 900, letterSpacing: "0.03em", color: "var(--ld-accent)", fontFamily: "var(--font-display)", lineHeight: 1 }}
-            >JU</motion.span>
+              style={{ width: 24, height: 24, objectFit: "contain", display: "block" }}
+            />
           </motion.div>
 
           {/* Name */}
@@ -517,11 +519,13 @@ function Navbar() {
             transition={{ duration: 0.25 }}
             style={{ width: 30, height: 30, borderRadius: 8, flexShrink: 0, background: "linear-gradient(135deg, rgba(59,130,246,0.14), rgba(139,92,246,0.10))", border: "1px solid rgba(59,130,246,0.22)", display: "flex", alignItems: "center", justifyContent: "center" }}
           >
-            <motion.span
+            <motion.img
+              src="/logo-icon.png"
+              alt="Jell Urmeneta logo"
               variants={{ hovered: { scale: 1.1 } }}
               transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              style={{ fontSize: "0.65rem", fontWeight: 900, color: "var(--ld-accent)", fontFamily: "var(--font-display)", lineHeight: 1 }}
-            >JU</motion.span>
+              style={{ width: 19, height: 19, objectFit: "contain", display: "block" }}
+            />
           </motion.div>
 
           {/* Name */}
