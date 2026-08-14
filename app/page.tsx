@@ -1258,10 +1258,9 @@ function MobileProjectSlider({ projects, onOpenModal }: { projects: ProjItem[]; 
           >
             <div style={{ background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden", boxShadow: "var(--ld-shadowLg)" }}>
               {/* Screenshot */}
-              <div style={{ height: 180, position: "relative", overflow: "hidden", background: `linear-gradient(160deg, #0B1020, ${cur.color}30)` }}>
+              <div style={{ height: 180, position: "relative", overflow: "hidden" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={cur.img} alt={cur.title} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", opacity: 0.8, display: "block" }} />
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 40, background: `linear-gradient(to bottom, transparent, var(--ld-card))` }} />
+                <img src={cur.img} alt={cur.title} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
                 <div style={{ position: "absolute", top: 12, left: 14, display: "flex", gap: 6 }}>
                   <span style={{ fontSize: "0.62rem", fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: "rgba(0,0,0,0.55)", border: `1px solid ${cur.color}50`, color: cur.color, backdropFilter: "blur(8px)" }}>{cur.platform}</span>
                   <span style={{ fontSize: "0.62rem", fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: "rgba(0,0,0,0.5)", border: "1px solid rgba(255,255,255,0.12)", color: cur.status === "Live" ? "#22c55e" : cur.status === "Running" ? "#fbbf24" : "#94a3b8", backdropFilter: "blur(8px)" }}>● {cur.status}</span>
@@ -1478,11 +1477,9 @@ function ProjectsSection() {
                   transition={{ duration: 0.24, ease: E }}
                 >
                   {/* Screenshot strip */}
-                  <div style={{ height: 130, position: "relative", overflow: "hidden", background: `linear-gradient(160deg, #0B1020, ${sel.color}30)` }}>
+                  <div style={{ height: 130, position: "relative", overflow: "hidden" }}>
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={sel.img} alt={sel.title} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", opacity: 0.75, display: "block" }} />
-                    <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0)", backgroundSize: "22px 22px" }} />
-                    <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, height: 36, background: `linear-gradient(to bottom, transparent, var(--ld-card))` }} />
+                    <img src={sel.img} alt={sel.title} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "top center", display: "block" }} />
                     {/* Badges */}
                     <div style={{ position: "absolute", top: 12, left: 14, display: "flex", gap: 6 }}>
                       <span style={{ fontSize: "0.62rem", fontWeight: 700, padding: "3px 9px", borderRadius: 100, background: "rgba(0,0,0,0.55)", border: `1px solid ${sel.color}50`, color: sel.color, backdropFilter: "blur(8px)" }}>{sel.platform}</span>
