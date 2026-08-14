@@ -1786,7 +1786,7 @@ function CTASection() {
             Let&apos;s Connect The Pieces
           </h2>
           <p style={{ fontSize: "0.85rem", color: "var(--ld-muted)", lineHeight: 1.5, maxWidth: "38ch", margin: "0 auto" }}>
-            Got something worth automating? Pick a time and let&apos;s build.
+            Got something worth automating? Pick a time that works for you.
           </p>
         </motion.div>
 
