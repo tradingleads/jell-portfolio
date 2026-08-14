@@ -736,8 +736,26 @@ function SocialProofSection() {
           ))}
         </motion.div>
 
-        {/* Testimonials — composed empty state until real quotes are added */}
-        <motion.div {...up(0.1)} style={{ marginTop: 24 }}>
+      </div>
+    </section>
+  );
+}
+
+/* ── Testimonials — its own section (was folded into Live Results).
+   Composed empty state until real quotes are added; same card markup,
+   font sizes, and colors as before, just given its own anchor. */
+function TestimonialsSection() {
+  return (
+    <section id="testimonials" style={{ padding: "20px 28px clamp(28px, 6vw, 48px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+      <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 14 }}>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)" }}>
+            Testimonials
+          </p>
+        </div>
+
+        <motion.div {...up()}>
           {TESTIMONIALS.length > 0 ? (
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
               {TESTIMONIALS.map(t => (
@@ -2121,6 +2139,7 @@ export default function LandingPage() {
         <HowIWorkSection />
         <ProjectsSection />
         <SocialProofSection />
+        <TestimonialsSection />
         <AboutSection />
         <CTASection />
         <ContactSection />
