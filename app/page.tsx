@@ -382,33 +382,14 @@ function Navbar() {
           transition={{ duration: 0.65, delay: 0.1, ease: E }}
           style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10 }}
         >
-          {/* Monogram badge */}
-          <motion.div
-            animate={{
-              background: logoHovered
-                ? "linear-gradient(135deg, rgba(59,130,246,0.30), rgba(139,92,246,0.22))"
-                : "linear-gradient(135deg, rgba(59,130,246,0.14), rgba(139,92,246,0.10))",
-              boxShadow: logoHovered
-                ? "0 0 22px rgba(59,130,246,0.45), 0 0 8px rgba(139,92,246,0.25), inset 0 1px 0 rgba(255,255,255,0.14)"
-                : "inset 0 1px 0 rgba(255,255,255,0.06)",
-              borderColor: logoHovered ? "rgba(59,130,246,0.55)" : "rgba(59,130,246,0.22)",
-            }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            style={{
-              width: 38, height: 38, borderRadius: 10, flexShrink: 0,
-              border: "1px solid rgba(59,130,246,0.22)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer",
-            }}
-          >
-            <motion.img
-              src="/logo-icon.png"
-              alt="Jell Urmeneta logo"
-              animate={{ scale: logoHovered ? 1.08 : 1 }}
-              transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              style={{ width: 24, height: 24, objectFit: "contain", display: "block" }}
-            />
-          </motion.div>
+          {/* Logo mark */}
+          <motion.img
+            src="/logo-icon.png"
+            alt="Jell Urmeneta logo"
+            animate={{ scale: logoHovered ? 1.08 : 1 }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            style={{ width: 40, height: 40, objectFit: "contain", display: "block", flexShrink: 0, cursor: "pointer" }}
+          />
 
           {/* Name */}
           <motion.span
@@ -511,22 +492,14 @@ function Navbar() {
           whileTap="hovered"
           style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}
         >
-          {/* Monogram badge */}
-          <motion.div
-            variants={{
-              hovered: { boxShadow: "0 0 20px rgba(59,130,246,0.45), 0 0 8px rgba(139,92,246,0.25), inset 0 1px 0 rgba(255,255,255,0.14)", borderColor: "rgba(59,130,246,0.55)", background: "linear-gradient(135deg, rgba(59,130,246,0.30), rgba(139,92,246,0.22))" },
-            }}
-            transition={{ duration: 0.25 }}
-            style={{ width: 30, height: 30, borderRadius: 8, flexShrink: 0, background: "linear-gradient(135deg, rgba(59,130,246,0.14), rgba(139,92,246,0.10))", border: "1px solid rgba(59,130,246,0.22)", display: "flex", alignItems: "center", justifyContent: "center" }}
-          >
-            <motion.img
-              src="/logo-icon.png"
-              alt="Jell Urmeneta logo"
-              variants={{ hovered: { scale: 1.1 } }}
-              transition={{ type: "spring", stiffness: 320, damping: 22 }}
-              style={{ width: 19, height: 19, objectFit: "contain", display: "block" }}
-            />
-          </motion.div>
+          {/* Logo mark */}
+          <motion.img
+            src="/logo-icon.png"
+            alt="Jell Urmeneta logo"
+            variants={{ hovered: { scale: 1.1 } }}
+            transition={{ type: "spring", stiffness: 320, damping: 22 }}
+            style={{ width: 32, height: 32, objectFit: "contain", display: "block", flexShrink: 0 }}
+          />
 
           {/* Name */}
           <div style={{ display: "inline-flex", alignItems: "baseline", gap: 4, position: "relative", overflow: "hidden" }}>
