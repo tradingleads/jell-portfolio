@@ -140,7 +140,7 @@ function ProjectsPanel({ onOpen }: { onOpen: (p: ProjectData) => void }) {
                 </span>
                 <span style={{
                   fontSize: "0.7rem", fontWeight: 700,
-                  fontFamily: "var(--font-geist-mono)",
+                  fontFamily: "var(--font-jetbrains-mono)",
                   color: project.metricColor, whiteSpace: "nowrap", flexShrink: 0,
                 }}>
                   {project.metric}
@@ -163,7 +163,7 @@ function ProjectsPanel({ onOpen }: { onOpen: (p: ProjectData) => void }) {
                 {project.tools.slice(0, 2).map(t => (
                   <span key={t} style={{
                     fontSize: "0.62rem",
-                    fontFamily: "var(--font-geist-mono)",
+                    fontFamily: "var(--font-jetbrains-mono)",
                     padding: "2px 7px", borderRadius: 100,
                     background: "var(--bg-card)",
                     border: "1px solid var(--border)",

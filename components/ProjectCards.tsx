@@ -150,7 +150,7 @@ function FeaturedCard({
           <span style={{
             flexShrink: 0,
             fontSize: "0.75rem", fontWeight: 700,
-            fontFamily: "var(--font-geist-mono)",
+            fontFamily: "var(--font-jetbrains-mono)",
             color: project.metricColor,
             whiteSpace: "nowrap",
             marginTop: 2,
@@ -168,7 +168,7 @@ function FeaturedCard({
           {project.tools.slice(0, 3).map(t => (
             <span key={t} style={{
               fontSize: "0.67rem",
-              fontFamily: "var(--font-geist-mono)",
+              fontFamily: "var(--font-jetbrains-mono)",
               padding: "3px 8px", borderRadius: 100,
               background: "var(--bg-surface)",
               border: "1px solid var(--border)",
@@ -268,7 +268,7 @@ function CompactCard({ project, onOpen }: { project: ProjectData; onOpen: () => 
       <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 4, flexShrink: 0 }}>
         <span style={{
           fontSize: "0.75rem", fontWeight: 700,
-          fontFamily: "var(--font-geist-mono)",
+          fontFamily: "var(--font-jetbrains-mono)",
           color: project.metricColor,
           whiteSpace: "nowrap",
         }}>

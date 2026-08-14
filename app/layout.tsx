@@ -1,19 +1,26 @@
 import type { Metadata } from "next";
-import { GeistMono } from "geist/font/mono";
-import { Inter, Aldrich } from "next/font/google";
+import { Space_Grotesk, Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "./providers";
 import "./globals.css";
 
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
 const inter = Inter({
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
 });
 
-const aldrich = Aldrich({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: "400",
-  variable: "--font-brand",
+  weight: ["400", "500"],
+  variable: "--font-jetbrains-mono",
   display: "swap",
 });
 
@@ -45,16 +52,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${GeistMono.variable} ${inter.variable} ${aldrich.variable}`}
+      className={`${spaceGrotesk.variable} ${inter.variable} ${jetbrainsMono.variable}`}
       suppressHydrationWarning
     >
-      <head>
-        <link rel="preconnect" href="https://api.fontshare.com" crossOrigin="anonymous" />
-        <link
-          href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body className="antialiased">
         <Providers>{children}</Providers>
       </body>

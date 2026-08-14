@@ -128,7 +128,7 @@ html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
 
 /* Font variables */
 :root {
-  --font-display: 'Satoshi', system-ui, sans-serif;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-body:    var(--font-inter, 'Inter'), system-ui, sans-serif;
 }
 
@@ -273,7 +273,7 @@ body::after {
 .message-prose li           { margin-bottom: 0.4rem; }
 .message-prose strong       { font-weight: 600; color: var(--text-primary); }
 .message-prose code {
-  font-family: var(--font-geist-mono), monospace;
+  font-family: var(--font-jetbrains-mono), monospace;
   font-size: 0.82em;
   background: rgba(59,130,246,0.10);
   border: 1px solid rgba(59,130,246,0.18);
