@@ -1039,7 +1039,6 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
             overflowY: "auto", borderRadius: 22,
             background: "var(--ld-card)",
             border: "1px solid var(--ld-border)",
-            boxShadow: "0 40px 100px rgba(0,0,0,0.65), inset 0 1px 0 rgba(255,255,255,0.07)",
             scrollbarWidth: "thin",
             pointerEvents: "auto",
           }}
@@ -1255,7 +1254,7 @@ function MobileProjectSlider({ projects, onOpenModal }: { projects: ProjItem[]; 
             onDragEnd={(_, info) => { if (info.offset.x < -40) go(1); else if (info.offset.x > 40) go(-1); }}
             style={{ cursor: "grab" }}
           >
-            <div style={{ background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden", boxShadow: "var(--ld-shadowLg)" }}>
+            <div style={{ background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden" }}>
               {/* Screenshot */}
               <div style={{ height: 180, position: "relative", overflow: "hidden" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -1372,7 +1371,6 @@ function ProjectsSection() {
         <motion.div {...up(0.1)} className="hidden md:block" style={{
           border: "1px solid var(--ld-border)", borderRadius: 16,
           overflow: "hidden", background: "var(--ld-card)",
-          boxShadow: "var(--ld-shadowLg)",
         }}>
           {/* Chrome bar */}
           <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "11px 16px", background: "var(--ld-card2)", borderBottom: "1px solid var(--ld-border)" }}>
