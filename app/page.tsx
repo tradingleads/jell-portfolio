@@ -1067,7 +1067,7 @@ function ProjectDetailModal({ project: p, onClose }: { project: ProjItem; onClos
               transition={{ duration: 0.2 }}
               style={{ position: "absolute", inset: 0, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", gap: 8, pointerEvents: "none" }}
             >
-              <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(0,0,0,0.6)", border: `1px solid ${p.color}55`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: `0 0 20px ${p.color}30` }}>
+              <div style={{ width: 44, height: 44, borderRadius: 12, background: "rgba(0,0,0,0.6)", border: `1px solid ${p.color}55`, backdropFilter: "blur(12px)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Maximize2 size={18} strokeWidth={1.5} style={{ color: p.color }} />
               </div>
               <span style={{ fontSize: "0.68rem", fontWeight: 600, color: "rgba(255,255,255,0.8)", letterSpacing: "0.08em", textTransform: "uppercase", background: "rgba(0,0,0,0.5)", backdropFilter: "blur(8px)", padding: "3px 10px", borderRadius: 100 }}>
