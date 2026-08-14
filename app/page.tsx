@@ -633,8 +633,8 @@ function HeroSection() {
         {/* Left */}
         <div className="text-center sm:text-left order-1">
 
-          <h1 className="hero-fade-item" style={{ animationDelay: "0.05s", fontSize: "clamp(2.2rem, 6vw, 4.2rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
-            <span className="ld-gradient">Build Better Business Systems.</span>
+          <h1 className="hero-fade-item" style={{ animationDelay: "0.05s", fontSize: "clamp(2.2rem, 5vw, 3.6rem)", fontWeight: 900, lineHeight: 1.1, letterSpacing: "-0.03em", color: "var(--ld-text)", fontFamily: "var(--font-display)", marginBottom: 16 }}>
+            <span className="ld-gradient">Build Better<br />Business Systems.</span>
           </h1>
 
           <p className="hero-fade-item mx-auto sm:mx-0" style={{ animationDelay: "0.15s", fontSize: "1.0625rem", fontWeight: 500, lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.88, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
