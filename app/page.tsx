@@ -669,7 +669,7 @@ const TESTIMONIALS: Testimonial[] = [];
 
 function SocialProofSection() {
   return (
-    <section style={{ padding: "20px 28px 8px", background: "var(--ld-bg)" }}>
+    <section style={{ padding: "20px 28px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         {/* Live indicator */}
