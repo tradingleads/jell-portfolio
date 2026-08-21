@@ -359,8 +359,8 @@ function Navbar() {
       style={{
         position: "fixed", top: 0, left: 0, right: 0, zIndex: 200,
         background: scrolled ? "var(--ld-nav-bg)" : "transparent",
-        backdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
-        WebkitBackdropFilter: scrolled ? "blur(20px) saturate(180%)" : "none",
+        backdropFilter: "blur(20px) saturate(180%)",
+        WebkitBackdropFilter: "blur(20px) saturate(180%)",
         borderBottom: scrolled ? "1px solid var(--ld-border)" : "none",
         transition: "all 0.3s ease",
       }}
