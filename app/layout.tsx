@@ -11,6 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://withjell.vercel.app"),
   title: "Jell Urmeneta — AI Automation Specialist",
   description:
     "AI Automation & Workflow Specialist based in Rizal, Philippines. I build systems that eliminate busywork and help businesses scale faster.",
@@ -27,7 +28,23 @@ export const metadata: Metadata = {
     description:
       "I build AI systems that save time, remove busywork, and help businesses grow faster.",
     type: "website",
+    images: ["/logo-icon.png"],
   },
+};
+
+const personJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: "Jell Urmeneta",
+  url: "https://withjell.vercel.app",
+  image: "https://withjell.vercel.app/logo-icon.png",
+  jobTitle: "AI Automation Specialist",
+  address: {
+    "@type": "PostalAddress",
+    addressRegion: "Rizal",
+    addressCountry: "PH",
+  },
+  sameAs: ["https://www.linkedin.com/in/jellurmeneta"],
 };
 
 export default function RootLayout({
@@ -46,6 +63,10 @@ export default function RootLayout({
         <link
           href="https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap"
           rel="stylesheet"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
         />
       </head>
       <body className="antialiased">
