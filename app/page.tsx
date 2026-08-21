@@ -601,7 +601,7 @@ function Navbar() {
 /* ── Hero ──────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section style={{ minHeight: "clamp(600px, 100dvh, 900px)", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout" }}>
+    <section style={{ minHeight: "clamp(600px, 100dvh, 900px)", display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout", background: "var(--ld-bg)" }}>
       {/* Hero dot grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, var(--ld-borderC) 1px, transparent 0)", backgroundSize: "32px 32px", opacity: 0.25, pointerEvents: "none" }} />
       {/* Spotlight — blue top center */}
