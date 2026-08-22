@@ -4,7 +4,7 @@
 export const BOOKING_CONFIG = {
   hostName: "Jell Urmeneta",
   avatarInitials: "JU",
-  avatarUrl: "", // optional image URL — leave empty to show initials instead
+  avatarUrl: "/logo-icon.png", // optional image URL — leave empty to show initials instead
   eventTitle: "Free Discovery Call",
   duration: "30 min",
   durationMinutes: 30,
