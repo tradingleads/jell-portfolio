@@ -857,14 +857,14 @@ interface ProjItem {
 const PROJ_DATA: ProjItem[] = [
   {
     id:"facebook-ai", cat:"support", Icon:MessageSquare, color:"#22d3ee", platform:"n8n", status:"Live",
-    featured:true, role:"Solo automation engineer — scoped the flow, built the n8n pipeline, integrated Gemini AI and the Facebook API, and handled deployment and handoff.",
-    title:"Facebook AI Sales Assistant", outcome:"Replied to 100% of leads instantly — 24/7, no staff needed.",
+    featured:true, role:"Solo automation engineer — scoped the flow, built the n8n webhook pipeline, connected a Google Docs knowledge base to the AI agent, integrated Google Gemini for reply generation, and handled deployment and handoff.",
+    title:"Facebook AI Sales Assistant", outcome:"Replied to 100% of Facebook leads instantly — 24/7, no staff needed.",
     roi:"–70% support cost", roiColor:"#34d399", img:"/projects/ai-agent-facebook.png",
-    tools:["n8n","Gemini AI","Facebook API","Webhooks"],
-    summary:"An AI agent connected to Facebook Messenger that intercepts leads, qualifies intent with Gemini AI, and responds instantly. The client replaced a 2-person support team with this single automation.",
-    problem:"Support teams work 8-hour shifts. Every after-hours message sits unanswered for hours. Competitors who reply first win the sale — this business was losing 60% of after-hours leads.",
-    workflowSteps:["Facebook message received via Webhook","AI detects lead intent and urgency level","Gemini generates a personalized, on-brand reply","Response sent in under 3 seconds","Lead and conversation logged to CRM automatically"],
-    beforeAfter:{ before:"2+ hour response time overnight. 60% of after-hours leads lost to faster competitors.", after:"Instant replies 24/7. Zero missed leads. Support team now handles only complex escalations." },
+    tools:["n8n","Google Gemini","Google Docs","Facebook Webhook"],
+    summary:"An AI agent connected to Facebook Messenger via webhook that filters incoming messages, loads a Google Docs knowledge base, and uses Google Gemini to generate instant on-brand replies — sent back via HTTP Request. Replaced a 2-person support team with a single automated workflow.",
+    problem:"Support teams work 8-hour shifts. Every after-hours message sits unanswered for hours. Competitors who reply first win the sale — this business was losing leads to faster competitors.",
+    workflowSteps:["Facebook message received via Webhook","Filter checks if the message should be processed","AI agent loads Google Docs knowledge base for context","Google Gemini generates a personalized, on-brand reply","Response sent back instantly via HTTP Request"],
+    beforeAfter:{ before:"2+ hour response time overnight. Leads lost to faster competitors after hours.", after:"Instant replies 24/7. Zero missed leads. Support team now handles only complex escalations." },
     metrics:[{ label:"Response time", val:"<3s", color:"#22d3ee" },{ label:"Leads recovered", val:"+40%", color:"#34d399" },{ label:"Support cost", val:"–70%", color:"#fb923c" }],
   },
   {
