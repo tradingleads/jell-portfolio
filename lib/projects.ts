@@ -183,17 +183,18 @@ export const ALL_PROJECTS: ProjectData[] = [
     id: "asana-crm-lead",
     featured: false,
     title: "Asana CRM Lead Engagement",
-    tagline: "Lead status changes in Asana trigger full CRM email sequences",
+    tagline: "Every deal stage in Asana triggers the right email sequence automatically — zero manual follow-up.",
     platform: "Zapier",
     image: "/projects/asana-crm-lead.png",
     category: "CRM Automation",
     overview:
-      "A Zapier automation triggered by Asana task updates. Based on lead stage (Ready to Start, No Response, Quoted, Approved, Paid & Closed), the workflow routes to the correct email sequence, sends follow-ups, attaches PDF quotes, and logs every touchpoint back to Google Drive.",
+      "A Zapier automation triggered by Asana task updates. When a deal moves to a new stage, the correct path fires instantly — creating folders, sending timed follow-up sequences, delivering quotes, sharing PDFs, and sending welcome or recommendation emails. Five deal stages covered end to end with no manual intervention.",
     useCase:
       "For agencies and consultants using Asana as a lightweight CRM who want automated client communication tied to their existing project workflow.",
     results: [
       "Stage-based email sequences fire automatically on Asana updates",
       "PDF quote delivery automated on Approved status",
+      "Timed follow-up sequences with built-in delays on every stage",
       "Full client communication logged without manual tracking",
     ],
     tools: ["Zapier", "Asana", "Gmail", "Google Drive", "Delay by Zapier", "Filter by Zapier"],
