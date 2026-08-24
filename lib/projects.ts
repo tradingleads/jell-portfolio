@@ -162,11 +162,11 @@ export const ALL_PROJECTS: ProjectData[] = [
     featured: false,
     title: "AI Appointment Setter",
     tagline: "Multi-path automated booking system for service businesses",
-    platform: "Zapier",
+    platform: "n8n",
     image: "/projects/ai-appointment-setter.png",
     category: "Booking Automation",
     overview:
-      "A complex multi-scenario Zapier workflow handling the full appointment lifecycle — inquiry intake, availability check, confirmation, reschedule, and cancellation — across multiple contact channels with automated follow-ups.",
+      "A complex multi-scenario n8n workflow handling the full appointment lifecycle — inquiry intake, availability check, confirmation, reschedule, and cancellation — across multiple contact channels with automated follow-ups.",
     useCase:
       "Service businesses replacing a full-time receptionist with intelligent booking automation that never misses a lead or double-books.",
     results: [
@@ -174,7 +174,7 @@ export const ALL_PROJECTS: ProjectData[] = [
       "Multi-channel intake from forms, email, and messaging apps",
       "Automated confirmation and reminder sequences",
     ],
-    tools: ["Zapier", "Google Calendar", "Gmail", "SMS", "Paths", "Delay"],
+    tools: ["n8n", "Google Calendar", "Gmail", "SMS", "Paths", "Delay"],
     metric: "24/7 booking",
     metricColor: "#22d3ee",
     accentColor: "#22d3ee",
