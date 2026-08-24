@@ -66,13 +66,13 @@ export const ALL_PROJECTS: ProjectData[] = [
   {
     id: "leads-enrichment",
     featured: true,
-    title: "Automated Leads Enrichment",
-    tagline: "New lead in → enriched data + personalized AI email out",
+    title: "Lead Enrichment Engine",
+    tagline: "New leads qualified, enriched, and followed up automatically in under 60 seconds.",
     platform: "Zapier",
     image: "/projects/leads-enrichment.png",
     category: "Lead Generation",
     overview:
-      "A Zapier workflow triggered when a new lead is captured. It automatically enriches the contact with company data via Apollo, scores lead priority, splits into high/low priority paths, saves top leads to Google Sheets, notifies the sales team via Slack, and uses AI to draft a personalized cold email — which is then sent directly from Gmail.",
+      "A Zapier pipeline that triggers on new leads, extracts company data, enriches the contact via Apollo, then splits into two paths — high-priority leads are logged to Google Sheets, the sales team is alerted on Slack, and AI by Zapier writes and sends a personalized outreach email. Low-priority leads get a Gmail notification to the team. Fully automated end to end.",
     useCase:
       "Built for sales teams spending hours manually researching prospects and writing first-touch emails. This pipeline does all of that automatically the moment a lead appears, ensuring no lead goes cold and every outreach is personalized.",
     results: [
@@ -81,7 +81,7 @@ export const ALL_PROJECTS: ProjectData[] = [
       "AI-written personalized emails improve reply rates",
       "Sales team notified on Slack the instant a high-value lead lands",
     ],
-    tools: ["Zapier", "Apollo", "AI by Zapier", "Google Sheets", "Slack", "Gmail", "Paths"],
+    tools: ["Zapier", "Apollo", "Google Sheets", "Slack", "Gmail", "AI by Zapier"],
     metric: "< 60s response",
     metricColor: "#34d399",
     accentColor: "#34d399",
