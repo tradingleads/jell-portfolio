@@ -884,7 +884,7 @@ const PROJ_DATA: ProjItem[] = [
     featured:true, role:"Sole developer — mapped the multi-channel intake logic, built the n8n automation, and set up calendar, reminder, and reschedule handling end to end.",
     title:"AI Appointment Setter", outcome:"Booked calls and appointments automatically across every channel, 24/7.",
     roi:"24/7 active", roiColor:"#a78bfa", img:"/projects/ai-appointment-setter.png",
-    tools:["n8n","Google Calendar","Gmail","SMS"],
+    tools:["n8n","Google Calendar","Gmail","Airtable","Vapi"],
     summary:"A multi-path automation handling the full appointment lifecycle — intake, availability, confirmation, reminders, and rescheduling — across email, forms, and messaging channels without any human input.",
     problem:"Scheduling was a back-and-forth nightmare consuming hours per week. Missed follow-ups and double-bookings were costing the business clients and credibility.",
     workflowSteps:["Inquiry received via email, form, or messaging app","AI checks real-time Google Calendar availability","Booking confirmation sent with calendar invite","24h and 1h reminder emails dispatched automatically","Reschedule requests handled by AI without human input"],

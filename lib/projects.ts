@@ -174,7 +174,7 @@ export const ALL_PROJECTS: ProjectData[] = [
       "Multi-channel intake from forms, email, and messaging apps",
       "Automated confirmation and reminder sequences",
     ],
-    tools: ["n8n", "Google Calendar", "Gmail", "SMS", "Paths", "Delay"],
+    tools: ["n8n", "Google Calendar", "Gmail", "Airtable", "Vapi", "Paths", "Delay"],
     metric: "24/7 booking",
     metricColor: "#22d3ee",
     accentColor: "#22d3ee",
