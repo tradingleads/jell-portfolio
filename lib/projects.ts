@@ -135,22 +135,22 @@ export const ALL_PROJECTS: ProjectData[] = [
   {
     id: "ai-content-repurposing",
     featured: true,
-    title: "AI Content Repurposing",
-    tagline: "One audio/video file → blog posts + social content across every channel",
+    title: "AI Content Machine",
+    tagline: "One file upload generates blog posts and publishes content across Facebook, LinkedIn, and Instagram automatically.",
     platform: "Zapier",
     image: "/projects/ai-content-repurposing.png",
     category: "Content Automation",
     overview:
-      "A Zapier workflow triggered when a new file is added to Google Drive. It filters for eligible content, generates an AI transcription, then uses AI to write blog posts and social captions. A loop distributes the content across two path variants — publishing to Facebook Pages, LinkedIn, and Instagram Business automatically.",
+      "A Zapier pipeline triggered by a new file in Google Drive. AI by Zapier transcribes the file, then generates blog posts from the transcription. The content loops through line items, splits into two path variants, and publishes simultaneously to Facebook Pages, LinkedIn, and Instagram for Business — zero manual effort after upload.",
     useCase:
       "For content teams, podcasters, or coaches who want to multiply reach without multiplying effort. Upload one recording; wake up to blog posts and social updates published everywhere.",
     results: [
       "One upload triggers publishing across 3+ platforms automatically",
       "Hours of manual editing and copywriting eliminated per piece",
       "Consistent content cadence maintained with zero manual scheduling",
-      "AI-generated captions optimized per platform format",
+      "Blog posts generated from transcription with zero manual writing",
     ],
-    tools: ["Zapier", "Google Drive", "AI by Zapier", "Facebook Pages", "LinkedIn", "Instagram for Business", "Looping by Zapier"],
+    tools: ["Zapier", "Google Drive", "AI by Zapier", "Looping by Zapier", "Facebook Pages", "LinkedIn", "Instagram for Business"],
     metric: "3 platforms, 0 effort",
     metricColor: "#60a5fa",
     accentColor: "#60a5fa",
