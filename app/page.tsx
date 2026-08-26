@@ -601,7 +601,7 @@ function Navbar() {
 /* ── Hero ──────────────────────────────────────────────────── */
 function HeroSection() {
   return (
-    <section className="min-h-[clamp(600px,100dvh,900px)] md:min-h-0" style={{ display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, paddingBottom: 40, contain: "layout", background: "var(--ld-bg)" }}>
+    <section className="min-h-[clamp(600px,100dvh,900px)] md:min-h-0 pb-[40px] md:pb-6" style={{ display: "flex", alignItems: "center", position: "relative", overflow: "hidden", paddingTop: 68, contain: "layout", background: "var(--ld-bg)" }}>
       {/* Hero dot grid */}
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, var(--ld-borderC) 1px, transparent 0)", backgroundSize: "32px 32px", opacity: 0.25, pointerEvents: "none" }} />
       {/* Spotlight — blue top center */}
@@ -669,7 +669,7 @@ const TESTIMONIALS: Testimonial[] = [];
 
 function SocialProofSection() {
   return (
-    <section style={{ padding: "20px 28px clamp(20px, 4vw, 32px)", background: "var(--ld-bg)" }}>
+    <section className="pt-[20px] md:pt-6 pb-[clamp(20px,4vw,32px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)" }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         {/* Live indicator */}
@@ -707,7 +707,7 @@ function SocialProofSection() {
    font sizes, and colors as before, just given its own anchor. */
 function TestimonialsSection() {
   return (
-    <section id="testimonials" className="pb-[clamp(28px,6vw,48px)] md:pb-6" style={{ paddingTop: 20, paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="testimonials" className="pt-[20px] md:pt-6 pb-[clamp(28px,6vw,48px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 14 }}>
@@ -776,7 +776,7 @@ const TOOL_SLUGS = [
 // page's own background so it reads as part of the page, not a boxed panel.
 function TrustBar() {
   return (
-    <section style={{ padding: "clamp(32px, 8vw, 56px) 28px", background: "var(--ld-bg)" }}>
+    <section className="pt-[clamp(32px,8vw,56px)] md:pt-6 pb-[clamp(32px,8vw,56px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)" }}>
       <p style={{ textAlign: "center", fontSize: "0.68rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 28 }}>Tools &amp; Technologies</p>
       <div style={{ position: "relative", width: "100%", overflow: "hidden", display: "flex", alignItems: "center", justifyContent: "center" }}>
         <IconCloud iconSlugs={TOOL_SLUGS} />
@@ -797,7 +797,7 @@ const SERVICES = [
 
 function ServicesSection() {
   return (
-    <section id="services" className="pb-[clamp(36px,8vw,60px)] md:pb-6" style={{ paddingTop: "clamp(36px, 8vw, 60px)", paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", scrollMarginTop: 50 }}>
+    <section id="services" className="pt-[clamp(36px,8vw,60px)] md:pt-6 pb-[clamp(36px,8vw,60px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center" style={{ marginBottom: "clamp(24px, 6vw, 40px)" }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>What I Deliver</p>
@@ -1335,7 +1335,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" className="pt-[clamp(28px,6vw,36px)] md:pt-0" style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: "clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="projects" className="pt-[clamp(28px,6vw,36px)] md:pt-6 pb-[clamp(20px,4vw,32px)] md:pb-6" style={{ paddingLeft: 20, paddingRight: 20, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1563,7 +1563,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" className="pt-[clamp(28px,4vw,48px)] md:pt-6 pb-[clamp(100px,16vw,180px)] md:pb-0" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="process" className="pt-[clamp(28px,4vw,48px)] md:pt-6 pb-[clamp(100px,16vw,180px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       {/* Background glow */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -1667,7 +1667,7 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" className="pt-[clamp(36px,8vw,60px)] md:pt-6" style={{ paddingBottom: "clamp(36px, 8vw, 60px)", paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="about" className="pt-[clamp(36px,8vw,60px)] md:pt-6 pb-[clamp(36px,8vw,60px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
@@ -1745,7 +1745,7 @@ function AboutSection() {
 /* ── CTA ───────────────────────────────────────────────────── */
 function CTASection() {
   return (
-    <section id="book-a-call" style={{ padding: "clamp(28px, 4vw, 48px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="book-a-call" className="pt-[clamp(28px,4vw,48px)] md:pt-6 pb-[clamp(28px,4vw,48px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 920, margin: "0 auto", position: "relative" }}>
@@ -1831,7 +1831,7 @@ function ContactSection() {
   }
 
   return (
-    <section id="contact" className="pb-[clamp(48px,9vw,96px)] md:pb-6" style={{ paddingTop: "clamp(48px, 9vw, 96px)", paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="contact" className="pt-[clamp(48px,9vw,96px)] md:pt-6 pb-[clamp(48px,9vw,96px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative", width: "100%" }}>
@@ -1978,7 +1978,7 @@ function PortfolioSection() {
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
 
   return (
-    <section id="portfolio" className="pt-[clamp(40px,8vw,80px)] md:pt-6" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingBottom: "clamp(40px, 8vw, 80px)" }}>
+    <section id="portfolio" className="pt-[clamp(40px,8vw,80px)] md:pt-6 pb-[clamp(40px,8vw,80px)] md:pb-6" style={{ background: "#05070B", position: "relative", overflow: "hidden" }}>
       <MouseGradient />
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(59,130,246,0.04) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none", zIndex: 0 }} />
 
