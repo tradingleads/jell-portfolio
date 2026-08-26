@@ -126,7 +126,7 @@
 
 /* ─── Base ───────────────────────────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; background-color: var(--bg); }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; background-color: var(--bg); overscroll-behavior-y: none; }
 
 /* Font variables */
 :root {
@@ -140,6 +140,7 @@ body {
   font-family: var(--font-body);
   min-height: 100dvh;
   overflow-x: hidden;
+  overscroll-behavior-y: none;
   transition: background-color 0.3s ease, color 0.25s ease;
   position: relative;
   line-height: 1.7;
