@@ -1335,7 +1335,7 @@ function ProjectsSection() {
   );
 
   return (
-    <section id="projects" className="pt-[clamp(28px,6vw,36px)] md:pt-6" style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: "clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="projects" className="pt-[clamp(28px,6vw,36px)] md:pt-0" style={{ paddingLeft: 20, paddingRight: 20, paddingBottom: "clamp(20px, 4vw, 32px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1160, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center" style={{ marginBottom: 16 }}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 8 }}>Real Systems I&apos;ve Built</p>
@@ -1563,7 +1563,7 @@ function HowIWorkSection() {
   }, [inView]);
 
   return (
-    <section id="process" className="pt-[clamp(28px,4vw,48px)] md:pt-6 pb-[clamp(100px,16vw,180px)] md:pb-6" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="process" className="pt-[clamp(28px,4vw,48px)] md:pt-6 pb-[clamp(100px,16vw,180px)] md:pb-0" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       {/* Background glow */}
       <div style={{ position: "absolute", inset: 0, background: "radial-gradient(ellipse at 50% 40%, rgba(59,130,246,0.14) 0%, transparent 70%)", pointerEvents: "none" }} />
 
