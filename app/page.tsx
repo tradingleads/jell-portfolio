@@ -707,7 +707,7 @@ function SocialProofSection() {
    font sizes, and colors as before, just given its own anchor. */
 function TestimonialsSection() {
   return (
-    <section id="testimonials" style={{ padding: "20px 28px clamp(28px, 6vw, 48px)", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="testimonials" className="pb-[clamp(28px,6vw,48px)] md:pb-6" style={{ paddingTop: 20, paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
 
         <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 14 }}>
@@ -1667,7 +1667,7 @@ function AboutSection() {
   }
 
   return (
-    <section id="about" style={{ padding: "clamp(36px, 8vw, 60px) 28px", background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="about" className="pt-[clamp(36px,8vw,60px)] md:pt-6" style={{ paddingBottom: "clamp(36px, 8vw, 60px)", paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "clamp(28px, 6vw, 64px)", alignItems: "center" }}>
         <motion.div {...up(0)} style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
           {/* Clickable photo with glow interaction */}
@@ -1831,7 +1831,7 @@ function ContactSection() {
   }
 
   return (
-    <section id="contact" style={{ padding: "clamp(48px, 9vw, 96px) 28px", background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
+    <section id="contact" className="pb-[clamp(48px,9vw,96px)] md:pb-6" style={{ paddingTop: "clamp(48px, 9vw, 96px)", paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", position: "relative", overflow: "hidden", scrollMarginTop: 50 }}>
       <div className="ld-ambient-glow" style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 600, height: 320, background: "radial-gradient(ellipse, var(--ld-glow) 0%, transparent 70%)", opacity: 0.4, pointerEvents: "none" }} />
 
       <div style={{ maxWidth: 1040, margin: "0 auto", position: "relative", width: "100%" }}>
@@ -1978,7 +1978,7 @@ function PortfolioSection() {
   const handleOrbState  = useCallback((s: OrbState) => setOrbState(s), []);
 
   return (
-    <section id="portfolio" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingTop: "clamp(40px, 8vw, 80px)", paddingBottom: "clamp(40px, 8vw, 80px)" }}>
+    <section id="portfolio" className="pt-[clamp(40px,8vw,80px)] md:pt-6" style={{ background: "#05070B", position: "relative", overflow: "hidden", paddingBottom: "clamp(40px, 8vw, 80px)" }}>
       <MouseGradient />
       <div style={{ position: "absolute", inset: 0, backgroundImage: "radial-gradient(circle at 1px 1px, rgba(59,130,246,0.04) 1px, transparent 0)", backgroundSize: "30px 30px", pointerEvents: "none", zIndex: 0 }} />
 
