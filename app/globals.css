@@ -343,3 +343,26 @@ body::after {
   0%   { width: 0;     height: 0;     opacity: 1; }
   100% { width: 160px; height: 160px; opacity: 0; }
 }
+
+/* ─── "Desktop site" on mobile: dead-space fix ──────────────────
+   min-width alone can't tell a phone with "Request Desktop Site"
+   turned on apart from an actual desktop — both report the same
+   viewport width. pointer:coarse can: a touchscreen reports coarse,
+   a real desktop's mouse reports fine. Combined with the width
+   check, this rule only ever matches a touch device that's been
+   forced into the md:/lg: desktop layout — real desktop (mouse,
+   pointer:fine) and real mobile (narrow viewport) are both
+   untouched. */
+@media (min-width: 768px) and (pointer: coarse) {
+  #hero { min-height: auto; padding-bottom: 24px; }
+  #trust-bar { padding-top: 24px; padding-bottom: 24px; }
+  #services { padding-top: 24px; padding-bottom: 40px; }
+  #process { padding-top: 40px; padding-bottom: 24px; }
+  #projects { padding-top: 24px; padding-bottom: 24px; }
+  #social-proof { padding-top: 24px; padding-bottom: 24px; }
+  #testimonials { padding-top: 24px; padding-bottom: 24px; }
+  #about { padding-top: 24px; padding-bottom: 24px; }
+  #book-a-call { padding-top: 24px; padding-bottom: 24px; }
+  #contact { padding-top: 24px; padding-bottom: 24px; }
+  #portfolio { padding-top: 24px; padding-bottom: 24px; }
+}
