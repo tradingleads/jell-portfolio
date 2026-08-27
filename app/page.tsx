@@ -542,28 +542,32 @@ function Navbar() {
             position: "fixed", inset: 0, zIndex: 999,
             background: "var(--ld-bg)",
             display: "flex", flexDirection: "column",
-            alignItems: "center", justifyContent: "flex-start",
-            paddingTop: 72,
+            alignItems: "flex-start", justifyContent: "flex-start",
           }}
         >
-          {/* Close button */}
-          <motion.button
-            type="button"
-            onClick={() => setMenuOpen(false)}
-            whileTap={{ scale: 0.92 }}
-            style={{
-              position: "absolute", top: 16, right: 16,
-              width: 40, height: 40, borderRadius: 10,
-              background: "var(--ld-card)", border: "1px solid var(--ld-border)",
-              display: "flex", alignItems: "center", justifyContent: "center",
-              cursor: "pointer", color: "var(--ld-text)",
-            }}
-          >
-            <X size={18} strokeWidth={2} />
-          </motion.button>
+          {/* Top bar — logo (for orientation) + close button, mirrors the header row underneath */}
+          <div style={{ width: "100%", display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px" }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+              <img src="/logo-icon.png" alt="Jell Urmeneta logo" style={{ width: 40, height: 40, objectFit: "contain", display: "block", flexShrink: 0 }} />
+              <span style={{ fontSize: "1.125rem", fontWeight: 700, letterSpacing: "0.03em", color: "var(--ld-text)", fontFamily: "var(--font-body)", textTransform: "uppercase" }}>Jell Urmeneta</span>
+            </div>
+            <motion.button
+              type="button"
+              onClick={() => setMenuOpen(false)}
+              whileTap={{ scale: 0.92 }}
+              style={{
+                width: 40, height: 40, borderRadius: 10,
+                background: "var(--ld-card)", border: "1px solid var(--ld-border)",
+                display: "flex", alignItems: "center", justifyContent: "center",
+                cursor: "pointer", color: "var(--ld-text)", flexShrink: 0,
+              }}
+            >
+              <X size={18} strokeWidth={2} />
+            </motion.button>
+          </div>
 
           {/* Inner content — left-aligned, consistent spacing */}
-          <div style={{ width: "100%", maxWidth: 400, padding: "0 24px", display: "flex", flexDirection: "column" }}>
+          <div style={{ width: "100%", maxWidth: 400, padding: "40px 24px 0", display: "flex", flexDirection: "column" }}>
 
             {/* Nav links */}
             {[...NAV_ITEMS, NAV_ABOUT, { label: "Book a Call", href: NAV_CTA.href }, NAV_CONTACT].map(({ label, href }, i) => (
