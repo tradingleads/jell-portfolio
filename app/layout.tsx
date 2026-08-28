@@ -39,6 +39,7 @@ const personJsonLd = {
   url: "https://withjell.vercel.app",
   image: "https://withjell.vercel.app/logo-icon.png",
   jobTitle: "AI Automation Specialist",
+  gender: "Female",
   address: {
     "@type": "PostalAddress",
     addressRegion: "Rizal",
