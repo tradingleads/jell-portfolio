@@ -1730,7 +1730,7 @@ function AboutSection() {
         <motion.div {...up(0.1)}>
           <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 16 }}>About</p>
           <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 18, lineHeight: 1.2 }}>
-            Hi, I&apos;m Jell.
+            Hi, I&apos;m Jell <span style={{ fontWeight: 500, color: "var(--ld-muted)" }}>(she/her)</span>.
           </h2>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
             I build AI-powered business systems that simplify operations through workflow automation, system integrations, and process optimization. My focus is creating reliable systems that remove repetitive work and help businesses operate more efficiently.
