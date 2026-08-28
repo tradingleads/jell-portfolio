@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://withjell.vercel.app"),
   title: "Jell Urmeneta — AI Automation Specialist",
   description:
-    "AI Automation & Workflow Specialist based in Rizal, Philippines. I build systems that eliminate busywork and help businesses scale faster.",
+    "AI Automation & Workflow Specialist based in Rizal, Philippines. She builds systems that eliminate busywork and help businesses scale faster.",
   keywords: [
     "AI automation",
     "workflow automation",
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Jell Urmeneta — AI Automation Specialist",
     description:
-      "I build AI systems that save time, remove busywork, and help businesses grow faster.",
+      "She builds AI systems that save time, remove busywork, and help businesses grow faster.",
     type: "website",
     images: ["/logo-icon.png"],
   },
@@ -40,6 +40,8 @@ const personJsonLd = {
   image: "https://withjell.vercel.app/logo-icon.png",
   jobTitle: "AI Automation Specialist",
   gender: "Female",
+  description:
+    "Jell Urmeneta is a Filipina AI Automation Specialist based in Rizal, Philippines. She builds AI-powered workflow automation systems for businesses.",
   address: {
     "@type": "PostalAddress",
     addressRegion: "Rizal",
