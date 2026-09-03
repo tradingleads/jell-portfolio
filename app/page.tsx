@@ -1686,16 +1686,10 @@ function AboutSection() {
             I design automation systems for small and mid-sized businesses that want to reduce repetitive work and make their existing tools work better together.
           </p>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
-            My approach starts with the process, not the technology. I look at how the work is being done today, where the friction is, and which steps actually make sense to automate.
-          </p>
-          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
-            From there, I design and build practical workflows around the way the business already operates using n8n, Make, and Zapier.
-          </p>
-          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
-            The goal isn&apos;t to add more technology. It&apos;s to make everyday operations simpler, more reliable, and less dependent on repetitive manual work.
+            My approach starts with the process, not the technology. I look at where the friction is, what&apos;s being done manually, and what actually makes sense to automate.
           </p>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
-            I&apos;ve built and tested 10+ automation systems around real-world business workflows, which you can explore throughout this portfolio.
+            Using n8n, Make, and Zapier, I build practical workflows that simplify everyday operations. I&apos;ve built and tested 10+ automation systems around real-world business workflows, which you can explore throughout this portfolio.
           </p>
         </motion.div>
       </div>
