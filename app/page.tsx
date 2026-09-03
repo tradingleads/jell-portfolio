@@ -1518,23 +1518,23 @@ function ProjectsSection() {
 const STEPS = [
   {
     Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "Understand & Identify",
-    d: "Understand how the current process works, where the friction is, and which repetitive steps are worth automating.",
+    t: "Assess",
+    d: "Understand the workflow, find the friction, and identify what's worth automating.",
   },
   {
     Icon: Workflow, hex: "#2563EB", c: "var(--ld-blue)",
     t: "Design",
-    d: "Map the workflow, logic, integrations, and tools needed before building the system.",
+    d: "Map the workflow, logic, tools, and integrations.",
   },
   {
     Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
-    t: "Build & Test",
-    d: "Build the automation and test normal scenarios, missing information, errors, and edge cases.",
+    t: "Build",
+    d: "Build and test the automation across real scenarios and edge cases.",
   },
   {
     Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "Launch & Handoff",
-    d: "Deploy the workflow once it's reliable, with clear documentation for easier handoff and maintenance.",
+    t: "Launch",
+    d: "Deploy, document, and hand off a reliable system.",
   },
 ];
 
