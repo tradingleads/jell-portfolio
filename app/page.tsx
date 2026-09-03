@@ -1518,22 +1518,22 @@ function ProjectsSection() {
 const STEPS = [
   {
     Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "01 — Understand & Identify",
+    t: "Understand & Identify",
     d: "Understand how the current process works, where the friction is, and which repetitive steps are worth automating.",
   },
   {
     Icon: Workflow, hex: "#2563EB", c: "var(--ld-blue)",
-    t: "02 — Design",
+    t: "Design",
     d: "Map the workflow, logic, integrations, and tools needed before building the system.",
   },
   {
     Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
-    t: "03 — Build & Test",
+    t: "Build & Test",
     d: "Build the automation and test normal scenarios, missing information, errors, and edge cases.",
   },
   {
     Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "04 — Launch & Handoff",
+    t: "Launch & Handoff",
     d: "Deploy the workflow once it's reliable, with clear documentation for easier handoff and maintenance.",
   },
 ];
