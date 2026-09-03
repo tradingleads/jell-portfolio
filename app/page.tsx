@@ -1682,8 +1682,20 @@ function AboutSection() {
           <h2 style={{ fontSize: "clamp(1.4rem, 3vw, 2rem)", fontWeight: 800, color: "var(--ld-text)", fontFamily: "var(--font-display)", letterSpacing: "-0.025em", marginBottom: 18, lineHeight: 1.2 }}>
             Hi, I&apos;m Jell.
           </h2>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
+            I design automation systems for small and mid-sized businesses that want to reduce repetitive work and make their existing tools work better together.
+          </p>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
+            My approach starts with the process, not the technology. I look at how the work is being done today, where the friction is, and which steps actually make sense to automate.
+          </p>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
+            From there, I design and build practical workflows around the way the business already operates using n8n, Make, and Zapier.
+          </p>
+          <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 18 }}>
+            The goal isn&apos;t to add more technology. It&apos;s to make everyday operations simpler, more reliable, and less dependent on repetitive manual work.
+          </p>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
-            I build AI-powered business systems that simplify operations through workflow automation, system integrations, and process optimization. My focus is creating reliable systems that remove repetitive work and help businesses operate more efficiently.
+            I&apos;ve built and tested 10+ automation systems around real-world business workflows, which you can explore throughout this portfolio.
           </p>
         </motion.div>
       </div>
