@@ -19,7 +19,7 @@ import {
   ArrowRight, Zap, Bot, Database, Film, Users, FileText,
   MessageSquare, Mail,
   ArrowUpRight, Sparkles, Activity, Phone, Linkedin, MapPin,
-  Search, Wrench, Rocket, Maximize2, Menu, X,
+  Search, Wrench, Rocket, Maximize2, Menu, X, Workflow,
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
   Loader2, Check, AlertCircle,
@@ -1518,23 +1518,23 @@ function ProjectsSection() {
 const STEPS = [
   {
     Icon: Search, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "Discover",
-    d: "Understand your business, workflow, and goals.",
+    t: "01 — Understand & Identify",
+    d: "Understand how the current process works, where the friction is, and which repetitive steps are worth automating.",
   },
   {
-    Icon: Settings2, hex: "#2563EB", c: "var(--ld-blue)",
-    t: "Plan",
-    d: "Map the best automation solution for your process.",
+    Icon: Workflow, hex: "#2563EB", c: "var(--ld-blue)",
+    t: "02 — Design",
+    d: "Map the workflow, logic, integrations, and tools needed before building the system.",
   },
   {
     Icon: Wrench, hex: "#7C3AED", c: "var(--ld-purple)",
-    t: "Build",
-    d: "Develop, test, and connect everything together.",
+    t: "03 — Build & Test",
+    d: "Build the automation and test normal scenarios, missing information, errors, and edge cases.",
   },
   {
     Icon: Rocket, hex: "#3B82F6", c: "var(--ld-accent)",
-    t: "Launch",
-    d: "Deploy your system, document it, and make sure it runs smoothly.",
+    t: "04 — Launch & Handoff",
+    d: "Deploy the workflow once it's reliable, with clear documentation for easier handoff and maintenance.",
   },
 ];
 
@@ -1575,7 +1575,7 @@ function HowIWorkSection() {
             How We&apos;ll Work Together
           </h2>
           <p style={{ fontSize: "1rem", color: "var(--ld-muted)", maxWidth: "52ch", margin: "0 auto", lineHeight: 1.7 }}>
-            A simple process designed to take your idea from manual work to a reliable business system.
+            A practical process that starts with understanding your workflow and ends with a reliable automation built around how your business actually works.
           </p>
         </motion.div>
 
