@@ -786,12 +786,12 @@ function TrustBar() {
 
 /* ── Services ──────────────────────────────────────────────── */
 const SERVICES = [
-  { Icon: Zap,       c: "var(--ld-accent)",  t: "Zero-Touch Workflows",       d: "Hands-free workflows that run automatically from start to finish." },
-  { Icon: RefreshCw, c: "var(--ld-purple)",  t: "End-to-End Automation",      d: "Complete workflow automation that removes bottlenecks and reduces manual work." },
-  { Icon: Database,  c: "var(--ld-blue)",    t: "System Integrations",        d: "Connect Airtable, Google Sheets, Notion, Slack, Gmail, CRMs, and other business tools." },
-  { Icon: Bot,       c: "var(--ld-accent)",  t: "AI-Powered Workflows",       d: "Use AI to automate repetitive tasks and support daily operations." },
-  { Icon: FileText,  c: "var(--ld-purple)",  t: "SOP-Ready Systems",          d: "Every workflow includes clear documentation for easy handoff." },
-  { Icon: Wrench,    c: "var(--ld-blue)",    t: "Custom Automation Solutions", d: "Automation solutions tailored to your unique business processes." },
+  { Icon: Zap,       c: "var(--ld-accent)",  t: "Workflow Automation",         d: "Automate repetitive tasks and multi-step business processes from start to finish." },
+  { Icon: Bot,       c: "var(--ld-purple)",  t: "AI-Powered Workflows",        d: "Use AI for tasks like data extraction, classification, customer support, and knowledge retrieval." },
+  { Icon: Database,  c: "var(--ld-blue)",    t: "System Integrations",         d: "Connect CRMs, Google Workspace, Airtable, Notion, Slack, Gmail, and other business tools." },
+  { Icon: RefreshCw, c: "var(--ld-accent)",  t: "Business Process Automation", d: "Streamline recurring processes such as lead management, scheduling, document handling, and internal operations." },
+  { Icon: FileText,  c: "var(--ld-purple)",  t: "SOP-Ready Systems",           d: "Clear documentation can be included for easier handoff and maintenance." },
+  { Icon: Wrench,    c: "var(--ld-blue)",    t: "Custom Automation Solutions", d: "Automation systems designed around your existing tools, processes, and business needs." },
 ];
 
 function ServicesSection() {
@@ -799,7 +799,7 @@ function ServicesSection() {
     <section id="services" className="pt-[clamp(36px,8vw,60px)] pb-[clamp(36px,8vw,60px)]" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-card2)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
         <motion.div {...up()} className="text-center" style={{ marginBottom: "clamp(24px, 6vw, 40px)" }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>What I Deliver</p>
+          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 10 }}>Automation Services</p>
           <h2 style={{ fontSize: "clamp(1.6rem, 3vw, 2.2rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)" }}>
             Where Automation Removes the Busywork
           </h2>
