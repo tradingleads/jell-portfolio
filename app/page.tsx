@@ -740,7 +740,7 @@ function ExpectSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1fr] gap-10 md:gap-16 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1fr] gap-10 md:gap-16 items-start md:items-center">
 
             {/* Left — heading, supporting text */}
             <div>
