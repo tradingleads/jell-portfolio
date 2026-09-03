@@ -23,7 +23,7 @@ import {
   ChevronLeft, ChevronRight,
   RefreshCw, Settings2,
   Loader2, Check, AlertCircle,
-  Quote, TrendingDown, Clock, Repeat,
+  TrendingDown, Clock, Repeat,
 } from "lucide-react";
 
 /* ── Constants ─────────────────────────────────────────── */
@@ -650,21 +650,16 @@ function HeroSection() {
   );
 }
 
-/* ── Social proof (results bar + testimonials) ────────────────
+/* ── Social proof (results bar) ────────────────────────────────
    Numbers mirror real figures already shown in the Projects section
    (facebook-ai, content-machine, appointment-setter, asana-crm) —
-   no invented stats. Testimonials array is empty-friendly: fill it in
-   with real { quote, name, title } objects when available and the
-   composed empty state below is replaced automatically. */
+   no invented stats. */
 const RESULT_STATS = [
   { Icon: TrendingDown, to: 70,  prefix: "–", suffix: "%", label: "Support cost cut" },
   { Icon: Clock,        to: 3,   prefix: "<", suffix: "s", label: "AI response time" },
   { Icon: Repeat,       to: 10,  prefix: "",  suffix: "×", label: "Content output" },
   { Icon: Check,        to: 100, prefix: "",  suffix: "%", label: "Lead follow-up rate" },
 ];
-
-interface Testimonial { quote: string; name: string; title: string }
-const TESTIMONIALS: Testimonial[] = [];
 
 function SocialProofSection() {
   return (
@@ -701,46 +696,125 @@ function SocialProofSection() {
   );
 }
 
-/* ── Testimonials — its own section (was folded into Live Results).
-   Composed empty state until real quotes are added; same card markup,
-   font sizes, and colors as before, just given its own anchor. */
-function TestimonialsSection() {
+/* ── What You Can Expect ───────────────────────────────────
+   Interactive accordion, not a card grid — deliberately different
+   from the Services/Process sections. Right column doubles as the
+   "list" and the "active detail content": each row's description
+   expands directly beneath it, so the same markup works as a
+   switching panel on desktop and a single-open accordion on mobile. */
+interface Expectation {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Icon: any; title: string; detail: string;
+}
+const EXPECTATIONS: Expectation[] = [
+  { Icon: MessageSquare, title: "Clear Communication",  detail: "Know what's being built, why it matters, how it works, and where things stand throughout the project." },
+  { Icon: Sparkles,      title: "Thoughtful Automation", detail: "Not everything needs to be automated. Focus on removing repetitive work while keeping human input where it actually matters." },
+  { Icon: Workflow,      title: "Reliable Workflows",    detail: "Build with real scenarios, exceptions, errors, and everyday use in mind—not just the perfect demo." },
+  { Icon: FileText,      title: "Smooth Handoff",        detail: "Provide clear documentation so the workflow is easier to understand, maintain, and manage after launch." },
+];
+
+function ExpectSection() {
+  const [active, setActive] = useState(0);
+  const btnRefs = useRef<(HTMLButtonElement | null)[]>([]);
+
+  const focusAndSelect = (i: number) => {
+    const next = (i + EXPECTATIONS.length) % EXPECTATIONS.length;
+    btnRefs.current[next]?.focus();
+    setActive(next);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent, i: number) => {
+    if (e.key === "ArrowDown" || e.key === "ArrowRight") { e.preventDefault(); focusAndSelect(i + 1); }
+    else if (e.key === "ArrowUp" || e.key === "ArrowLeft") { e.preventDefault(); focusAndSelect(i - 1); }
+  };
+
   return (
-    <section id="testimonials" className="pt-[20px] pb-[clamp(28px,6vw,48px)]" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
+    <section id="expect" className="pt-[20px] pb-[clamp(28px,6vw,48px)]" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <motion.div {...up()} className="grid grid-cols-1 md:grid-cols-[0.85fr_1fr] gap-10 md:gap-16 items-start">
 
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 7, marginBottom: 14 }}>
-          <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)" }}>
-            Testimonials
-          </p>
-        </div>
+          {/* Left — label, heading, supporting text */}
+          <div>
+            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 12 }}>
+              What You Can Expect
+            </p>
+            <h2 style={{ fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", lineHeight: 1.15, marginBottom: 14 }}>
+              Automation you can actually rely on.
+            </h2>
+            <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.7, maxWidth: "42ch" }}>
+              Automation should make your business easier to run—not give you another system to constantly babysit.
+            </p>
+          </div>
 
-        <motion.div {...up()}>
-          {TESTIMONIALS.length > 0 ? (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16 }}>
-              {TESTIMONIALS.map(t => (
-                <div key={t.name} style={{ padding: "22px 22px", background: "var(--ld-card)", border: "1px solid var(--ld-border)", borderRadius: 16, boxShadow: "var(--ld-shadow)" }}>
-                  <Quote size={18} strokeWidth={1.5} style={{ color: "var(--ld-accent)", opacity: 0.6, marginBottom: 10 }} />
-                  <p style={{ fontSize: "0.9rem", color: "var(--ld-text)", lineHeight: 1.65, marginBottom: 14 }}>&ldquo;{t.quote}&rdquo;</p>
-                  <p style={{ fontSize: "0.8125rem", fontWeight: 700, color: "var(--ld-text)" }}>{t.name}</p>
-                  <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)" }}>{t.title}</p>
+          {/* Right — interactive expectation list / active detail */}
+          <div style={{ border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden", background: "var(--ld-card)", boxShadow: "var(--ld-shadow)" }}>
+            {EXPECTATIONS.map(({ Icon, title, detail }, i) => {
+              const isActive = active === i;
+              const btnId = `expect-tab-${i}`;
+              const panelId = `expect-panel-${i}`;
+              return (
+                <div key={title} style={{ borderTop: i === 0 ? "none" : "1px solid var(--ld-border)" }}>
+                  <button
+                    ref={el => { btnRefs.current[i] = el; }}
+                    id={btnId}
+                    type="button"
+                    aria-expanded={isActive}
+                    aria-controls={panelId}
+                    onClick={() => setActive(i)}
+                    onKeyDown={(e) => handleKeyDown(e, i)}
+                    className="focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--ld-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ld-card)]"
+                    style={{
+                      width: "100%", display: "flex", alignItems: "center", gap: 14,
+                      padding: "18px 20px", background: isActive ? "var(--ld-card2)" : "transparent",
+                      border: "none", borderLeft: `3px solid ${isActive ? "var(--ld-accent)" : "transparent"}`,
+                      cursor: "pointer", textAlign: "left",
+                      transition: "background 0.25s ease, border-color 0.25s ease",
+                    }}
+                  >
+                    <span style={{
+                      width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+                      display: "flex", alignItems: "center", justifyContent: "center",
+                      background: isActive ? "var(--ld-glow)" : "var(--ld-card2)",
+                      border: `1px solid ${isActive ? "var(--ld-borderC)" : "var(--ld-border)"}`,
+                      transition: "background 0.25s ease, border-color 0.25s ease",
+                    }}>
+                      <Icon size={17} strokeWidth={1.5} style={{ color: isActive ? "var(--ld-accent)" : "var(--ld-muted)" }} />
+                    </span>
+                    <span style={{
+                      fontSize: "0.9375rem", fontWeight: 700, fontFamily: "var(--font-display)", flex: 1,
+                      color: isActive ? "var(--ld-text)" : "var(--ld-muted)", transition: "color 0.25s ease",
+                    }}>
+                      {title}
+                    </span>
+                    <ChevronRight size={16} strokeWidth={1.5} style={{
+                      color: "var(--ld-muted)", flexShrink: 0,
+                      transform: isActive ? "rotate(90deg)" : "rotate(0deg)",
+                      transition: "transform 0.25s ease",
+                    }} />
+                  </button>
+
+                  <AnimatePresence initial={false}>
+                    {isActive && (
+                      <motion.div
+                        id={panelId} role="region" aria-labelledby={btnId}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: E }}
+                        style={{ overflow: "hidden" }}
+                      >
+                        <p style={{ padding: "0 20px 20px 70px", fontSize: "0.875rem", color: "var(--ld-muted)", lineHeight: 1.7 }}>
+                          {detail}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div style={{
-              display: "flex", flexDirection: "column", alignItems: "center", textAlign: "center", gap: 8,
-              padding: "26px 24px", borderRadius: 16, border: "1px dashed var(--ld-borderC)", background: "var(--ld-card2)",
-            }}>
-              <Quote size={18} strokeWidth={1.5} style={{ color: "var(--ld-muted)", opacity: 0.6 }} />
-              <p style={{ fontSize: "0.8125rem", fontWeight: 600, color: "var(--ld-muted)" }}>Client testimonials coming soon</p>
-              <p style={{ fontSize: "0.75rem", color: "var(--ld-muted)", maxWidth: "46ch" }}>
-                In the meantime, the results above are pulled straight from live projects — see the full breakdown in each project above.
-              </p>
-            </div>
-          )}
-        </motion.div>
+              );
+            })}
+          </div>
 
+        </motion.div>
       </div>
     </section>
   );
@@ -2093,7 +2167,7 @@ export default function LandingPage() {
         <HowIWorkSection />
         <ProjectsSection />
         <SocialProofSection />
-        <TestimonialsSection />
+        <ExpectSection />
         <AboutSection />
         <CTASection />
         <ContactSection />
