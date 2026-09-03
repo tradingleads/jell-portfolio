@@ -621,7 +621,7 @@ function HeroSection() {
           </h1>
 
           <p className="hero-fade-item mx-auto sm:mx-0" style={{ animationDelay: "0.15s", fontSize: "1.0625rem", fontWeight: 500, lineHeight: 1.65, color: "var(--ld-text)", opacity: 0.88, maxWidth: "42ch", marginBottom: "clamp(20px, 4vw, 32px)" }}>
-            I build zero-touch workflows, AI automations, and system integrations that remove bottlenecks, reduce manual work, and keep your business moving.
+            I design and build practical AI workflows, business process automations, and system integrations for SMBs that reduce manual work and simplify everyday operations.
           </p>
 
           <div className="hero-fade-item flex-col sm:flex-row justify-center sm:justify-start" style={{ animationDelay: "0.25s", display: "flex", flexWrap: "wrap", gap: 10, marginBottom: 22 }}>
