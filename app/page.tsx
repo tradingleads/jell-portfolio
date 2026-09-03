@@ -731,23 +731,29 @@ function ExpectSection() {
   return (
     <section id="expect" className="pt-[20px] pb-[clamp(28px,6vw,48px)]" style={{ paddingLeft: 28, paddingRight: 28, background: "var(--ld-bg)", scrollMarginTop: 50 }}>
       <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-        <motion.div {...up()} className="grid grid-cols-1 md:grid-cols-[0.85fr_1fr] gap-10 md:gap-16 items-start">
+        <motion.div {...up()}>
 
-          {/* Left — label, heading, supporting text */}
-          <div>
-            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)", marginBottom: 12 }}>
+          {/* Centered label — matches the Process section treatment */}
+          <div style={{ textAlign: "center", marginBottom: "clamp(28px, 6vw, 48px)" }}>
+            <p style={{ fontSize: "0.7rem", fontWeight: 700, letterSpacing: "0.16em", textTransform: "uppercase", color: "var(--ld-accent)" }}>
               What You Can Expect
-            </p>
-            <h2 style={{ fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", lineHeight: 1.15, marginBottom: 14 }}>
-              Automation you can actually rely on.
-            </h2>
-            <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.7, maxWidth: "42ch" }}>
-              Automation should make your business easier to run—not give you another system to constantly babysit.
             </p>
           </div>
 
-          {/* Right — interactive expectation list / active detail */}
-          <div style={{ border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden", background: "var(--ld-card)", boxShadow: "var(--ld-shadow)" }}>
+          <div className="grid grid-cols-1 md:grid-cols-[0.85fr_1fr] gap-10 md:gap-16 items-start">
+
+            {/* Left — heading, supporting text */}
+            <div>
+              <h2 style={{ fontSize: "clamp(1.8rem, 3.4vw, 2.6rem)", fontWeight: 800, color: "var(--ld-text)", letterSpacing: "-0.025em", fontFamily: "var(--font-display)", lineHeight: 1.15, marginBottom: 14 }}>
+                Automation you can actually rely on.
+              </h2>
+              <p style={{ fontSize: "1rem", color: "var(--ld-muted)", lineHeight: 1.7, maxWidth: "42ch" }}>
+                Automation should make your business easier to run—not give you another system to constantly babysit.
+              </p>
+            </div>
+
+            {/* Right — interactive expectation list / active detail */}
+            <div style={{ border: "1px solid var(--ld-border)", borderRadius: 20, overflow: "hidden", background: "var(--ld-card)", boxShadow: "var(--ld-shadow)" }}>
             {EXPECTATIONS.map(({ Icon, title, detail }, i) => {
               const isActive = active === i;
               const btnId = `expect-tab-${i}`;
@@ -814,6 +820,7 @@ function ExpectSection() {
             })}
           </div>
 
+          </div>
         </motion.div>
       </div>
     </section>
