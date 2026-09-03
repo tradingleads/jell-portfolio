@@ -1689,7 +1689,7 @@ function AboutSection() {
             My approach starts with the process, not the technology. I look at where the friction is, what&apos;s being done manually, and what actually makes sense to automate.
           </p>
           <p style={{ fontSize: "0.9375rem", lineHeight: 1.75, color: "var(--ld-muted)", maxWidth: "40ch", marginBottom: 24 }}>
-            Using n8n, Make, and Zapier, I build practical workflows that simplify everyday operations. I&apos;ve built and tested 10+ automation systems around real-world business workflows, which you can explore throughout this portfolio.
+            Using n8n, Make, and Zapier, I build practical workflows that simplify everyday operations. I&apos;ve built and tested 10+ automation systems based on real-world business processes, which you can explore throughout this portfolio.
           </p>
         </motion.div>
       </div>
